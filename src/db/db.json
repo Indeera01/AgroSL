@@ -1,0 +1,51 @@
+[
+    {
+      "id": 1,
+      "title": "Green Iguana",
+      "price": "LKR 200",
+      "quantity": "1kg",
+      "seller": "Sample Seller",
+      "image": "../assets/background.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Red Rose",
+      "price": "LKR 50",
+      "quantity": "1 stem",
+      "seller": "Flower Paradise",
+      "image": "../assets/red-rose.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Blue Bicycle",
+      "price": "LKR 1500",
+      "quantity": "1 unit",
+      "seller": "Cycle City",
+      "image": "../assets/blue-bicycle.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Coffee Beans",
+      "price": "LKR 300",
+      "quantity": "500g",
+      "seller": "Coffee Haven",
+      "image": "../assets/coffee-beans.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Smartphone",
+      "price": "LKR 25000",
+      "quantity": "1 unit",
+      "seller": "Tech Hub",
+      "image": "../assets/smartphone.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Running Shoes",
+      "price": "LKR 5000",
+      "quantity": "1 pair",
+      "seller": "Sports World",
+      "image": "../assets/running-shoes.jpg"
+    }
+  ]
+  
