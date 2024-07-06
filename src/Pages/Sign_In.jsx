@@ -33,28 +33,21 @@ const SignIn = () => {
           label="Email Address"
           variant="outlined"
           margin="dense"
-          // fullWidth
+          type="email"
+          fullWidth
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          InputProps={{
-            sx: {
-              padding: '0px 60px',
-            },
-          }}
+          required
         />
         <TextField
           label="Password"
           variant="outlined"
           type="password"
           margin="dense"
-          // fullWidth
+          fullWidth
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          InputProps={{
-            sx: {
-              padding: '0px 60px',
-            },
-          }}
+          required
         />
         <Button
           variant="contained"
