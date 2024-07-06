@@ -18,6 +18,12 @@ const SignUp = () => {
     console.log('Phonenumber:', phonenumber);
     console.log('Reenteredpassword:', reenteredpassword);
     alert('Account created successfully')
+    setFirstname('');
+    setLastname('');
+    setEmail('');
+    setPhonenumber('');
+    setPassword('');
+    setReenteredpassword('');
   };
 
   return (
@@ -96,6 +102,7 @@ const SignUp = () => {
           onChange={(e) => setReenteredpassword(e.target.value)}
           required
         />
+        <Link color="secondary" href="/Sign_Up_Seller" >Create as seller</Link>
         <Button
           variant="contained"
           color="primary"
