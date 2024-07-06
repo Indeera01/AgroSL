@@ -15,7 +15,6 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import AgroSL_Logo from '../assets/image.png'
 import Side_Drawer from './Side_Drawer'
 
 const Search = styled('div')(({ theme }) => ({
