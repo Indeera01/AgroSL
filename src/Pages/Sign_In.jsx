@@ -3,11 +3,11 @@ import { Box, Typography, TextField, Button, Container, Link } from '@mui/materi
 import Background from '../Components/Backgroud';
 
 const SignIn = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignUp = () => {
-    console.log('Username:', username);
+    console.log('Username:', email);
     console.log('Password:', password);
   };
 
@@ -34,8 +34,8 @@ const SignIn = () => {
           variant="outlined"
           margin="dense"
           // fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           InputProps={{
             sx: {
               padding: '0px 60px',
