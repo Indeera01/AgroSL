@@ -2,22 +2,14 @@ import React from 'react'
 import {Box} from '@mui/material';
 import Item from './Item'
 const Items = () => {
+  const itemlist = [1,2,3,4,5,6,7,8,9,10,11]
   return (
     <Box
-    sx={{display:'flex',margin:10,flexWrap:'wrap'}}
+    ml={3}
+    mt={12}
+    sx={{display:'flex',gap:3,flexWrap: 'wrap'}}
     >
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
-      <Item/>
+      {itemlist.map((i)=><Item/>)}
     </Box>
 
   )

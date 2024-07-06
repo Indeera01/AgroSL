@@ -9,7 +9,7 @@ import backgroundImage from '../assets/background.jpg';
 
 const Item = () => {
   return (
-    <Card sx={{ minWidth: {md:200,xs:300},maxWidth:250 }}>
+    <Card sx={{ minWidth: { md: 200, xs: 320 },maxWidth:250 }}>
       <CardMedia
         component="img"
         alt="green iguana"

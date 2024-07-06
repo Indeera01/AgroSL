@@ -11,7 +11,7 @@ const Side_Drawer = () => {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box',backgroudColor:"#98BC74" },
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' ,backgroundColor: '#98BC74'},
         }}
       >
         <Toolbar />
