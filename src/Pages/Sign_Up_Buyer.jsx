@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Container, Link } from '@mui/material';
 import Background from '../Components/Backgroud';
+import { useNavigate } from 'react-router-dom';
+
 
 const SignUp = () => {
   const [password, setPassword] = useState('');
@@ -9,7 +11,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [phonenumber, setPhonenumber] = useState('');
   const [reenteredpassword, setReenteredpassword] = useState('');
-
+  const navigate = useNavigate();
 
   const handleSignUp = () => {
     console.log('Email:', email);
@@ -24,6 +26,7 @@ const SignUp = () => {
     setPhonenumber('');
     setPassword('');
     setReenteredpassword('');
+    navigate("/Success")
   };
 
   return (
