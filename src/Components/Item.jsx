@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import backgroundImage from '../assets/background.jpg';
 
-const Item = () => {
+const Item = ({item}) => {
   return (
     <Card sx={{ minWidth: { md: 200, xs: 320 },maxWidth:250 }}>
       <CardMedia
@@ -18,13 +18,13 @@ const Item = () => {
       />
       <CardContent sx={{ p: 0 }}>
         <Typography gutterBottom variant="h6" component="div">
-          LKR 200
+          {item.price}
         </Typography>
         <Typography gutterBottom variant="h7" component="div">
-          Quantity : 1kg
+          Quantity :{item.quantity}
         </Typography>
         <Typography gutterBottom variant="h7" component="div">
-          Seller : Sample Seller
+          Seller : {item.seller}
         </Typography>
       </CardContent>
       <CardActions sx={{justifyContent:'space-between'}}>

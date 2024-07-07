@@ -78,12 +78,16 @@ export default function Navigation_Bar() {
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-    setShowUserProfile(true); // Show profile box when profile menu is opened
   };
+
+  const handleProfilePopUp = ()=>{
+    setShowUserProfile(true);
+    setAnchorEl(null);
+
+  }
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    //setShowUserProfile(false); // Hide profile box when profile menu is closed
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -115,7 +119,7 @@ export default function Navigation_Bar() {
       open={Boolean(anchorEl)}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>Profile</MenuItem>
+      <MenuItem onClick={handleProfilePopUp}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
     </Menu>
   );
@@ -157,7 +161,7 @@ export default function Navigation_Bar() {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem>
         <IconButton
           size="large"
           aria-label="account of current user"
