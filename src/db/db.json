@@ -1,51 +1,78 @@
-[
+{
+  "items": [
     {
       "id": 1,
-      "title": "Green Iguana",
-      "price": "LKR 200",
+      "title": "Organic Tomatoes",
+      "price": "LKR 150",
       "quantity": "1kg",
-      "seller": "Sample Seller",
-      "image": "../assets/background.jpg"
+      "seller": "Green Farms",
+      "image": "../assets/organic-tomatoes.jpg"
     },
     {
       "id": 2,
-      "title": "Red Rose",
-      "price": "LKR 50",
-      "quantity": "1 stem",
-      "seller": "Flower Paradise",
-      "image": "../assets/red-rose.jpg"
+      "title": "Fresh Strawberries",
+      "price": "LKR 500",
+      "quantity": "500g",
+      "seller": "Berry Bliss",
+      "image": "../assets/fresh-strawberries.jpg"
     },
     {
       "id": 3,
-      "title": "Blue Bicycle",
-      "price": "LKR 1500",
-      "quantity": "1 unit",
-      "seller": "Cycle City",
-      "image": "../assets/blue-bicycle.jpg"
+      "title": "Free-Range Eggs",
+      "price": "LKR 200",
+      "quantity": "1 dozen",
+      "seller": "Farm Fresh",
+      "image": "../assets/free-range-eggs.jpg"
     },
     {
       "id": 4,
-      "title": "Coffee Beans",
-      "price": "LKR 300",
+      "title": "Raw Honey",
+      "price": "LKR 800",
       "quantity": "500g",
-      "seller": "Coffee Haven",
-      "image": "../assets/coffee-beans.jpg"
+      "seller": "Honey Haven",
+      "image": "../assets/raw-honey.jpg"
     },
     {
       "id": 5,
-      "title": "Smartphone",
-      "price": "LKR 25000",
-      "quantity": "1 unit",
-      "seller": "Tech Hub",
-      "image": "../assets/smartphone.jpg"
+      "title": "Brown Rice",
+      "price": "LKR 250",
+      "quantity": "1kg",
+      "seller": "Healthy Grains",
+      "image": "../assets/brown-rice.jpg"
     },
     {
       "id": 6,
-      "title": "Running Shoes",
-      "price": "LKR 5000",
-      "quantity": "1 pair",
-      "seller": "Sports World",
-      "image": "../assets/running-shoes.jpg"
+      "title": "Fresh Spinach",
+      "price": "LKR 100",
+      "quantity": "1 bunch",
+      "seller": "Veggie Delight",
+      "image": "../assets/fresh-spinach.jpg"
+    }
+  ],
+  "users": [
+    {
+      "id": "001",
+      "firstName": "Pavalakumaran",
+      "lastName": "Vithurshan",
+      "phoneNumber": "0774454400",
+      "email": "vithupp30@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "002",
+      "firstName": "John",
+      "lastName": "Doe",
+      "phoneNumber": "0774454410",
+      "email": "john.doe@example.com",
+      "password": "password123"
+    },
+    {
+      "id": "003",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "phoneNumber": "0774454411",
+      "email": "jane.smith@example.com",
+      "password": "password123"
     }
   ]
-  
+}
