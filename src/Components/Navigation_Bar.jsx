@@ -15,7 +15,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import Side_Drawer from './Side_Drawer'
+import Side_Drawer from './Side_Drawer';
+import User_Profile from '../Pages/User_Profile';
+import { useParams } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -47,7 +49,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -57,7 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Logo = styled(Box)(({theme})=>({
+const Logo = styled(Box)(({ theme }) => ({
   backgroundImage: `url(${AgroSL_Logo})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
@@ -67,35 +68,35 @@ const Logo = styled(Box)(({theme})=>({
   justifyContent: 'center',
 }));
 
-export default function PrimarySearchAppBar() {
+export default function Navigation_Bar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
   const [showSideDrawer, setShowSideDrawer] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false); 
+  const id = useParams();
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
+    setShowUserProfile(true); // Show profile box when profile menu is opened
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
+    //setShowUserProfile(false); // Hide profile box when profile menu is closed
   };
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleSideDrawer = ()=>{
-    setShowSideDrawer(!showSideDrawer)
-  }
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleSideDrawer = () => {
+    setShowSideDrawer(!showSideDrawer);
+  };
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -111,11 +112,11 @@ export default function PrimarySearchAppBar() {
         vertical: 'top',
         horizontal: 'right',
       }}
-      open={isMenuOpen}
+      open={Boolean(anchorEl)}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}> Log out</MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
     </Menu>
   );
 
@@ -133,7 +134,7 @@ export default function PrimarySearchAppBar() {
         vertical: 'top',
         horizontal: 'right',
       }}
-      open={isMobileMenuOpen}
+      open={Boolean(mobileMoreAnchorEl)}
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
@@ -173,14 +174,14 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-        <IconButton
+          <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2  }}
+            sx={{ mr: 2 }}
             onClick={handleSideDrawer}
           >
             <MenuIcon />
@@ -191,7 +192,7 @@ export default function PrimarySearchAppBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-          AgroSL
+            AgroSL
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -246,7 +247,11 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {showSideDrawer && <Side_Drawer/>}
+      {showSideDrawer && <Side_Drawer />}
+      {showUserProfile && (<User_Profile
+          onClose={() => setShowUserProfile(false)}
+        />
+      )}
     </Box>
   );
 }
