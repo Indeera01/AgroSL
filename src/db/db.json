@@ -1,78 +1,232 @@
 {
   "items": [
     {
-      "id": 1,
-      "title": "Organic Tomatoes",
-      "price": "LKR 150",
+      "id": "1",
+      "name": "Organic Tomatoes",
+      "price": "150",
       "quantity": "1kg",
-      "seller": "Green Farms",
-      "image": "../assets/organic-tomatoes.jpg"
+      "seller_id": "001",
+      "image_url": "../assets/organic-tomatoes.jpg",
+      "average_rating_value": 4.5,
+      "description": "Fresh organic tomatoes"
     },
     {
-      "id": 2,
-      "title": "Fresh Strawberries",
-      "price": "LKR 500",
+      "id": "2",
+      "name": "Fresh Strawberries",
+      "price": "500",
       "quantity": "500g",
-      "seller": "Berry Bliss",
-      "image": "../assets/fresh-strawberries.jpg"
+      "seller_id": "002",
+      "image_url": "../assets/fresh-strawberries.jpg",
+      "average_rating_value": 4.8,
+      "description": "Juicy fresh strawberries"
     },
     {
-      "id": 3,
-      "title": "Free-Range Eggs",
-      "price": "LKR 200",
+      "id": "3",
+      "name": "Free-Range Eggs",
+      "price": "200",
       "quantity": "1 dozen",
-      "seller": "Farm Fresh",
-      "image": "../assets/free-range-eggs.jpg"
+      "seller_id": "003",
+      "image_url": "../assets/free-range-eggs.jpg",
+      "average_rating_value": 4.7,
+      "description": "Healthy free-range eggs"
     },
     {
-      "id": 4,
-      "title": "Raw Honey",
-      "price": "LKR 800",
+      "id": "4",
+      "name": "Raw Honey",
+      "price": "800",
       "quantity": "500g",
-      "seller": "Honey Haven",
-      "image": "../assets/raw-honey.jpg"
+      "seller_id": "004",
+      "image_url": "../assets/raw-honey.jpg",
+      "average_rating_value": 4.9,
+      "description": "Pure raw honey"
     },
     {
-      "id": 5,
-      "title": "Brown Rice",
-      "price": "LKR 250",
+      "id": "5",
+      "name": "Brown Rice",
+      "price": "250",
       "quantity": "1kg",
-      "seller": "Healthy Grains",
-      "image": "../assets/brown-rice.jpg"
+      "seller_id": "005",
+      "image_url": "../assets/brown-rice.jpg",
+      "average_rating_value": 4.6,
+      "description": "Nutritious brown rice"
     },
     {
-      "id": 6,
-      "title": "Fresh Spinach",
-      "price": "LKR 100",
+      "id": "6",
+      "name": "Fresh Spinach",
+      "price": "100",
       "quantity": "1 bunch",
-      "seller": "Veggie Delight",
-      "image": "../assets/fresh-spinach.jpg"
+      "seller_id": "006",
+      "image_url": "../assets/fresh-spinach.jpg",
+      "average_rating_value": 4.3,
+      "description": "Crisp fresh spinach"
     }
   ],
   "users": [
     {
       "id": "001",
-      "firstName": "Pavalakumaran",
-      "lastName": "Vithurshan",
-      "phoneNumber": "0774454400",
+      "first_name": "Pavalakumaran",
+      "last_name": "Vithurshan",
+      "mobile_number": "0774454400",
       "email": "vithupp30@gmail.com",
-      "password": "1234"
+      "password": "1234",
+      "address_id": "101",
+      "user_type": "buyer"
     },
     {
       "id": "002",
-      "firstName": "John",
-      "lastName": "Doe",
-      "phoneNumber": "0774454410",
+      "first_name": "John",
+      "last_name": "Doe",
+      "mobile_number": "0774454410",
       "email": "john.doe@example.com",
-      "password": "password123"
+      "password": "password123",
+      "address_id": "102",
+      "user_type": "seller"
     },
     {
       "id": "003",
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "phoneNumber": "0774454411",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "mobile_number": "0774454411",
       "email": "jane.smith@example.com",
-      "password": "password123"
+      "password": "password123",
+      "address_id": "103",
+      "user_type": "delivery_rider"
+    }
+  ],
+  "sellers": [
+    {
+      "user_id": "002",
+      "NIC": "901234567V",
+      "store_name": "Berry Bliss",
+      "id": "0b8a"
+    }
+  ],
+  "buyers": [
+    {
+      "user_id": "001",
+      "NIC": "800123456V",
+      "id": "a091"
+    }
+  ],
+  "delivery_riders": [
+    {
+      "user_id": "003",
+      "NIC": "700123456V",
+      "delivery_center_id": "201",
+      "id": "b50e"
+    }
+  ],
+  "admins": [
+    {
+      "admin_id": "1",
+      "email": "admin@agrosl.com",
+      "id": "dd5d"
+    }
+  ],
+  "addresses": [
+    {
+      "address_id": "101",
+      "PB_number": "10",
+      "street_name": "Main Street",
+      "city": "Colombo",
+      "district": "Colombo",
+      "id": "c6d6"
+    },
+    {
+      "address_id": "102",
+      "PB_number": "20",
+      "street_name": "Second Street",
+      "city": "Kandy",
+      "district": "Kandy",
+      "id": "9414"
+    },
+    {
+      "address_id": "103",
+      "PB_number": "30",
+      "street_name": "Third Street",
+      "city": "Galle",
+      "district": "Galle",
+      "id": "692c"
+    }
+  ],
+  "shopping_cart": [
+    {
+      "buyer_id": "001",
+      "item_id": "1",
+      "quantity": "2",
+      "seller_id": "002",
+      "price": "300",
+      "id": "dfe3"
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "00000001",
+      "buyer_id": "001",
+      "item_id": "1",
+      "order_date": "2023-07-12",
+      "is_confirmed": true,
+      "seller_id": "002",
+      "id": "e6c6"
+    }
+  ],
+  "delivery_centers": [
+    {
+      "delivery_center_id": "201",
+      "address_id": "101",
+      "id": "d8a2"
+    }
+  ],
+  "delivery": [
+    {
+      "delivery_id": "0001",
+      "order_id": "00000001",
+      "starting_center_id": "201",
+      "delivered_to_sc": "2023-07-13 10:00",
+      "destination_center_id": "202",
+      "delivered_to_dc": "2023-07-14 15:00",
+      "delivery_rider_id": "003",
+      "is_delivered_to_buyer": true,
+      "Confirmation": "2024-07-14 17:51",
+      "id": "acd1"
+    },
+    {
+      "id": "6213",
+      "delivery_id": "0001"
+    },
+    {
+      "id": "109e",
+      "delivery_id": "0001"
+    },
+    {
+      "id": "13ba",
+      "delivery_id": "0001"
+    },
+    {
+      "id": "71d3",
+      "delivery_id": "0001"
+    }
+  ],
+  "complaints": [
+    {
+      "complaint_id": "1001",
+      "buyer_id": "001",
+      "description": "Received damaged product",
+      "rider_id": "003",
+      "seller_id": "002",
+      "order_id": "00000001",
+      "complained_seller": true,
+      "id": "9998"
+    }
+  ],
+  "reviews": [
+    {
+      "review_id": "2001",
+      "item_id": "1",
+      "description": "Great quality tomatoes!",
+      "rating": 5,
+      "buyer_id": "001",
+      "id": "6867"
     }
   ]
 }
