@@ -46,7 +46,7 @@ const Item = ({ item }) => {
 
 
   return (
-    <Card sx={{ minWidth: { md: 200, xs: 320 }, maxWidth: 250 }}>
+    <Card sx={{ minWidth: { md: 260, xs: 350 } }} >
       <CardHeader
         avatar={
            <Avatar {...stringAvatar(`${item.seller? item.seller : 'Unknown Seller'}`)} />

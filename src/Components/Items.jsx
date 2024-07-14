@@ -50,9 +50,9 @@ const Items = () => {
 
   return (
     <Box
-      ml={3}
+      ml={5}
       mt={12}
-      sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}
+      sx={{ display: 'flex', gap: 3, flexWrap: 'wrap'}}
     >
       {items.map((item) => (
         <Item key={item.id} item={item} />
