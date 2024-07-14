@@ -9,18 +9,22 @@ import {
   CircularProgress,
   Paper,
   Divider,
-  Button
+  Button,
+  Grid,
+  Link
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useMediaQuery } from '@mui/material';
 
 const Tracking = () => {
   const [delivery, setDelivery] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const nav = useNavigate();
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const handleConfirmDelivery = () => {
-    const formatedDate = () => {
+    const formatDate = () => {
       const date = new Date();
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -30,12 +34,11 @@ const Tracking = () => {
       return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
   
-    const confirmationDate = formatedDate();
-    axios.patch(`http://localhost:5000/delivery/${delivery[0].id}`, { is_delivered_to_buyer: true,Confirmation: confirmationDate})
+    const confirmationDate = formatDate();
+    axios.patch(`http://localhost:5000/delivery/${delivery[0].id}`, { is_delivered_to_buyer: true, Confirmation: confirmationDate })
       .then((res) => {
-
         setDelivery(prevDelivery => {
-          const updatedDelivery = { ...prevDelivery[0], is_delivered_to_buyer: true,Confirmation: confirmationDate};
+          const updatedDelivery = { ...prevDelivery[0], is_delivered_to_buyer: true, Confirmation: confirmationDate };
           return [updatedDelivery];
         });
         alert('Delivery confirmed');
@@ -133,17 +136,16 @@ const Tracking = () => {
   };
 
   return (
-    <Box width={'80%'} ml={'10%'}>
-      <Box p={3} display={'flex'} flexDirection={'column'} height={'auto'} bgcolor={'yellow'}>
+    <Box width={isMobile ? '95%' : '80%'} ml={isMobile ? '2.5%' : '10%'}>
+      <Box p={isMobile ? 1 : 3} display="flex" flexDirection="column" height="auto" bgcolor="yellow">
         <Typography variant="h6" gutterBottom align='center' mb={4}>
           Delivery Progress
         </Typography>
-        <Typography variant='h7' gutterBottom mb={4}> 
+        <Typography variant='body1' gutterBottom mb={4}> 
           Your Order Delivery Id : {delivery[0].delivery_id}<br/>
           Your Order Id : {delivery[0].order_id}<br/>
-          Delivery Man : {delivery[0].delivery_rider_id ? delivery[0].delivery_rider_id : 'Not Yet Assigned'}
-        </Typography>
-        <Stepper activeStep={getCurrentStep()}>
+          Delivery Man : {delivery[0].delivery_rider_id ? delivery[0].delivery_rider_id : 'Not Yet Assigned'}        </Typography>
+        <Stepper activeStep={getCurrentStep()} orientation={isMobile ? 'vertical' : 'horizontal'}>
           {steps.map((step, index) => (
             <Step key={index} completed={step.isCompleted}>
               <StepLabel>
@@ -168,7 +170,7 @@ const Tracking = () => {
         </Box>
         <Button
           variant='contained'
-          sx={{ width: '200px', borderRadius: 3, marginTop: 5, alignItems: 'right' }}
+          sx={{ width: 'auto', borderRadius: 3, marginTop: 5, alignSelf: 'center' }}
           onClick={handleConfirmDelivery}
           disabled={delivery[0].is_delivered_to_buyer}
         >
