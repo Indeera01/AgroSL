@@ -15,9 +15,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import Side_Drawer from './Side_Drawer';
 import User_Profile from '../Pages/User_Profile';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -71,10 +71,9 @@ const Logo = styled(Box)(({ theme }) => ({
 export default function Navigation_Bar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const [showSideDrawer, setShowSideDrawer] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false); 
   const id = useParams();
-
+  const navigate = useNavigate();
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -120,7 +119,10 @@ export default function Navigation_Bar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleProfilePopUp}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
+      <MenuItem onClick={()=>{
+        handleMenuClose();
+        navigate("/Sign_In")
+        }}>Log out</MenuItem>
     </Menu>
   );
 
@@ -251,7 +253,6 @@ export default function Navigation_Bar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {showSideDrawer && <Side_Drawer />}
       {showUserProfile && (<User_Profile
           onClose={() => setShowUserProfile(false)}
         />
