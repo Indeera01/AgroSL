@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Container, Link } from '@mui/material';
 import backgroundImage from '../assets/background.jpg'
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword} from 'firebase/auth';
+import {auth} from '../../firebase'
+import axios from 'axios';
 
 
 const SignUp = () => {
@@ -13,20 +16,53 @@ const SignUp = () => {
   const [reenteredpassword, setReenteredpassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSignUp = () => {
-    console.log('Email:', email);
-    console.log('Fullname:', firstname + ' ' + lastname);
-    console.log('Password:', password);
-    console.log('Phonenumber:', phonenumber);
-    console.log('Reenteredpassword:', reenteredpassword);
-    alert('Account created successfully')
+  const handleSignUp = async () => {
+    if (password !== reenteredpassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log('User created:', user);
+
+      const userId = user.uid;
+      const newUser = {
+        id: userId,
+        first_name: firstname,
+        last_name: lastname,
+        mobile_number: phonenumber,
+        email: email,
+        password: password,
+        address_id:"",
+        user_type: "buyer"
+      };
+      alert('Account created successfully');
+      clearFields();
+      navigate("/Success");
+      axios.post('http://localhost:5000/users', newUser)
+      .then(response => {
+        alert('Account created successfully');
+        clearFields();
+        navigate("/Success");
+      })
+      .catch(error => {
+        console.error('Error creating account:', error);
+      });
+    } catch (error) {
+      console.error('Error creating user:', error);
+      alert('Error creating account');
+    }
+  };
+
+  const clearFields = () => {
     setFirstname('');
     setLastname('');
     setEmail('');
     setPhonenumber('');
     setPassword('');
     setReenteredpassword('');
-    navigate("/Success")
   };
 
   return (
