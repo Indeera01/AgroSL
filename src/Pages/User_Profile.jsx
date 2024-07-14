@@ -95,8 +95,8 @@ const User_Profile = ({onClose}) => {
         top={0}
         left={0}
         width="100%"
-        bgcolor="rgba(255, 255, 255, 0.8)" // Semi-transparent white background
-        zIndex={9999} // Ensure it's on top of other content
+        bgcolor="rgba(255, 255, 255, 0.8)" 
+        zIndex={9999} 
       >
         <CircularProgress />
       </Box>
@@ -143,25 +143,25 @@ const User_Profile = ({onClose}) => {
         width="30%"
       >
         <Typography variant="h3" align="center">Profile</Typography>
-        <Avatar {...stringAvatar(`${user.firstName} ${user.lastName}`)} />
+        <Avatar {...stringAvatar(`${user.first_name} ${user.last_name}`)} />
         {isEditing ? (
           <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} width={'100%'}>
             <TextField
               label="First Name"
               name="firstName"
-              value={updatedUser.firstName}
+              value={updatedUser.first_name}
               onChange={handleInputChange}
             />
             <TextField
               label="Last Name"
               name="lastName"
-              value={updatedUser.lastName}
+              value={updatedUser.last_name}
               onChange={handleInputChange}
             />
             <TextField
               label="Phone Number"
-              name="phoneNumber"
-              value={updatedUser.phoneNumber}
+              name="mobile_number"
+              value={updatedUser.mobile_number}
               onChange={handleInputChange}
             />
             <TextField
@@ -180,15 +180,15 @@ const User_Profile = ({onClose}) => {
         ) : (
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <ListItem>
-              <ListItemText primary="First Name" secondary={user.firstName} />
+              <ListItemText primary="First Name" secondary={user.first_name} />
             </ListItem>
             <Divider/>
             <ListItem>
-              <ListItemText primary="Last Name" secondary={user.lastName} />
+              <ListItemText primary="Last Name" secondary={user.last_name} />
             </ListItem>
             <Divider/>
             <ListItem>
-              <ListItemText primary="Phone Number" secondary={user.phoneNumber} />
+              <ListItemText primary="Phone Number" secondary={user.mobile_number} />
             </ListItem>
             <Divider/>
             <ListItem>
