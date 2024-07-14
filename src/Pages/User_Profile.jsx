@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, CircularProgress, Avatar, List, ListItem, ListItemText, Button, TextField, Divider } from '@mui/material';
 import axios from 'axios';
+import { auth } from '../../firebase'; 
 
 function stringToColor(string) {
   let hash = 0;
@@ -32,7 +33,7 @@ function stringAvatar(name) {
   };
 }
 
-const User_Profile = ({onClose}) => {
+const User_Profile = ({ onClose }) => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,17 +42,21 @@ const User_Profile = ({onClose}) => {
   const [updatedUser, setUpdatedUser] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/users/${id}`)
-      .then((res) => {
-        setUser(res.data);
-        setUpdatedUser(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, [id]);
+    // Fetch logged-in user details from Firebase Authentication
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      axios.get(`http://localhost:5000/users/${currentUser.uid}`)
+        .then((res) => {
+          setUser(res.data);
+          setUpdatedUser(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
+    }
+  }, []);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -60,10 +65,6 @@ const User_Profile = ({onClose}) => {
   const handleCloseClick = () => {
     setIsEditing(false);
   };
-
-  const handlePopUpCloseClick = () => {
-
-  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -74,7 +75,7 @@ const User_Profile = ({onClose}) => {
   };
 
   const handleSaveClick = () => {
-    axios.put(`http://localhost:5000/users/${id}`, updatedUser)
+    axios.put(`http://localhost:5000/users/${user.id}`, updatedUser)
       .then((res) => {
         setUser(res.data);
         setIsEditing(false);
@@ -95,8 +96,8 @@ const User_Profile = ({onClose}) => {
         top={0}
         left={0}
         width="100%"
-        bgcolor="rgba(255, 255, 255, 0.8)" 
-        zIndex={9999} 
+        bgcolor="rgba(255, 255, 255, 0.8)"
+        zIndex={9999}
       >
         <CircularProgress />
       </Box>
@@ -114,8 +115,8 @@ const User_Profile = ({onClose}) => {
         top={0}
         left={0}
         width="100%"
-        bgcolor="rgba(255, 255, 255, 0.8)" 
-        zIndex={9999} 
+        bgcolor="rgba(255, 255, 255, 0.8)"
+        zIndex={9999}
       >
         <Typography variant="h6" color="error">
           Error: {error}
@@ -134,8 +135,8 @@ const User_Profile = ({onClose}) => {
       top={0}
       left={0}
       width="100%"
-      bgcolor="rgba(255, 255, 255, 0.8)" 
-      zIndex={9999} 
+      bgcolor="rgba(255, 255, 255, 0.8)"
+      zIndex={9999}
     >
       <Box
         sx={{ display: 'flex', flexDirection: 'column', gap: 2, bgcolor: 'white', padding: 4, borderRadius: 10, boxShadow: 3 }}
@@ -148,13 +149,13 @@ const User_Profile = ({onClose}) => {
           <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} width={'100%'}>
             <TextField
               label="First Name"
-              name="firstName"
+              name="first_name"
               value={updatedUser.first_name}
               onChange={handleInputChange}
             />
             <TextField
               label="Last Name"
-              name="lastName"
+              name="last_name"
               value={updatedUser.last_name}
               onChange={handleInputChange}
             />
@@ -182,25 +183,25 @@ const User_Profile = ({onClose}) => {
             <ListItem>
               <ListItemText primary="First Name" secondary={user.first_name} />
             </ListItem>
-            <Divider/>
+            <Divider />
             <ListItem>
               <ListItemText primary="Last Name" secondary={user.last_name} />
             </ListItem>
-            <Divider/>
+            <Divider />
             <ListItem>
               <ListItemText primary="Phone Number" secondary={user.mobile_number} />
             </ListItem>
-            <Divider/>
+            <Divider />
             <ListItem>
               <ListItemText primary="Email" secondary={user.email} />
             </ListItem>
             <Box display={'flex'} justifyContent={'space-evenly'}>
-            <Button variant="contained" color="secondary" onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="contained" color="secondary" onClick={handleEditClick}>
-              Edit
-            </Button>
+              <Button variant="contained" color="secondary" onClick={onClose}>
+                Close
+              </Button>
+              <Button variant="contained" color="secondary" onClick={handleEditClick}>
+                Edit
+              </Button>
             </Box>
           </List>
         )}

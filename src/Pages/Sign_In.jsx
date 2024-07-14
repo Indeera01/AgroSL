@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Container, Link } from '@mui/material';
-import backgroundImage from '../assets/background.jpg'
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase'; 
+import { useNavigate } from 'react-router-dom';
+import backgroundImage from '../assets/background.jpg'; 
 
-const SignIn = () => {
+const Sign_In = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSignUp = () => {
-    console.log('Username:', email);
-    console.log('Password:', password);
+  const handleSignIn = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log('User signed in:', email);
+      const currentUser = auth.currentUser;
+
+      navigate(`/Home/${currentUser.uid}`);
+    } catch (error) {
+      console.error('Error signing in:', error);
+      alert('Error signing in');
+    }
   };
 
   return (
@@ -53,7 +65,7 @@ const SignIn = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleSignUp}
+          onClick={handleSignIn}
           sx={{ mt: 2, width: '40%', fontSize: '16px' }}
         >
           Sign In
@@ -62,8 +74,8 @@ const SignIn = () => {
           Don’t have an account? <Link color="secondary" href="/Sign_Up_Buyer">Sign Up</Link>
         </Typography>
       </Container>
-      </Box>
+    </Box>
   );
 };
 
-export default SignIn;
+export default Sign_In;

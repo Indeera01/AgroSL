@@ -18,6 +18,15 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import User_Profile from '../Pages/User_Profile';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../../firebase'; 
+
+const handleLogout = () => {
+  auth.signOut().then(() => {
+    console.log("User signed out");
+  }).catch((error) => {
+    console.error("Error signing out:", error);
+  });
+};
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -119,10 +128,7 @@ export default function Navigation_Bar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleProfilePopUp}>Profile</MenuItem>
-      <MenuItem onClick={()=>{
-        handleMenuClose();
-        navigate("/Sign_In")
-        }}>Log out</MenuItem>
+      <MenuItem onClick={handleLogout}>Log out</MenuItem>
     </Menu>
   );
 
