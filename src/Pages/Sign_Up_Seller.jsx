@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Container, Link } from '@mui/material';
-import backgroundImage from '../assets/background.jpg'
+import backgroundImage from '../assets/pxfuel.jpg'
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth} from '../../firebase'
@@ -66,7 +66,7 @@ const SignUp = () => {
   };
 
   return (
-    <Box width={'100%'} height={'100vh'} sx={{backgroundImage:`url(${backgroundImage})`}} position={'absolute'} padding={8}>
+    <Box width={'100%'} height={'100vh'} sx={{backgroundImage:`url(${backgroundImage})`,backgroundRepeat:'no-repeat',backgroundSize:'cover'}} position={'absolute'} padding={8}>
       <Container
         maxWidth="xs"
         sx={{

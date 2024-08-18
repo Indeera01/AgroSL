@@ -45,7 +45,7 @@ const User_Profile = ({ onClose }) => {
     // Fetch logged-in user details from Firebase Authentication
     const currentUser = auth.currentUser;
     if (currentUser) {
-      axios.get(`http://localhost:5000/users/${currentUser.uid}`)
+      axios.get(`http://localhost:5001/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setUpdatedUser(res.data);
@@ -75,7 +75,7 @@ const User_Profile = ({ onClose }) => {
   };
 
   const handleSaveClick = () => {
-    axios.put(`http://localhost:5000/users/${user.id}`, updatedUser)
+    axios.put(`http://localhost:5001/users/${user.id}`, updatedUser)
       .then((res) => {
         setUser(res.data);
         setIsEditing(false);

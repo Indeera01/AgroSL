@@ -49,7 +49,7 @@ const Tracking = () => {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:5000/delivery')
+    axios.get('http://localhost:5001/delivery')
       .then((res) => {
         setDelivery(res.data);
         setLoading(false);

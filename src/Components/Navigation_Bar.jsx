@@ -23,6 +23,7 @@ import { auth } from '../../firebase';
 const handleLogout = () => {
   auth.signOut().then(() => {
     console.log("User signed out");
+    navigator("/Sign_in");
   }).catch((error) => {
     console.error("Error signing out:", error);
   });
