@@ -3,7 +3,7 @@ import { Box, Typography, TextField, Button, Container, Link } from '@mui/materi
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase'; 
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../assets/background.jpg'; 
+import backgroundImage from '../assets/pxfuel.jpg'; 
 
 const Sign_In = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ const Sign_In = () => {
   };
 
   return (
-    <Box width={'100%'} height={'100vh'} sx={{backgroundImage:`url(${backgroundImage})`}} position={'absolute'}>
+    <Box width={'100%'} height={'100vh'} sx={{backgroundImage:`url(${backgroundImage})`,backgroundRepeat:'no-Repeat',backgroundSize:'cover'}} position={'absolute'}>
       <Container
         maxWidth="xs"
         sx={{
@@ -35,7 +35,7 @@ const Sign_In = () => {
           p: 4,
           borderRadius: 6,
           boxShadow: 3,
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
           marginTop:'10%',
         }}
       >

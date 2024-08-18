@@ -41,7 +41,7 @@ const SignUp = () => {
       alert('Account created successfully');
       clearFields();
       navigate("/Success");
-      axios.post('http://localhost:5000/users', newUser)
+      axios.post('http://localhost:5001/users', newUser)
       .then(response => {
         alert('Account created successfully');
         clearFields();

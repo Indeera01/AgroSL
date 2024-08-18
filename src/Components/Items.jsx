@@ -9,7 +9,7 @@ const Items = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/items')
+    axios.get('http://localhost:5001/items')
       .then((res) => {
         setItems(res.data);
         setLoading(false);
