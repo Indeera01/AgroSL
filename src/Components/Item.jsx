@@ -88,6 +88,9 @@ const Item = ({ item }) => {
         <Typography gutterBottom variant="body2" color="text.secondary">
           Available Quantity: {item.quantity}
         </Typography>
+        <Typography gutterBottom variant="body2" color="text.secondary">
+          {item.description}
+        </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'center' }}>
         <Button size="small" variant="contained" color="primary" fullWidth>
