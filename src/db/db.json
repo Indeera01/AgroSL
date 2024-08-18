@@ -91,6 +91,16 @@
       "password": "123abcd",
       "address_id": "",
       "user_type": "buyer"
+    },
+    {
+      "id": "O4fII2CLd1ax68i4uinFO23gTAA3",
+      "first_name": "Pavalakumaran",
+      "last_name": "Vithurshan",
+      "mobile_number": "0774454409",
+      "email": "pavalakumaran.21@cse.mrt.ac.lk",
+      "password": "abcd123",
+      "address_id": "",
+      "user_type": "buyer"
     }
   ],
   "sellers": [

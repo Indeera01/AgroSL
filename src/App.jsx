@@ -42,6 +42,7 @@ const App = () => {
         <Route path="/Sign_Up_Buyer" element={<Sign_Up_Buyer />} />
         <Route path="/Sign_Up_Seller" element={<Sign_Up_Seller />} />
         <Route path="/" element={<Navigation_Bar />} />
+        <Route path='/Home' element={<Layout/>}/>
         <Route path="/Home/:id" element={<PrivateRoute element={<Layout />} />} />
         <Route path="Home/:id/Tracking/:id" element={<Tracking />} />
         <Route path="/Success" element={<Success />} />
