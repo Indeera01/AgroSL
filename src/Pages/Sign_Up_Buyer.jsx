@@ -49,6 +49,13 @@ const SignUp = () => {
       .catch(error => {
         console.error('Error creating account:', error);
       });
+
+      axios.post('http://localhost:5001/buyer', newUser).
+    then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.error('Error creating buyer:', error);
+    });
     } catch (error) {
       console.error('Error creating user:', error);
       alert('Error creating account');

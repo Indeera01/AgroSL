@@ -13,6 +13,8 @@ const SignUp = () => {
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [phonenumber, setPhonenumber] = useState('');
+  const [NIC,setNIC] = useState('');
+  const[storeName,setStoreName] = useState('');
   const [reenteredpassword, setReenteredpassword] = useState('');
   const navigate = useNavigate();
 
@@ -38,6 +40,14 @@ const SignUp = () => {
         address_id:"",
         user_type: "Seller"
       };
+
+      const newSeller = {
+        user_id: userId,
+        NIC: NIC,
+        store_name: storeName
+      };
+
+
       alert('Account created successfully');
       clearFields();
       navigate("/Success");
@@ -54,6 +64,13 @@ const SignUp = () => {
       console.error('Error creating user:', error);
       alert('Error creating account');
     }
+
+    axios.post('http://localhost:5001/seller', newSeller).
+    then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.error('Error creating seller:', error);
+    });
   };
 
   const clearFields = () => {

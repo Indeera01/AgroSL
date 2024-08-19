@@ -75,7 +75,7 @@ const User_Profile = ({ onClose }) => {
   };
 
   const handleSaveClick = () => {
-    axios.put(`http://localhost:5001/users/${user.id}`, updatedUser)
+    axios.put(`http://localhost:5001/users/${id}`, updatedUser)
       .then((res) => {
         setUser(res.data);
         setIsEditing(false);

@@ -10,6 +10,7 @@ import Sign_Up_Seller from './Pages/Sign_Up_Seller';
 import Success from './Pages/Success';
 import User_Profile from './Pages/User_Profile';
 import Tracking from './Components/Tracking';
+import Cart from './Components/Cart';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
@@ -47,6 +48,8 @@ const App = () => {
         <Route path="Home/:id/Tracking/:id" element={<Tracking />} />
         <Route path="/Success" element={<Success />} />
         <Route path="/Profile/:id" element={<PrivateRoute element={<User_Profile user={user} />} />} />
+        <Route path="/cart" element={<Cart />} />
+        
       </Routes>
     </Router>
   );
