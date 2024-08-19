@@ -91,11 +91,11 @@ const SignUp = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          p: 4,
+          p: 2,
           borderRadius: 6,
           boxShadow: 3,
           backgroundColor: 'rgba(255, 255, 255, 0.8)',
-
+          gap: 0
         }}
       >
         <Typography variant="h4" fontFamily="open-sans" gutterBottom mb={2}>
@@ -108,7 +108,7 @@ const SignUp = () => {
           fullWidth
           value={firstname}
           onChange={(e) => setFirstname(e.target.value)}
-          
+          size='small'
         />
         <TextField
           label="Last Name"
@@ -118,6 +118,7 @@ const SignUp = () => {
           value={lastname}
           onChange={(e) => setLastname(e.target.value)}
           required
+          size='small'
         />
         <TextField
           label="Phone Number"
@@ -127,6 +128,27 @@ const SignUp = () => {
           value={phonenumber}
           onChange={(e) => setPhonenumber(e.target.value)}
           required
+          size='small'
+        />
+        <TextField
+          label="NIC"
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={NIC}
+          onChange={(e) => setNIC(e.target.value)}
+          required
+          size='small'
+        />
+        <TextField
+          label="Store Name"
+          variant="outlined"
+          margin="dense"
+          fullWidth
+          value={storeName}
+          onChange={(e) => setStoreName(e.target.value)}
+          required
+          size='small'
         />
         <TextField
           label="Email Address"
@@ -137,6 +159,7 @@ const SignUp = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          size='small'
         />
         <TextField
           label="Password"
@@ -147,6 +170,7 @@ const SignUp = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          size='small'
         />
         <TextField
           label="Re-Enter Password"
@@ -157,6 +181,7 @@ const SignUp = () => {
           value={reenteredpassword}
           onChange={(e) => setReenteredpassword(e.target.value)}
           required
+          size='small'
         />
         <Button
           variant="contained"
