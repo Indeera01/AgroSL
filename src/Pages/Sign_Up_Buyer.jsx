@@ -29,13 +29,12 @@ const SignUp = () => {
 
       const userId = user.uid;
       const newUser = {
-        id: userId,
+        user_id: userId,  
         first_name: firstname,
         last_name: lastname,
         mobile_number: phonenumber,
         email: email,
-        password: password,
-        address_id:"",
+        address_id: "",
         user_type: "buyer"
       };
       alert('Account created successfully');
