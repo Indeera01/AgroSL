@@ -14,9 +14,51 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [phonenumber, setPhonenumber] = useState('');
   const [reenteredpassword, setReenteredpassword] = useState('');
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [phoneNumberError ,setPhonenumberError] = useState(false);  
   const navigate = useNavigate();
 
+  const handleFirstNameChange = (e) => {
+    setFirstname(e.target.value);
+    if(e.target.validity.valid){
+      setFirstNameError(false);
+    }else{
+      setFirstNameError(true);
+    }
+  };
+
+  const handleLastNameChange = (e) => {
+    setLastname(e.target.value);
+    if(e.target.validity.valid){
+      setLastNameError(false);
+    }else{
+      setLastNameError(true);
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if(e.target.validity.valid){
+      setEmailError(false);
+    }else{
+      setEmailError(true);
+    }
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    setPhonenumber(e.target.value);
+    if(e.target.validity.valid){
+      setPhonenumberError(false);
+    }else{
+      setPhonenumberError(true);
+    }
+  };
+
+
   const handleSignUp = async () => {
+    
     if (password !== reenteredpassword) {
       alert('Passwords do not match');
       return;
@@ -96,8 +138,12 @@ const SignUp = () => {
           margin="dense"
           fullWidth
           value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
-          
+          onChange={(e) => handleFirstNameChange(e)}
+          inputProps={{
+            pattern: "[A-Za-z ]+",
+          }}
+          size='small'
+          helperText={firstNameError ? 'Please enter a valid name . It should be [a-z,A-Z]' : ''}
         />
         <TextField
           label="Last Name"
@@ -105,8 +151,13 @@ const SignUp = () => {
           margin="dense"
           fullWidth
           value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
+          onChange={(e) => handleLastNameChange(e)}
           required
+          inputProps={{
+            pattern: "[A-Za-z ]+",
+          }}
+          size='small'
+          helperText={lastNameError ? 'Please enter a valid name. It should be [a-z,A-Z]' : ''}
         />
         <TextField
           label="Phone Number"
@@ -114,8 +165,14 @@ const SignUp = () => {
           margin="dense"
           fullWidth
           value={phonenumber}
-          onChange={(e) => setPhonenumber(e.target.value)}
+          onChange={(e) => handlePhoneNumberChange(e)}
           required
+          helperText={phoneNumberError?"Enter a valid phone number  ie: 07xxxxxxxx  ":'' }
+          inputProps={{
+            pattern: "[0][7][0-9]{8}",
+          }}
+          size='small'
+
         />
         <TextField
           label="Email Address"
@@ -124,8 +181,13 @@ const SignUp = () => {
           fullWidth
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => handleEmailChange(e)}
           required
+          helperText={emailError?"Enter a valid email address ie: dummy@gmail.com":""}
+          inputProps={{
+            pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}",
+          }}
+          size='small'
         />
         <TextField
           label="Password"
@@ -136,6 +198,7 @@ const SignUp = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          size='small'
         />
         <TextField
           label="Re-Enter Password"
@@ -146,6 +209,7 @@ const SignUp = () => {
           value={reenteredpassword}
           onChange={(e) => setReenteredpassword(e.target.value)}
           required
+          size='small'
         />
         <Link color="secondary" href="/Sign_Up_Seller" >Create as seller</Link>
         <Button
