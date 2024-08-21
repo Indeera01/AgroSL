@@ -16,7 +16,57 @@ const SignUp = () => {
   const [NIC,setNIC] = useState('');
   const[storeName,setStoreName] = useState('');
   const [reenteredpassword, setReenteredpassword] = useState('');
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [phoneNumberError ,setPhonenumberError] = useState(false);  
+  const [NICError,setNICError] = useState(false);
   const navigate = useNavigate();
+
+  const handleFirstNameChange = (e) => {
+    setFirstname(e.target.value);
+    if(e.target.validity.valid){
+      setFirstNameError(false);
+    }else{
+      setFirstNameError(true);
+    }
+  };
+
+  const handleLastNameChange = (e) => {
+    setLastname(e.target.value);
+    if(e.target.validity.valid){
+      setLastNameError(false);
+    }else{
+      setLastNameError(true);
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if(e.target.validity.valid){
+      setEmailError(false);
+    }else{
+      setEmailError(true);
+    }
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    setPhonenumber(e.target.value);
+    if(e.target.validity.valid){
+      setPhonenumberError(false);
+    }else{
+      setPhonenumberError(true);
+    }
+  };
+
+  const handleNICChange = (e) => {
+    setNIC(e.target.value);
+    if(e.target.validity.valid){
+      setNICError(false);
+    }else{
+      setNICError(true);
+    }
+  };
 
   const handleSignUp = async () => {
     if (password !== reenteredpassword) {
@@ -106,8 +156,12 @@ const SignUp = () => {
           margin="dense"
           fullWidth
           value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
+          onChange={(e) => handleFirstNameChange(e)}
           size='small'
+          inputProps={{
+            pattern: "[A-Za-z ]+",
+          }}
+          helperText={firstNameError ? 'Please enter a valid name . It should be [a-z,A-Z]' : ''}
         />
         <TextField
           label="Last Name"
@@ -115,9 +169,13 @@ const SignUp = () => {
           margin="dense"
           fullWidth
           value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
+          onChange={(e) => handleLastNameChange(e)}
           required
           size='small'
+          inputProps={{
+            pattern: "[A-Za-z ]+",
+          }}
+          helperText={lastNameError ? 'Please enter a valid name . It should be [a-z,A-Z]' : ''}
         />
         <TextField
           label="Phone Number"
@@ -125,9 +183,13 @@ const SignUp = () => {
           margin="dense"
           fullWidth
           value={phonenumber}
-          onChange={(e) => setPhonenumber(e.target.value)}
+          onChange={(e) => handlePhoneNumberChange(e)}
           required
           size='small'
+          helperText={phoneNumberError?"Enter a valid phone number  ie: 07xxxxxxxx  ":'' }
+          inputProps={{
+            pattern: "[0][7][0-9]{8}",
+          }}
         />
         <TextField
           label="NIC"
@@ -135,9 +197,13 @@ const SignUp = () => {
           margin="dense"
           fullWidth
           value={NIC}
-          onChange={(e) => setNIC(e.target.value)}
+          onChange={(e) => handleNICChange(e)}
           required
           size='small'
+          inputProps={{
+            pattern: "^[0-9]{9}[vV]$|^[0-9]{12}$",
+          }}
+          helperText={NICError?"Enter a valid NIC number ie: 123456789V or 200156789123":''}
         />
         <TextField
           label="Store Name"
@@ -156,9 +222,13 @@ const SignUp = () => {
           fullWidth
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => handleEmailChange(e)}
           required
           size='small'
+          helperText={emailError?"Enter a valid email address ie: dummy@gmail.com":""}
+          inputProps={{
+            pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}",
+          }}
         />
         <TextField
           label="Password"
