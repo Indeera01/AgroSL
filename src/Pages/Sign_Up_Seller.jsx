@@ -31,23 +31,20 @@ const SignUp = () => {
 
       const userId = user.uid;
       const newUser = {
-        id: userId,
+        user_id: userId,  
         first_name: firstname,
         last_name: lastname,
         mobile_number: phonenumber,
         email: email,
-        password: password,
-        address_id:"",
-        user_type: "Seller"
+        address_id: "",
+        user_type: "seller"
       };
 
       const newSeller = {
         user_id: userId,
-        NIC: NIC,
-        store_name: storeName
-      };
-
-
+        NIC:NIC,
+        store_name:storeName
+      }
       alert('Account created successfully');
       clearFields();
       navigate("/Success");
@@ -60,17 +57,17 @@ const SignUp = () => {
       .catch(error => {
         console.error('Error creating account:', error);
       });
+
+      axios.post('http://localhost:5001/sellers', newSeller).
+    then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.error('Error creating buyer:', error);
+    });
     } catch (error) {
       console.error('Error creating user:', error);
       alert('Error creating account');
     }
-
-    axios.post('http://localhost:5001/seller', newSeller).
-    then(response => {
-      console.log(response);
-    }).catch(error => {
-      console.error('Error creating seller:', error);
-    });
   };
 
   const clearFields = () => {
@@ -80,6 +77,8 @@ const SignUp = () => {
     setPhonenumber('');
     setPassword('');
     setReenteredpassword('');
+    setNIC('');
+    setStoreName('');
   };
 
   return (
