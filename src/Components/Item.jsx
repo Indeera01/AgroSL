@@ -70,7 +70,7 @@ const Item = ({ item }) => {
         component="img"
         alt={item.item_name}
         height="140"
-        image={backgroundImg}  
+        image={item.image_url}  
       />
       <CardContent sx={{ p: 2 }}>
         <Rating
