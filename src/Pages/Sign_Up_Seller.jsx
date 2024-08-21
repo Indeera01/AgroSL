@@ -62,7 +62,7 @@ const SignUp = () => {
     then(response => {
       console.log(response);
     }).catch(error => {
-      console.error('Error creating buyer:', error);
+      console.error('Error creating seller:', error);
     });
     } catch (error) {
       console.error('Error creating user:', error);
