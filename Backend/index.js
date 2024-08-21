@@ -107,9 +107,9 @@ app.get('/items', async (req, res) => {
 });
 
 app.post('/items', async (req, res) => {
-    const { item_id, item_name, item_description, item_price, item_quantity, seller_id } = req.body;
+    const { item_id, item_name, unit_price, quantity, image_url, average_rating_value,description,seller_id } = req.body;
 try{
-    const result = await pool.query('insert into item (item_id, item_name, item_description, item_price, item_quantity, seller_id) values ($1, $2, $3, $4, $5, $6) returning *', [item_id, item_name, item_description, item_price, item_quantity, seller_id]);
+    const result = await pool.query('insert into item (item_id, item_name, unit_price, item_price, quantity, image_url,average_rating_value,seller_id) values ($1, $2, $3, $4, $5, $6,$7,$8) returning *', [item_id, item_name, unit_price, quantity, image_url, average_rating_value,description,seller_id]);
 
     console.log('Item stored successfully:', result.rows[0]);
     res.status(201).json(result.rows[0]);
