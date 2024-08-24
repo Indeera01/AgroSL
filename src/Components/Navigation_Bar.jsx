@@ -20,7 +20,7 @@ import NotificationIcon from '@mui/icons-material/Notifications';
 import { Badge } from '@mui/material';
 
 
-const pages = ['Category', 'Contact us', 'About'];
+const pages = ['Become a Seller','Category', 'Contact us', 'About'];
 const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -37,7 +37,16 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (page) => {
+    if(page === "Become a Seller"){
+      navigate('/Sign_Up_Seller');
+    }else if(page === "Category"){
+      navigate('/Category');
+    }else if(page === "Contact us"){
+      navigate('/Contact_us');
+    }else if(page === "About"){
+      navigate('/About');
+    }
     setAnchorElNav(null);
   };
 
@@ -118,7 +127,7 @@ function ResponsiveAppBar() {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem key={page} onClick={()=>handleCloseNavMenu(page)}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
@@ -147,7 +156,7 @@ function ResponsiveAppBar() {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  onClick={()=>handleCloseNavMenu(page)}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {page}
