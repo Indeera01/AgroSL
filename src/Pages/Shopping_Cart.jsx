@@ -107,7 +107,9 @@ const ShoppingCart = () => {
               />
             ))
           ) : (
-            <div>No items in the cart</div>
+            <Typography variant="h4" component="h2">
+              No items in the cart
+            </Typography>
           )}
         </Grid>
         <Grid item xs={12} md={4}>
