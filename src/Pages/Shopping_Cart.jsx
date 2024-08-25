@@ -49,8 +49,14 @@ const ShoppingCart = () => {
           setCartItems(response.data);
           console.log("Cart items:", response.data);
         } catch (err) {
-          console.error("Error fetching cart items:", err);
-          setError(err.message);
+          // Handle 404 or any other errors gracefully
+          if (err.response && err.response.status === 404) {
+            setCartItems([]); // Set cartItems to empty array if 404 error
+          } else {
+            setError(err.message);
+          }
+        } finally {
+          setLoading(false);
         }
       };
 
