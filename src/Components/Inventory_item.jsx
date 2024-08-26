@@ -9,35 +9,15 @@ import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
-const Cart_item = ({ item, onRemove, onQuantityChange }) => {
+const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
   console.log(item);
   const [quantity, setQuantity] = useState(item.quantity);
-  const [fullItem, setFullItem] = useState(null);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchItem = async (itemID) => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5001/items/${itemID}`
-        );
-        setFullItem(response.data[0]);
-        console.log("Item:", response.data[0]);
-      } catch (err) {
-        console.error("Error fetching the item:", err);
-        setError(err.message);
-      }
-    };
-
-    if (item.item_id) {
-      fetchItem(item.item_id); // Fetch item details if item_id is available
-    }
-  }, [item.item_id]);
 
   const updateQuantity = async (newQuantity) => {
     try {
       const response = await axios.put(
-        `http://localhost:5001/cart/${item.buyer_id}/${item.item_id}`,
+        `http://localhost:5001/items_update/${item.item_id}`,
         { quantity: newQuantity }
       );
       setQuantity(response.data.quantity);
@@ -58,28 +38,22 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
       const newQuantity = quantity - 1;
       updateQuantity(newQuantity);
     } else {
-      onRemove(item.item_id); // Remove the item if quantity is 1
+      onRemove(item.item_id);
     }
   };
-
-  if (!fullItem) {
-    return <div>Loading item details...</div>; // Show loading state while fetching
-  }
-
-  const total = quantity * item.price;
 
   return (
     <Card
       sx={{
-        width: "25%",
+        width: "20%",
         backgroundColor: "#98BC74",
         margin: "20px",
       }}
     >
       <CardMedia
         component="img"
-        alt={fullItem.item_name}
-        image={fullItem.image_url}
+        alt={item.item_name}
+        image={item.image_url}
         sx={{
           width: "100%", // Make sure the image takes the full width of the parent Box
           height: "auto", // Maintain aspect ratio based on the image's width
@@ -88,10 +62,7 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
       />
       <CardContent sx={{ p: 2 }}>
         <Typography gutterBottom variant="h6" component="div">
-          {fullItem.item_name}
-        </Typography>
-        <Typography gutterBottom variant="h6" component="div">
-          LKR : {item.price} / unit
+          {item.item_name}
         </Typography>
         <Typography gutterBottom variant="body2" color="text.secondary">
           Quantity:
@@ -106,9 +77,6 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
           <Button size="small" onClick={handleAdd}>
             <AddIcon />
           </Button>
-        </Typography>
-        <Typography gutterBottom variant="body2" color="text.secondary">
-          Total: LKR {total}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "center" }}>
@@ -125,4 +93,4 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
   );
 };
 
-export default Cart_item;
+export default Inventory_item;
