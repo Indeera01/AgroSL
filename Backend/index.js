@@ -137,6 +137,48 @@ app.get("/items/:item_id", async (req, res) => {
   }
 });
 
+app.put("/items_update/:item_id", async (req, res) => {
+  const item_id = req.params.item_id;
+  const { quantity } = req.body;
+
+  try {
+    const result = await pool.query(
+      "UPDATE item SET quantity = $1 WHERE item_id = $2 RETURNING *",
+      [quantity, item_id]
+    );
+
+    if (result.rows.length > 0) {
+      console.log(`Updated item ${item_id}  with quantity ${quantity}`);
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json({ message: "Item not found" });
+    }
+  } catch (e) {
+    console.error("Error updating item quantity:", e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.delete("/items/:item_id", async (req, res) => {
+  const item_id = req.params.item_id;
+
+  try {
+    const result = await pool.query(
+      "DELETE FROM item WHERE item_id = $1 RETURNING *",
+      [item_id]
+    );
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ message: "Item removed successfully." });
+    } else {
+      res.status(404).json({ message: "Item not found." });
+    }
+  } catch (err) {
+    console.error("Error deleting item:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/items_seller/:sellerID", async (req, res) => {
   const sellerID = req.params.sellerID;
   console.log(sellerID);
