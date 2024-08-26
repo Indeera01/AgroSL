@@ -137,6 +137,27 @@ app.get("/items/:item_id", async (req, res) => {
   }
 });
 
+app.get("/items_seller/:sellerID", async (req, res) => {
+  const sellerID = req.params.sellerID;
+  console.log(sellerID);
+  try {
+    const result = await pool.query("SELECT * FROM item WHERE seller_id = $1", [
+      sellerID,
+    ]);
+    if (result.rows.length > 0) {
+      console.log(
+        `Retrieved ${result.rows.length} items for user: ${sellerID}`
+      );
+      res.status(200).json(result.rows);
+    } else {
+      res.status(404).json({ message: "No items found for this user" });
+    }
+  } catch (e) {
+    console.error("Error retrieving the items", e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.post("/items", async (req, res) => {
   const {
     item_id,

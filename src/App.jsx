@@ -15,8 +15,8 @@ import Sign_Up_Seller from "./Pages/Sign_Up_Seller";
 import Success from "./Pages/Success";
 import User_Profile from "./Pages/User_Profile";
 import Tracking from "./Components/Tracking";
-import Cart from "./Components/Cart";
 import ShoppingCart from "./Pages/Shopping_Cart";
+import Inventory from "./Pages/Inventory";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,6 +59,7 @@ const App = () => {
           element={<PrivateRoute element={<User_Profile user={user} />} />}
         />
         <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/inventory" element={<Inventory />} />
       </Routes>
     </Router>
   );
