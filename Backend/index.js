@@ -440,6 +440,50 @@ app.get("/complaints/:/seller_id", async (req, res) => {
   }
 });
 
+app.get("/get_seller_complaints/:sellerID", async (req, res) => {
+  const sellerID = req.params.sellerID;
+  console.log(sellerID);
+  try {
+    const result = await pool.query(
+      "SELECT * FROM complaint WHERE seller_id = $1",
+      [sellerID]
+    );
+    console.log("result", { result });
+    if (result.rows.length === 0) {
+      return res.status(404).send("No complaints found");
+    } else {
+      return res.status(200).json(result.rows);
+    }
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send("Server error");
+  }
+});
+
+app.get("/get_user/:uid", async (req, res) => {
+  const { uid } = req.params;
+
+  try {
+    // Query the user table to get the user_type for the given uid
+
+    const result = await pool.query(
+      "SELECT user_type FROM users WHERE user_id = $1",
+      [req.params.uid]
+    );
+
+    if (result.rows.length > 0) {
+      // Send back the user_type if the user is found
+      return res.json({ user_type: result.rows[0].user_type });
+    } else {
+      // If the user is not found, send a 404 response
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (e) {
+    console.error("Error retrieving user_type:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.listen(5001, () => {
   console.log("Server is running on port 5001");
 });
