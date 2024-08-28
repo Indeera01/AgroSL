@@ -147,94 +147,100 @@ const Item_View = () => {
             width: "25%",
             margin: "0 auto",
             marginTop: "20px",
-            backgroundColor: "#4B8412",
           }}
         >
-          <Box></Box>
-          <Box></Box>
-          <Card
+          <Box>
+            <Card
+              sx={{
+                width: "100%",
+                backgroundColor: "#98BC74",
+              }}
+            >
+              <CardMedia
+                component="img"
+                alt={item.item_name}
+                image={item.image_url}
+                sx={{
+                  width: "100%", // Make sure the image takes the full width of the parent Box
+                  height: "auto", // Maintain aspect ratio based on the image's width
+                  objectFit: "cover",
+                }}
+              />
+              <CardContent sx={{ p: 2 }}>
+                <Typography gutterBottom variant="h6" component="div">
+                  {item.item_name}
+                </Typography>
+                <Typography gutterBottom variant="h6" component="div">
+                  LKR : {item.unit_price} / unit
+                </Typography>
+                <Typography gutterBottom variant="h6" component="div">
+                  Units left: {item.quantity}
+                </Typography>
+                <Typography gutterBottom variant="body2" color="text.secondary">
+                  Quantity:
+                  <Button size="small" onClick={handleDecrease}>
+                    <RemoveIcon />
+                  </Button>
+                  {quantity}
+                  <Button size="small" onClick={handleAdd}>
+                    <AddIcon />
+                  </Button>
+                </Typography>
+                <Typography gutterBottom variant="body2" color="text.secondary">
+                  Total: {item.unit_price * quantity} LKR
+                </Typography>
+              </CardContent>
+              <CardActions sx={{ justifyContent: "center" }}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="error"
+                  onClick={addToCart}
+                >
+                  Add to cart
+                </Button>
+              </CardActions>
+            </Card>
+          </Box>
+          <Box
             sx={{
-              width: "100%",
               backgroundColor: "#98BC74",
+              padding: "5px",
+              border: "2px solid black",
+              marginTop: "20px",
             }}
           >
-            <CardMedia
-              component="img"
-              alt={item.item_name}
-              image={item.image_url}
-              sx={{
-                width: "100%", // Make sure the image takes the full width of the parent Box
-                height: "auto", // Maintain aspect ratio based on the image's width
-                objectFit: "cover",
-              }}
-            />
-            <CardContent sx={{ p: 2 }}>
-              <Typography gutterBottom variant="h6" component="div">
-                {item.item_name}
-              </Typography>
-              <Typography gutterBottom variant="h6" component="div">
-                LKR : {item.unit_price} / unit
-              </Typography>
-              <Typography gutterBottom variant="h6" component="div">
-                Units left: {item.quantity}
-              </Typography>
-              <Typography gutterBottom variant="body2" color="text.secondary">
-                Quantity:
-                <Button size="small" onClick={handleDecrease}>
-                  <RemoveIcon />
-                </Button>
-                {quantity}
-                <Button size="small" onClick={handleAdd}>
-                  <AddIcon />
-                </Button>
-              </Typography>
-              <Typography gutterBottom variant="body2" color="text.secondary">
-                Total: {item.unit_price * quantity} LKR
-              </Typography>
-            </CardContent>
-            <CardActions sx={{ justifyContent: "center" }}>
-              <Button
-                size="small"
-                variant="contained"
-                color="error"
-                onClick={addToCart}
-              >
-                Add to cart
-              </Button>
-            </CardActions>
-          </Card>
-        </Box>
-        <Box>
-          <Box
-            component="form"
-            sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="outlined-basic"
-              label="Outlined"
-              variant="outlined"
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-            />
+            <Box
+              component="form"
+              sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="outlined-basic"
+                label="Add a Review"
+                variant="outlined"
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+              />
+            </Box>
+            <Stack spacing={1}>
+              <Rating
+                name="half-rating"
+                value={ratingValue}
+                onChange={handleRatingChange}
+                precision={0.1}
+              />
+            </Stack>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleReviewSubmit}
+              sx={{ mt: 2 }}
+            >
+              Submit Review
+            </Button>
           </Box>
-          <Stack spacing={1}>
-            <Rating
-              name="half-rating"
-              value={ratingValue}
-              onChange={handleRatingChange}
-              precision={0.1}
-            />
-          </Stack>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleReviewSubmit}
-            sx={{ mt: 2 }}
-          >
-            Submit Review
-          </Button>
         </Box>
 
         <Box sx={{ width: "50%" }}>
