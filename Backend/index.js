@@ -502,14 +502,42 @@ app.delete("/cart/:buyer_id/:item_id", async (req, res) => {
   }
 });
 
+// app.post("/cart", async (req, res) => {
+//   const { buyer_id, item_id, quantity, seller_id, price } = req.body;
+
+//   try {
+//     const result = await pool.query(
+//       "INSERT INTO shopping_cart(buyer_id,item_id,quantity,seller_id,price) VALUES($1,$2,$3,$4,$5) RETURNING *",
+//       [buyer_id, item_id, quantity, seller_id, price]
+//     );
+//     console.log("Item stored successfully:", result.rows[0]);
+//     res.status(201).json(result.rows[0]);
+//   } catch (e) {
+//     console.error(e);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
 app.post("/cart", async (req, res) => {
-  const { buyer_id, item_id, quantity, seller_id, price } = req.body;
+  const { buyer_id, item_id, quantity, price } = req.body;
 
   try {
+    const sellerResult = await pool.query(
+      "SELECT seller_id FROM item WHERE item_id = $1",
+      [item_id]
+    );
+
+    if (sellerResult.rows.length === 0) {
+      return res.status(404).json({ error: "Seller not found" });
+    }
+
+    const seller_id = sellerResult.rows[0].seller_id;
+
     const result = await pool.query(
-      "INSERT INTO shopping_cart(buyer_id,item_id,quantity,seller_id,price) VALUES($1,$2,$3,$4,$5) RETURNING *",
+      "INSERT INTO shopping_cart(buyer_id, item_id, quantity, seller_id, price) VALUES($1, $2, $3, $4, $5) RETURNING *",
       [buyer_id, item_id, quantity, seller_id, price]
     );
+
     console.log("Item stored successfully:", result.rows[0]);
     res.status(201).json(result.rows[0]);
   } catch (e) {
@@ -595,6 +623,61 @@ app.get("/get_user/:uid", async (req, res) => {
   } catch (e) {
     console.error("Error retrieving user_type:", error);
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/reviews/:itemID", async (req, res) => {
+  const itemID = req.params.itemID;
+  console.log("Item ID:", itemID);
+
+  try {
+    const result = await pool.query(
+      `SELECT
+        u.first_name,
+        u.last_name,
+        r.review_id,
+        r.description,
+        r.rating
+      FROM
+        review r
+      JOIN
+        "users" u
+      ON
+        r.buyer_id = u.user_id
+      WHERE
+        r.item_id = $1`,
+      [itemID]
+    );
+
+    console.log("Query result:", result.rows);
+
+    if (result.rows.length === 0) {
+      return res.status(404).send("No reviews found");
+    } else {
+      return res.status(200).json(result.rows);
+    }
+  } catch (e) {
+    console.error("Error fetching reviews:", e);
+    return res.status(500).send("Server error");
+  }
+});
+
+app.post("/reviews", async (req, res) => {
+  const { item_id, description, rating, buyer_id } = req.body;
+
+  const count = await pool.query("SELECT COUNT(*) FROM review");
+  const rid = parseInt(count.rows[0].count) + 1;
+  const review_id = `r${String(rid).padStart(4, "0")}`;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO review (review_id, item_id, description, rating, buyer_id)
+      VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [review_id, item_id, description, rating, buyer_id]
+    );
+  } catch (e) {
+    console.error("Error creating review:", e);
+    return res.status(500).send("Server error");
   }
 });
 
