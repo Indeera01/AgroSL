@@ -1,16 +1,25 @@
-import React, { useEffect } from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Avatar, CardHeader, Rating } from '@mui/material';
-import axios from 'axios';
-import backgroundImg from '../assets/background.jpg';
+import React, { useEffect } from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { Avatar, CardHeader, Rating } from "@mui/material";
+import axios from "axios";
+import backgroundImg from "../assets/background.jpg";
 
-const Item = ({ item }) => {
-  const [storeName, setStoreName] = React.useState('Unknown Seller');
+const Item = ({ item, onCardClick }) => {
+  const [storeName, setStoreName] = React.useState("Unknown Seller");
+
+  const handleCardClick = () => {
+    onCardClick(item);
+  };
+
+  const handleButtonClick = (event) => {
+    event.stopPropagation();
+    console.log("add to cart clicked");
+  };
 
   useEffect(() => {
     if (item.seller_id) {
@@ -26,7 +35,7 @@ const Item = ({ item }) => {
       hash = string.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    let color = '#';
+    let color = "#";
 
     for (i = 0; i < 3; i += 1) {
       const value = (hash >> (i * 8)) & 0xff;
@@ -37,7 +46,10 @@ const Item = ({ item }) => {
   };
 
   const stringAvatar = (name) => {
-    const initials = name.split(' ').map((word) => word[0]).join('');
+    const initials = name
+      .split(" ")
+      .map((word) => word[0])
+      .join("");
     return {
       sx: {
         bgcolor: stringToColor(name),
@@ -49,18 +61,19 @@ const Item = ({ item }) => {
   };
 
   const getseller = (id) => {
-    axios.get(`http://localhost:5001/getseller/${id}`)
+    axios
+      .get(`http://localhost:5001/getseller/${id}`)
       .then((res) => {
-        setStoreName(res.data.store_name || 'Unknown Seller');
+        setStoreName(res.data.store_name || "Unknown Seller");
         console.log(storeName);
       })
       .catch((err) => {
-        console.error('Error fetching seller:', err);
+        console.error("Error fetching seller:", err);
       });
   };
 
   return (
-    <Card sx={{ minWidth: { md: 260, xs: 350 } }}>
+    <Card sx={{ minWidth: { md: 260, xs: 350 } }} onClick={handleCardClick}>
       <CardHeader
         avatar={<Avatar {...stringAvatar(storeName)} />}
         title={storeName}
@@ -70,13 +83,13 @@ const Item = ({ item }) => {
         component="img"
         alt={item.item_name}
         height="140"
-        image={item.image_url}  
+        image={item.image_url}
       />
       <CardContent sx={{ p: 2 }}>
         <Rating
           name="rating"
           value={parseFloat(item.average_rating_value)}
-          precision={0.1} 
+          precision={0.1}
           readOnly
         />
         <Typography gutterBottom variant="h6" component="div">
@@ -92,8 +105,14 @@ const Item = ({ item }) => {
           {item.description}
         </Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: 'center' }}>
-        <Button size="small" variant="contained" color="primary" fullWidth>
+      <CardActions sx={{ justifyContent: "center" }}>
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleButtonClick}
+        >
           Add To Cart
         </Button>
       </CardActions>
