@@ -311,6 +311,78 @@ app.get("/orders", async (req, res) => {
   }
 });
 
+app.post("/orders", async (req, res) => {
+  const {
+    order_id,
+    buyer_id,
+    item_id,
+    order_date,
+    is_confirmed,
+    seller_id,
+    order_quantity,
+  } = req.body;
+  try {
+    const result = await pool.query(
+      'insert into "order" (order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity) values ($1, $2, $3, $4, $5, $6,$7) returning *',
+      [
+        order_id,
+        buyer_id,
+        item_id,
+        order_date,
+        is_confirmed,
+        seller_id,
+        order_quantity,
+      ]
+    );
+
+    console.log("Order stored successfully:", result.rows[0]);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error storing order:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/seller_orders/:sellerID", async (req, res) => {
+  const sellerID = req.params.sellerID;
+  const { startDate, endDate } = req.query; // Extracting startDate and endDate from query params
+
+  try {
+    let query = `
+      SELECT o.*, i.item_name, i.unit_price 
+      FROM "order" o
+      JOIN item i ON o.item_id = i.item_id
+      WHERE o.seller_id = $1
+    `;
+
+    const queryParams = [sellerID];
+
+    if (startDate) {
+      query += ` AND o.order_date >= $2`; // Add start date filter
+      queryParams.push(startDate);
+    }
+
+    if (endDate) {
+      query += ` AND o.order_date <= $3`; // Add end date filter
+      queryParams.push(endDate);
+    }
+
+    const result = await pool.query(query, queryParams);
+
+    if (result.rows.length > 0) {
+      console.log(
+        `Retrieved ${result.rows.length} orders for seller ID: ${sellerID}`
+      );
+      res.status(200).json(result.rows);
+    } else {
+      res.status(404).json({ message: "No orders found for this user" });
+    }
+  } catch (e) {
+    console.error("Error retrieving orders:", e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/delivery", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM delivery");

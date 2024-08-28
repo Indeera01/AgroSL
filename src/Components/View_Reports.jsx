@@ -1,6 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function ViewReports() {
+  const navigate = useNavigate();
+
+  const handleViewReports = () => {
+    navigate("/reports_seller");
+  };
+
   return (
     <div style={styles.container}>
       <div
@@ -10,7 +17,9 @@ function ViewReports() {
           alignItems: "center",
         }}
       >
-        <button style={styles.button}>View Reports</button>
+        <button style={styles.button} onClick={handleViewReports}>
+          View Reports
+        </button>
       </div>
     </div>
   );
