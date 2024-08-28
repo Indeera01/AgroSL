@@ -18,6 +18,8 @@ import Tracking from "./Components/Tracking";
 import ShoppingCart from "./Pages/Shopping_Cart";
 import Inventory from "./Pages/Inventory";
 import Seller_Dashboard from "./Pages/Seller_Dashboard";
+import Reports_seller from "./Pages/Reports_seller";
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -61,6 +63,7 @@ const App = () => {
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/seller_dashboard/:id" element={<Seller_Dashboard />} />
+        <Route path="/reports_seller" element={<Reports_seller />} />
       </Routes>
     </Router>
   );
