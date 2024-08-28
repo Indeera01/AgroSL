@@ -18,6 +18,9 @@ import Tracking from "./Components/Tracking";
 import ShoppingCart from "./Pages/Shopping_Cart";
 import Inventory from "./Pages/Inventory";
 import Seller_Dashboard from "./Pages/Seller_Dashboard";
+import Post_Item from "./Components/Post_Item";
+import AddItem from "./Components/Add_Item";
+import Complaints from "./Pages/Complaints";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -61,6 +64,14 @@ const App = () => {
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/seller_dashboard/:id" element={<Seller_Dashboard />} />
+
+        <Route path="/seller_dashboard/:sellerId" element={<Post_Item />} />
+        <Route path="/add_item/:sellerId" element={<AddItem />} />
+
+        <Route
+          path="/sellerdashboard/:seller_id/complaints"
+          element={<Complaints />}
+        />
       </Routes>
     </Router>
   );

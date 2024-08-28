@@ -1,6 +1,14 @@
 import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ViewComplaints() {
+  const navigate = useNavigate();
+  const { id } = useParams(); // Extract seller_id from URL
+
+  const handleViewComplaints = () => {
+    navigate(`/sellerdashboard/${id}/complaints`); // Use template string to navigate
+  };
+
   return (
     <div style={styles.container}>
       <div
@@ -10,7 +18,9 @@ function ViewComplaints() {
           alignItems: "center",
         }}
       >
-        <button style={styles.button}>View Complaints</button>
+        <button style={styles.button} onClick={handleViewComplaints}>
+          View Complaints
+        </button>
       </div>
     </div>
   );
@@ -26,7 +36,7 @@ const styles = {
     height: "300px",
     display: "flex",
     justifyContent: "center",
-    alignComplaints: "center",
+    alignItems: "center",
   },
   button: {
     backgroundColor: "#D9D9D9",

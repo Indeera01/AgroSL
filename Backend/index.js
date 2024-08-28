@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db.js");
+const { Category } = require("@mui/icons-material");
 
 //middleware
 app.use(cors());
@@ -481,6 +482,112 @@ app.get("/get_user/:uid", async (req, res) => {
   } catch (e) {
     console.error("Error retrieving user_type:", error);
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/complaints", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM complaint");
+
+    if (result.rows.length === 0) {
+      return res.status(404).send("No complanits found");
+    } else {
+      return res.status(200).json(result.rows);
+    }
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send("Server error");
+  }
+});
+
+app.post("/api/items", async (req, res) => {
+  const {
+    item_name,
+    unit_price,
+    quantity,
+    image_url,
+    average_rating_value,
+    description,
+    seller_id,
+    unit_type,
+    category,
+  } = req.body;
+
+  try {
+    // Validate input
+    if (
+      !item_name ||
+      !unit_price ||
+      !quantity ||
+      !image_url ||
+      !description ||
+      !seller_id ||
+      !unit_type
+    ) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Generate item_id in the format ITxxxx
+    const result = await pool.query("SELECT COUNT(*) FROM item");
+    const itemCount = parseInt(result.rows[0].count) + 1;
+    const item_id = `IT${String(itemCount).padStart(4, "0")}`;
+
+    // Insert the new item into the database
+    const insertResult = await pool.query(
+      `INSERT INTO item (
+          item_id, item_name, unit_price, quantity, image_url,average_rating_value, description, seller_id, unit_type,category
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10) RETURNING *`,
+      [
+        item_id,
+        item_name,
+        unit_price,
+        quantity,
+        image_url,
+        average_rating_value,
+        description,
+        seller_id,
+        unit_type,
+        category,
+      ]
+    );
+
+    res.status(201).json(insertResult.rows[0]);
+  } catch (error) {
+    console.error("Error inserting item:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/api/complaints", async (req, res) => {
+  const { seller_id } = req.query;
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM complaint_users WHERE seller_id = $1`,
+      [seller_id]
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/api/complaints/:id/status", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    await pool.query(
+      `UPDATE complaint
+       SET complaint_status_seller = $1
+       WHERE complaint_id = $2`,
+      [status, id]
+    );
+    res.status(200).json({ message: "Complaint status updated successfully" });
+  } catch (error) {
+    console.error("Error updating complaint status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
