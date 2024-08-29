@@ -22,8 +22,13 @@ import AddItem from "./Components/Add_Item";
 import Complaints from "./Pages/Complaints";
 import Reports_seller from "./Pages/Reports_seller";
 import Item_View from "./Components/Item_View";
+
 import Orders from "./Pages/Orders";
 import Processing_Orders from "./Pages/Processing_Orders";
+
+import Admin_Page from "./Pages/Admin_Page";
+import Sign_Up_Admin from "./Pages/Sign_Up_Admin";
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -76,11 +81,16 @@ const App = () => {
         />
         <Route path="/reports_seller" element={<Reports_seller />} />
         <Route path="/item/:id" element={<Item_View />} />
+        
         <Route path="/sellerdashboard/:seller_id/orders" element={<Orders />} />
         <Route
           path="/sellerdashboard/:seller_id/processingorders"
           element={<Processing_Orders />}
         />
+
+        <Route path="/admin" element={<Admin_Page />} />
+        <Route path="/admin_signup" element={<Sign_Up_Admin />} />
+
       </Routes>
     </Router>
   );
