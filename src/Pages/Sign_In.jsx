@@ -24,17 +24,43 @@ const Sign_In = () => {
       console.log("User signed in:", email);
       const currentUser = auth.currentUser;
 
-      const response = await axios.get(
-        `http://localhost:5001/get_user/${currentUser.uid}`
-      );
-      const userType = response.data.user_type;
-      console.log("User type:", userType);
-      if (userType === "buyer") {
-        navigate(`/Home/${currentUser.uid}`);
-      } else if (userType === "seller") {
-        navigate(`/seller_dashboard/${currentUser.uid}`);
-      } else {
-        alert("User type not recognized");
+      try {
+        // Attempt to fetch user details from the users table
+        const response = await axios.get(
+          `http://localhost:5001/get_user/${currentUser.uid}`
+        );
+
+        const userType = response.data.user_type;
+        console.log("User type:", userType);
+        if (userType === "buyer") {
+          navigate(`/Home/${currentUser.uid}`);
+        } else if (userType === "seller") {
+          navigate(`/seller_dashboard/${currentUser.uid}`);
+        } else {
+          alert("User type not recognized");
+        }
+      } catch (error) {
+        // If a 404 error occurs, check the admin table
+        if (error.response && error.response.status === 404) {
+          console.log("User not found in users table, checking admin table...");
+          try {
+            const admin = await axios.get(
+              `http://localhost:5001/admin/${currentUser.uid}`
+            );
+
+            if (admin.data && admin.data.user_id) {
+              navigate("/admin");
+            } else {
+              alert("User type not recognized");
+            }
+          } catch (adminError) {
+            console.error("Error checking admin table:", adminError);
+            alert("Error signing in");
+          }
+        } else {
+          console.error("Error fetching user data:", error);
+          alert("Error signing in");
+        }
       }
     } catch (error) {
       console.error("Error signing in:", error);

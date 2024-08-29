@@ -6,11 +6,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { useNavigate } from "react-router-dom";
 
 const Admin_Page = () => {
   const [users, setUsers] = useState([]);
@@ -22,6 +23,7 @@ const Admin_Page = () => {
   const [complaints, setComplaints] = useState([]);
   const [usersClicked, setUsersClicked] = useState(false);
   const [complaintsClicked, setComplaintsClicked] = useState(false);
+  const navigate = useNavigate();
 
   const handleSellersChange = (event) => {
     setSellersChecked(event.target.checked);
@@ -77,15 +79,20 @@ const Admin_Page = () => {
     setUsersClicked(false);
   };
 
+  const handleAdminCreate = () => {
+    navigate("/admin_signup");
+  };
+
   return (
     <Box>
-      <Grid
-        container
-        spacing={2} // Adjust spacing between items as needed
-        direction="row"
-        margin={3}
-      >
-        <Box>
+      <Grid container spacing={10} direction="row" margin={3}>
+        <Box
+          sx={{
+            backgroundColor: "#98BC74",
+            padding: "10px",
+          }}
+        >
+          <Typography variant="h5">Search for users</Typography>
           <FormGroup>
             <FormControlLabel
               control={
@@ -115,10 +122,49 @@ const Admin_Page = () => {
               label="Riders"
             />
           </FormGroup>
-          <Button onClick={handleSearch}>Search</Button>
+          <Button
+            onClick={handleSearch}
+            sx={{
+              backgroundColor: "#4B8412", // Background color
+              color: "#ffffff", // Text color
+              "&:hover": {
+                // Hover effect
+                backgroundColor: "#3A6B0F", // Darker shade on hover
+              },
+            }}
+          >
+            Search
+          </Button>
         </Box>
-        <Box>
-          <Button onClick={handleComplaints}>Show Complaints</Button>
+        <Box marginLeft={10}>
+          <Button
+            onClick={handleComplaints}
+            sx={{
+              backgroundColor: "#4B8412", // Background color
+              color: "#ffffff", // Text color
+              "&:hover": {
+                // Hover effect
+                backgroundColor: "#3A6B0F", // Darker shade on hover
+              },
+            }}
+          >
+            Show Complaints
+          </Button>
+        </Box>
+        <Box marginLeft={10}>
+          <Button
+            onClick={handleAdminCreate}
+            sx={{
+              backgroundColor: "#4B8412", // Background color
+              color: "#ffffff", // Text color
+              "&:hover": {
+                // Hover effect
+                backgroundColor: "#3A6B0F", // Darker shade on hover
+              },
+            }}
+          >
+            Create new admin
+          </Button>
         </Box>
       </Grid>
 
