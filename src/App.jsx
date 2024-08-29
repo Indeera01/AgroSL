@@ -6,7 +6,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import { auth } from "../firebase";
-
 import Navigation_Bar from "./Components/Navigation_Bar";
 import Layout from "./Layout";
 import Sign_In from "./Pages/Sign_In";
@@ -18,8 +17,12 @@ import Tracking from "./Components/Tracking";
 import ShoppingCart from "./Pages/Shopping_Cart";
 import Inventory from "./Pages/Inventory";
 import Seller_Dashboard from "./Pages/Seller_Dashboard";
+import Post_Item from "./Components/Post_Item";
+import AddItem from "./Components/Add_Item";
+import Complaints from "./Pages/Complaints";
 import Reports_seller from "./Pages/Reports_seller";
 import Item_View from "./Components/Item_View";
+
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,6 +67,12 @@ const App = () => {
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/seller_dashboard/:id" element={<Seller_Dashboard />} />
+        <Route path="/seller_dashboard/:sellerId" element={<Post_Item />} />
+        <Route path="/add_item/:sellerId" element={<AddItem />} />
+        <Route
+          path="/sellerdashboard/:seller_id/complaints"
+          element={<Complaints />}
+        />
         <Route path="/reports_seller" element={<Reports_seller />} />
         <Route path="/item/:id" element={<Item_View />} />
       </Routes>
