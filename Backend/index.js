@@ -26,6 +26,32 @@ app.get("/users", async (req, res) => {
   }
 });
 
+app.get("/users_by_type", async (req, res) => {
+  try {
+    const { types } = req.query; // Extract the 'types' query parameter
+
+    // Convert 'types' from a comma-separated string to an array
+    const userTypes = types ? types.split(",") : [];
+
+    let query = 'SELECT * FROM "users"';
+
+    // Modify the query if specific user types are requested
+    if (userTypes.length > 0) {
+      // Use the IN clause with placeholders to avoid SQL injection
+      const placeholders = userTypes.map((_, i) => `$${i + 1}`).join(", ");
+      query += ` WHERE user_type IN (${placeholders})`;
+    }
+
+    // Execute the query with the userTypes array as parameters
+    const result = await pool.query(query, userTypes);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/users/:user_id", async (req, res) => {
   try {
     const result = await pool.query(

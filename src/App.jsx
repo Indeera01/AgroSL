@@ -22,7 +22,7 @@ import AddItem from "./Components/Add_Item";
 import Complaints from "./Pages/Complaints";
 import Reports_seller from "./Pages/Reports_seller";
 import Item_View from "./Components/Item_View";
-
+import Admin_Page from "./Pages/Admin_Page";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -75,6 +75,7 @@ const App = () => {
         />
         <Route path="/reports_seller" element={<Reports_seller />} />
         <Route path="/item/:id" element={<Item_View />} />
+        <Route path="/admin" element={<Admin_Page />} />
       </Routes>
     </Router>
   );
