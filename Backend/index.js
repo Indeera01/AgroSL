@@ -849,7 +849,6 @@ app.post("/reviews", async (req, res) => {
   }
 });
 
-
 app.get("/api/orders", async (req, res) => {
   const { seller_id } = req.query;
 
@@ -861,6 +860,9 @@ app.get("/api/orders", async (req, res) => {
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("Error fetching complaints:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.post("/admins", async (req, res) => {
   const { user_id, email } = req.body;
@@ -882,7 +884,6 @@ app.post("/admins", async (req, res) => {
   }
 });
 
-
 app.get("/api/processingorders", async (req, res) => {
   const { seller_id } = req.query;
 
@@ -895,6 +896,8 @@ app.get("/api/processingorders", async (req, res) => {
   } catch (error) {
     console.error("Error fetching complaints:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.get("/admin/:adminID", async (req, res) => {
   const adminID = req.params.adminID;
@@ -912,7 +915,6 @@ app.get("/admin/:adminID", async (req, res) => {
   } catch (e) {
     console.error(e);
     return res.status(500).send("Server error");
-
   }
 });
 
