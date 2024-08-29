@@ -741,6 +741,45 @@ app.put("/api/complaints/:id/status", async (req, res) => {
   }
 });
 
+app.put("/api/orders/:orderId/send", async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    const result = await pool.query(
+      'UPDATE "order" SET sent_to_delivery = $1 WHERE order_id = $2',
+      [true, orderId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.status(200).json({ message: "Order sent to delivery" });
+  } catch (error) {
+    console.error("Error sending order to delivery:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/api/processingorders/:orderId/send", async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    const result = await pool.query(
+      'UPDATE "order" SET sent_to_delivery = $1 WHERE order_id = $2',
+      [false, orderId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.status(200).json({ message: "Order sent to delivery" });
+  } catch (error) {
+    console.error("Error sending order to delivery:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 app.post("/reviews", async (req, res) => {
   const { item_id, description, rating, buyer_id } = req.body;
 
@@ -757,6 +796,36 @@ app.post("/reviews", async (req, res) => {
   } catch (e) {
     console.error("Error creating review:", e);
     return res.status(500).send("Server error");
+  }
+});
+
+app.get("/api/orders", async (req, res) => {
+  const { seller_id } = req.query;
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM "order" WHERE seller_id = $1`,
+      [seller_id]
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/api/processingorders", async (req, res) => {
+  const { seller_id } = req.query;
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM "order" WHERE seller_id = $1`,
+      [seller_id]
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
