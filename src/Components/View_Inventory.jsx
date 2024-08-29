@@ -1,6 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function ViewInventory() {
+  const navigate = useNavigate();
+
+  const handleViewInventory = () => {
+    navigate("/inventory"); // This will navigate to the InventoryPage
+  };
+
   return (
     <div style={styles.container}>
       <div
@@ -10,7 +17,9 @@ function ViewInventory() {
           alignItems: "center",
         }}
       >
-        <button style={styles.button}>View Inventory</button>
+        <button style={styles.button} onClick={handleViewInventory}>
+          View Inventory
+        </button>
       </div>
     </div>
   );

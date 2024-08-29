@@ -138,6 +138,48 @@ app.get("/items/:item_id", async (req, res) => {
   }
 });
 
+app.put("/items_update/:item_id", async (req, res) => {
+  const item_id = req.params.item_id;
+  const { quantity } = req.body;
+
+  try {
+    const result = await pool.query(
+      "UPDATE item SET quantity = $1 WHERE item_id = $2 RETURNING *",
+      [quantity, item_id]
+    );
+
+    if (result.rows.length > 0) {
+      console.log(`Updated item ${item_id}  with quantity ${quantity}`);
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json({ message: "Item not found" });
+    }
+  } catch (e) {
+    console.error("Error updating item quantity:", e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.delete("/items/:item_id", async (req, res) => {
+  const item_id = req.params.item_id;
+
+  try {
+    const result = await pool.query(
+      "DELETE FROM item WHERE item_id = $1 RETURNING *",
+      [item_id]
+    );
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ message: "Item removed successfully." });
+    } else {
+      res.status(404).json({ message: "Item not found." });
+    }
+  } catch (err) {
+    console.error("Error deleting item:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/items_seller/:sellerID", async (req, res) => {
   const sellerID = req.params.sellerID;
   console.log(sellerID);
@@ -270,6 +312,78 @@ app.get("/orders", async (req, res) => {
   }
 });
 
+app.post("/orders", async (req, res) => {
+  const {
+    order_id,
+    buyer_id,
+    item_id,
+    order_date,
+    is_confirmed,
+    seller_id,
+    order_quantity,
+  } = req.body;
+  try {
+    const result = await pool.query(
+      'insert into "order" (order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity) values ($1, $2, $3, $4, $5, $6,$7) returning *',
+      [
+        order_id,
+        buyer_id,
+        item_id,
+        order_date,
+        is_confirmed,
+        seller_id,
+        order_quantity,
+      ]
+    );
+
+    console.log("Order stored successfully:", result.rows[0]);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error storing order:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/seller_orders/:sellerID", async (req, res) => {
+  const sellerID = req.params.sellerID;
+  const { startDate, endDate } = req.query; // Extracting startDate and endDate from query params
+
+  try {
+    let query = `
+      SELECT o.*, i.item_name, i.unit_price 
+      FROM "order" o
+      JOIN item i ON o.item_id = i.item_id
+      WHERE o.seller_id = $1
+    `;
+
+    const queryParams = [sellerID];
+
+    if (startDate) {
+      query += ` AND o.order_date >= $2`; // Add start date filter
+      queryParams.push(startDate);
+    }
+
+    if (endDate) {
+      query += ` AND o.order_date <= $3`; // Add end date filter
+      queryParams.push(endDate);
+    }
+
+    const result = await pool.query(query, queryParams);
+
+    if (result.rows.length > 0) {
+      console.log(
+        `Retrieved ${result.rows.length} orders for seller ID: ${sellerID}`
+      );
+      res.status(200).json(result.rows);
+    } else {
+      res.status(404).json({ message: "No orders found for this user" });
+    }
+  } catch (e) {
+    console.error("Error retrieving orders:", e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/delivery", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM delivery");
@@ -389,14 +503,42 @@ app.delete("/cart/:buyer_id/:item_id", async (req, res) => {
   }
 });
 
+// app.post("/cart", async (req, res) => {
+//   const { buyer_id, item_id, quantity, seller_id, price } = req.body;
+
+//   try {
+//     const result = await pool.query(
+//       "INSERT INTO shopping_cart(buyer_id,item_id,quantity,seller_id,price) VALUES($1,$2,$3,$4,$5) RETURNING *",
+//       [buyer_id, item_id, quantity, seller_id, price]
+//     );
+//     console.log("Item stored successfully:", result.rows[0]);
+//     res.status(201).json(result.rows[0]);
+//   } catch (e) {
+//     console.error(e);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
 app.post("/cart", async (req, res) => {
-  const { buyer_id, item_id, quantity, seller_id, price } = req.body;
+  const { buyer_id, item_id, quantity, price } = req.body;
 
   try {
+    const sellerResult = await pool.query(
+      "SELECT seller_id FROM item WHERE item_id = $1",
+      [item_id]
+    );
+
+    if (sellerResult.rows.length === 0) {
+      return res.status(404).json({ error: "Seller not found" });
+    }
+
+    const seller_id = sellerResult.rows[0].seller_id;
+
     const result = await pool.query(
-      "INSERT INTO shopping_cart(buyer_id,item_id,quantity,seller_id,price) VALUES($1,$2,$3,$4,$5) RETURNING *",
+      "INSERT INTO shopping_cart(buyer_id, item_id, quantity, seller_id, price) VALUES($1, $2, $3, $4, $5) RETURNING *",
       [buyer_id, item_id, quantity, seller_id, price]
     );
+
     console.log("Item stored successfully:", result.rows[0]);
     res.status(201).json(result.rows[0]);
   } catch (e) {
@@ -491,14 +633,48 @@ app.get("/complaints", async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).send("No complanits found");
+
+app.get("/reviews/:itemID", async (req, res) => {
+  const itemID = req.params.itemID;
+  console.log("Item ID:", itemID);
+
+  try {
+    const result = await pool.query(
+      `SELECT
+        u.first_name,
+        u.last_name,
+        r.review_id,
+        r.description,
+        r.rating
+      FROM
+        review r
+      JOIN
+        "users" u
+      ON
+        r.buyer_id = u.user_id
+      WHERE
+        r.item_id = $1`,
+      [itemID]
+    );
+
+    console.log("Query result:", result.rows);
+
+    if (result.rows.length === 0) {
+      return res.status(404).send("No reviews found");
+
     } else {
       return res.status(200).json(result.rows);
     }
   } catch (e) {
+
     console.error(e);
+
+    console.error("Error fetching reviews:", e);
+
     return res.status(500).send("Server error");
   }
 });
+
 
 app.post("/api/items", async (req, res) => {
   const {
@@ -588,6 +764,24 @@ app.put("/api/complaints/:id/status", async (req, res) => {
   } catch (error) {
     console.error("Error updating complaint status:", error);
     res.status(500).json({ error: "Internal Server Error" });
+
+app.post("/reviews", async (req, res) => {
+  const { item_id, description, rating, buyer_id } = req.body;
+
+  const count = await pool.query("SELECT COUNT(*) FROM review");
+  const rid = parseInt(count.rows[0].count) + 1;
+  const review_id = `r${String(rid).padStart(4, "0")}`;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO review (review_id, item_id, description, rating, buyer_id)
+      VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [review_id, item_id, description, rating, buyer_id]
+    );
+  } catch (e) {
+    console.error("Error creating review:", e);
+    return res.status(500).send("Server error");
+
   }
 });
 
