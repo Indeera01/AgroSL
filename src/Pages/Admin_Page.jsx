@@ -8,12 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, Button, Grid } from "@mui/material";
 import axios from "axios";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -27,6 +21,7 @@ const Admin_Page = () => {
   const [error, setError] = useState(null);
   const [complaints, setComplaints] = useState([]);
   const [usersClicked, setUsersClicked] = useState(false);
+  const [complaintsClicked, setComplaintsClicked] = useState(false);
 
   const handleSellersChange = (event) => {
     setSellersChecked(event.target.checked);
@@ -62,7 +57,24 @@ const Admin_Page = () => {
           setLoading(false);
         });
       setUsersClicked(true);
+      setComplaintsClicked(false);
     }
+  };
+
+  const handleComplaints = () => {
+    axios
+      .get("http://localhost:5001/all_complaints_for_admins")
+      .then((res) => {
+        setComplaints(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+
+    setComplaintsClicked(true);
+    setUsersClicked(false);
   };
 
   return (
@@ -106,7 +118,7 @@ const Admin_Page = () => {
           <Button onClick={handleSearch}>Search</Button>
         </Box>
         <Box>
-          <Button>Show Complaints</Button>
+          <Button onClick={handleComplaints}>Show Complaints</Button>
         </Box>
       </Grid>
 
@@ -146,8 +158,102 @@ const Admin_Page = () => {
           </Table>
         </TableContainer>
       )}
+      {complaintsClicked && (
+        <Box>
+          <div style={styles.container}>
+            <h1 style={styles.header}>Complaints</h1>
+            {complaints.map((complaint_users) => (
+              <div key={complaint_users.complaint_id} style={styles.card}>
+                <div style={styles.cardHeader}>
+                  <p style={styles.complaintId}>
+                    Complaint ID: {complaint_users.complaint_id}
+                  </p>
+                </div>
+                <p style={styles.description}>
+                  Description: {complaint_users.description}
+                </p>
+                <p style={styles.detail}>
+                  Rider name: {complaint_users.rider_name}
+                </p>
+                <p style={styles.detail}>
+                  Seller name: {complaint_users.seller_name}
+                </p>
+                <p style={styles.detail}>
+                  Order ID: {complaint_users.order_id}
+                </p>
+                <label style={styles.checkboxLabel}>
+                  Complained Seller:
+                  <input
+                    type="checkbox"
+                    checked={complaint_users.complained_seller}
+                    readOnly
+                    style={styles.checkbox}
+                  />
+                </label>
+              </div>
+            ))}
+          </div>
+        </Box>
+      )}
     </Box>
   );
+};
+
+const styles = {
+  container: {
+    padding: "20px",
+    backgroundColor: "#f5f5f5",
+  },
+  header: {
+    textAlign: "center",
+    color: "#333",
+    marginBottom: "20px",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: "20px",
+    margin: "10px auto",
+    maxWidth: "600px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+  },
+  cardHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+  },
+  complaintId: {
+    fontWeight: "bold",
+    color: "#333",
+  },
+  statusDropdown: {
+    padding: "5px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+  },
+  description: {
+    fontSize: "14px",
+    color: "#555",
+    marginBottom: "10px",
+  },
+  detail: {
+    fontSize: "13px",
+    color: "#777",
+    marginBottom: "5px",
+  },
+  checkboxLabel: {
+    display: "flex",
+    alignItems: "center",
+    fontSize: "14px",
+    color: "#555",
+  },
+  checkbox: {
+    marginLeft: "5px",
+  },
 };
 
 export default Admin_Page;

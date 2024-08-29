@@ -557,6 +557,20 @@ app.post("/cart", async (req, res) => {
   }
 });
 
+app.get("/complaints", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM complaint");
+    if (result.rows.length === 0) {
+      return res.status(404).send("No complaints found");
+    } else {
+      return res.status(200).json(result.rows);
+    }
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send("Server error");
+  }
+});
+
 app.get("/complaints/:buyer_id", async (req, res) => {
   const buyer_id = req.params;
   try {
@@ -742,6 +756,16 @@ app.get("/api/complaints", async (req, res) => {
       `SELECT * FROM complaint_users WHERE seller_id = $1`,
       [seller_id]
     );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/all_complaints_for_admins", async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT * FROM complaint_users`);
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("Error fetching complaints:", error);
