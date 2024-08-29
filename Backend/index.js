@@ -503,22 +503,6 @@ app.delete("/cart/:buyer_id/:item_id", async (req, res) => {
   }
 });
 
-// app.post("/cart", async (req, res) => {
-//   const { buyer_id, item_id, quantity, seller_id, price } = req.body;
-
-//   try {
-//     const result = await pool.query(
-//       "INSERT INTO shopping_cart(buyer_id,item_id,quantity,seller_id,price) VALUES($1,$2,$3,$4,$5) RETURNING *",
-//       [buyer_id, item_id, quantity, seller_id, price]
-//     );
-//     console.log("Item stored successfully:", result.rows[0]);
-//     res.status(201).json(result.rows[0]);
-//   } catch (e) {
-//     console.error(e);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
 app.post("/cart", async (req, res) => {
   const { buyer_id, item_id, quantity, price } = req.body;
 
@@ -627,13 +611,6 @@ app.get("/get_user/:uid", async (req, res) => {
   }
 });
 
-app.get("/complaints", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM complaint");
-
-    if (result.rows.length === 0) {
-      return res.status(404).send("No complanits found");
-
 app.get("/reviews/:itemID", async (req, res) => {
   const itemID = req.params.itemID;
   console.log("Item ID:", itemID);
@@ -661,12 +638,10 @@ app.get("/reviews/:itemID", async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).send("No reviews found");
-
     } else {
       return res.status(200).json(result.rows);
     }
   } catch (e) {
-
     console.error(e);
 
     console.error("Error fetching reviews:", e);
@@ -674,7 +649,6 @@ app.get("/reviews/:itemID", async (req, res) => {
     return res.status(500).send("Server error");
   }
 });
-
 
 app.post("/api/items", async (req, res) => {
   const {
@@ -764,6 +738,8 @@ app.put("/api/complaints/:id/status", async (req, res) => {
   } catch (error) {
     console.error("Error updating complaint status:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.post("/reviews", async (req, res) => {
   const { item_id, description, rating, buyer_id } = req.body;
@@ -781,7 +757,6 @@ app.post("/reviews", async (req, res) => {
   } catch (e) {
     console.error("Error creating review:", e);
     return res.status(500).send("Server error");
-
   }
 });
 
