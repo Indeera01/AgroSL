@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function ViewOrders() {
+function View_Processing_Orders() {
   const navigate = useNavigate();
   const { id } = useParams(); // Extract seller_id from URL
 
-  const handleViewOrders = () => {
-    navigate(`/sellerdashboard/${id}/orders`); // Use template string to navigate
+  const handleViewProcessingOrders = () => {
+    navigate(`/sellerdashboard/${id}/processingorders`); // Use template string to navigate
   };
 
   return (
@@ -18,8 +18,8 @@ function ViewOrders() {
           alignItems: "center",
         }}
       >
-        <button style={styles.button} onClick={handleViewOrders}>
-          View Orders
+        <button style={styles.button} onClick={handleViewProcessingOrders}>
+          View Processing Orders
         </button>
       </div>
     </div>
@@ -49,4 +49,4 @@ const styles = {
   },
 };
 
-export default ViewOrders;
+export default View_Processing_Orders;
