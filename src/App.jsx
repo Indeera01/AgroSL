@@ -63,8 +63,7 @@ const App = () => {
           path="/Sign_Up_Delivery_Rider"
           element={<Sign_Up_Delivery_Rider />}
         />
-        <Route path="/" element={<Navigation_Bar />} />
-        <Route path="/Home" element={<Layout />} />
+        <Route path="/" element={<Layout />} />
         <Route
           path="/Home/:id"
           element={<PrivateRoute element={<Layout />} />}

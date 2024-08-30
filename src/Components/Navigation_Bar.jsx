@@ -119,7 +119,7 @@ function ResponsiveAppBar() {
       .signOut()
       .then(() => {
         console.log("User signed out");
-        navigate("/Sign_in");
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error signing out:", error);
@@ -246,61 +246,92 @@ function ResponsiveAppBar() {
                 </Button>
               ))}
             </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "60px",
-              }}
-              mr={9}
-            >
-              <Badge badgeContent={cart.length} color="action">
-                <ShoppingCartIcon
-                  fontSize="large"
-                  onClick={() => navigate("/cart")}
-                />
-              </Badge>
-              <Badge badgeContent={0} color="action">
-                <ChatIcon
-                  fontSize="large"
-                  onClick={() => navigate("/notifications")}
-                />
-              </Badge>
-            </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+            {user && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "60px",
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={() => setAnchorElUser(null)}
+                mr={9}
               >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting}
-                    onClick={() => handleCloseUserMenu(setting)}
-                  >
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+                <Badge badgeContent={cart.length} color="action">
+                  <ShoppingCartIcon
+                    fontSize="large"
+                    onClick={() => navigate("/cart")}
+                  />
+                </Badge>
+                <Badge badgeContent={0} color="action">
+                  <ChatIcon
+                    fontSize="large"
+                    onClick={() => navigate("/notifications")}
+                  />
+                </Badge>
+              </Box>
+            )}
+            {!user && (
+              <Button
+                onClick={() => navigate("/Sign_In")}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  position: "relative",
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    width: "0",
+                    height: "2px",
+                    bottom: "-2px", // Adjust the underline position
+                    left: "0",
+                    backgroundColor: "white",
+                    transition: "width 0.3s ease-in-out",
+                  },
+                  "&:hover::after": {
+                    width: "100%",
+                  },
+                }}
+              >
+                Login
+              </Button>
+            )}
+            {user && (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={() => setAnchorElUser(null)}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => handleCloseUserMenu(setting)}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>
