@@ -22,7 +22,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ChatIcon from "@mui/icons-material/Chat";
 
-const pages = ["Become a Seller", "Contact us", "About"];
+const pages = [
+  "Become a Seller",
+  "Become a Delivery Rider",
+  "Contact us",
+  "About",
+];
 const settings = ["Profile", "Logout"];
 
 function ResponsiveAppBar() {
@@ -90,6 +95,8 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = (page) => {
     if (page === "Become a Seller") {
       navigate("/Sign_Up_Seller");
+    } else if (page === "Become a Delivery Rider") {
+      navigate("/Sign_Up_Delivery_Rider");
     } else if (page === "Contact us") {
       navigate("/Contact_us");
     } else if (page === "About") {
@@ -208,7 +215,7 @@ function ResponsiveAppBar() {
                 flexGrow: 1,
                 display: { xs: "none", md: "flex" },
                 gap: { md: 8 },
-                marginLeft: { md: "100px" },
+                marginLeft: { md: "80px" },
               }}
             >
               {pages.map((page) => (
