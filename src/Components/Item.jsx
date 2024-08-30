@@ -53,8 +53,8 @@ const Item = ({ item, onCardClick }) => {
     return {
       sx: {
         bgcolor: stringToColor(name),
-        width: 50,
-        height: 50,
+        width: 45,
+        height: 45,
       },
       children: initials,
     };
@@ -77,7 +77,7 @@ const Item = ({ item, onCardClick }) => {
       <CardHeader
         avatar={<Avatar {...stringAvatar(storeName)} />}
         title={storeName}
-        subheader="September 14, 2016"
+        sx={{ padding: "8px", marginLeft: "5px" }}
       />
       <CardMedia
         component="img"
