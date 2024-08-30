@@ -141,7 +141,7 @@ function ResponsiveAppBar() {
               variant="h6"
               noWrap
               component="a"
-              href="#"
+              onClick={() => navigate(`/Home/${user?.user_id}`)}
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -196,7 +196,7 @@ function ResponsiveAppBar() {
               variant="h5"
               noWrap
               component="a"
-              href="#"
+              onClick={() => navigate("/Home")}
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -208,7 +208,7 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              AgroSL
             </Typography>
             <Box
               sx={{
