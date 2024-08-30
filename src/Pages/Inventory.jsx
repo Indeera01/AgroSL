@@ -115,7 +115,7 @@ const Inventory = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "#e6ffe6" }}>
       <Navigation_Bar_Seller />
       <Box
         sx={{

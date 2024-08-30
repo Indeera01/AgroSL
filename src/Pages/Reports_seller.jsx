@@ -152,7 +152,7 @@ const Reports_seller = () => {
   }
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "#e6ffe6" }}>
       <Navigation_Bar_Seller />
       <Grid
         container

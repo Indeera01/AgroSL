@@ -46,6 +46,7 @@ const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
     <Card
       sx={{
         width: "20%",
+        height: "400px",
         backgroundColor: "#98BC74",
         margin: "20px",
       }}
@@ -56,7 +57,7 @@ const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
         image={item.image_url}
         sx={{
           width: "100%", // Make sure the image takes the full width of the parent Box
-          height: "auto", // Maintain aspect ratio based on the image's width
+          height: "50%", // Maintain aspect ratio based on the image's width
           objectFit: "cover",
         }}
       />
