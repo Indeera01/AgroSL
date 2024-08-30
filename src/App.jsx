@@ -28,7 +28,8 @@ import Processing_Orders from "./Pages/Processing_Orders";
 
 import Admin_Page from "./Pages/Admin_Page";
 import Sign_Up_Admin from "./Pages/Sign_Up_Admin";
-
+import Sign_Up_Delivery_Rider from "./Pages/Sign_Up_Delivery_Rider";
+import Delivery_Rider_Dashboard from "./Pages/Delivery_Rider_Dashboard";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,6 +59,10 @@ const App = () => {
         <Route path="/Sign_in" element={<Sign_In />} />
         <Route path="/Sign_Up_Buyer" element={<Sign_Up_Buyer />} />
         <Route path="/Sign_Up_Seller" element={<Sign_Up_Seller />} />
+        <Route
+          path="/Sign_Up_Delivery_Rider"
+          element={<Sign_Up_Delivery_Rider />}
+        />
         <Route path="/" element={<Navigation_Bar />} />
         <Route path="/Home" element={<Layout />} />
         <Route
@@ -73,6 +78,11 @@ const App = () => {
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/seller_dashboard/:id" element={<Seller_Dashboard />} />
+        <Route
+          path="/delivery_rider_dashboard/:riderId"
+          element={<Delivery_Rider_Dashboard />}
+        />
+
         <Route path="/seller_dashboard/:sellerId" element={<Post_Item />} />
         <Route path="/add_item/:sellerId" element={<AddItem />} />
         <Route
@@ -81,7 +91,7 @@ const App = () => {
         />
         <Route path="/reports_seller" element={<Reports_seller />} />
         <Route path="/item/:id" element={<Item_View />} />
-        
+
         <Route path="/sellerdashboard/:seller_id/orders" element={<Orders />} />
         <Route
           path="/sellerdashboard/:seller_id/processingorders"
@@ -90,7 +100,6 @@ const App = () => {
 
         <Route path="/admin" element={<Admin_Page />} />
         <Route path="/admin_signup" element={<Sign_Up_Admin />} />
-
       </Routes>
     </Router>
   );

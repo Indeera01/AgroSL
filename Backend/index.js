@@ -918,6 +918,64 @@ app.get("/admin/:adminID", async (req, res) => {
   }
 });
 
+app.post("/delivery_riders", async (req, res) => {
+  const { user_id, NIC } = req.body;
+
+  try {
+    // Validate input
+    if (!user_id || !NIC) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Insert new seller into the database
+    const result = await pool.query(
+      `INSERT INTO "delivery_rider" (
+          "user_id", "NIC"
+        ) VALUES ($1, $2) RETURNING *`,
+      [user_id, NIC]
+    );
+    console.log("details stored successfully");
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error inserting delivery rider:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/api/delivery_rider_dashboard/:id/deliveries", async (req, res) => {
+  const { id } = req.params; // Extract delivery rider ID from the URL
+
+  try {
+    // Query to fetch deliveries for the given delivery rider ID
+    const result = await pool.query("SELECT * FROM users WHERE user_id = $1", [
+      id,
+    ]);
+
+    // Respond with the deliveries
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching deliveries:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/api/delivery_rider_dashboard/:id/orders", async (req, res) => {
+  const { id } = req.params; // Extract delivery rider ID from the URL
+
+  try {
+    // Query to fetch deliveries for the given delivery rider ID
+    const result = await pool.query("SELECT * FROM users WHERE user_id = $1", [
+      id,
+    ]);
+
+    // Respond with the deliveries
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error fetching deliveries:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.listen(5001, () => {
   console.log("Server is running on port 5001");
 });
