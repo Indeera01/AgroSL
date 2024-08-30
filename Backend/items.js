@@ -101,9 +101,8 @@ router.get("/items_seller/:sellerID", async (req, res) => {
   }
 });
 
-router.post("/items", async (req, res) => {
+router.post("/api/items", async (req, res) => {
   const {
-    item_id,
     item_name,
     unit_price,
     quantity,
@@ -111,10 +110,34 @@ router.post("/items", async (req, res) => {
     average_rating_value,
     description,
     seller_id,
+    unit_type,
+    category,
   } = req.body;
+
   try {
-    const result = await pool.query(
-      "insert into item (item_id, item_name, unit_price, quantity, image_url,average_rating_value,description,seller_id) values ($1, $2, $3, $4, $5, $6,$7,$8) returning *",
+    // Validate input
+    if (
+      !item_name ||
+      !unit_price ||
+      !quantity ||
+      !image_url ||
+      !description ||
+      !seller_id ||
+      !unit_type
+    ) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Generate item_id in the format ITxxxx
+    const result = await pool.query("SELECT COUNT(*) FROM item");
+    const itemCount = parseInt(result.rows[0].count) + 1;
+    const item_id = 'IT${String(itemCount).padStart(4, "0")}';
+
+    // Insert the new item into the database
+    const insertResult = await pool.query(
+      `INSERT INTO item (
+          item_id, item_name, unit_price, quantity, image_url,average_rating_value, description, seller_id, unit_type,category
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10) RETURNING *`,
       [
         item_id,
         item_name,
@@ -124,13 +147,14 @@ router.post("/items", async (req, res) => {
         average_rating_value,
         description,
         seller_id,
+        unit_type,
+        category,
       ]
     );
 
-    console.log("Item stored successfully:", result.rows[0]);
-    res.status(201).json(result.rows[0]);
+    res.status(201).json(insertResult.rows[0]);
   } catch (error) {
-    console.error("Error inserting user:", error.message); // Log the detailed error message
+    console.error("Error inserting item:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

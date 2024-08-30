@@ -9,6 +9,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { Category } from "@mui/icons-material";
+import Navigation_Bar_Seller from "./Navigation_Bar_Seller";
+import { Box } from "@mui/material";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -91,81 +93,86 @@ const AddItem = () => {
   };
 
   return (
-    <div className="add-item-container">
-      <form className="add-item-form" onSubmit={handleSubmit}>
-        <label htmlFor="itemName">Item Name:</label>
-        <input
-          type="text"
-          id="itemName"
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
-          required
-        />
+    <Box bgcolor={"#e6ffe6 "} height={"110vh"}>
+      <Navigation_Bar_Seller />
+      <Box mt={3} mb={3}>
+        <div className="add-item-container">
+          <form className="add-item-form" onSubmit={handleSubmit}>
+            <label htmlFor="itemName">Item Name:</label>
+            <input
+              type="text"
+              id="itemName"
+              value={itemName}
+              onChange={(e) => setItemName(e.target.value)}
+              required
+            />
 
-        <label htmlFor="unitPrice">Unit Price:</label>
-        <input
-          type="number"
-          step="0.01"
-          id="unitPrice"
-          value={unitPrice}
-          onChange={(e) => setUnitPrice(e.target.value)}
-          required
-        />
+            <label htmlFor="unitPrice">Unit Price:</label>
+            <input
+              type="number"
+              step="0.01"
+              id="unitPrice"
+              value={unitPrice}
+              onChange={(e) => setUnitPrice(e.target.value)}
+              required
+            />
 
-        <label htmlFor="quantity">Quantity:</label>
-        <input
-          type="number"
-          id="quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          required
-        />
+            <label htmlFor="quantity">Quantity:</label>
+            <input
+              type="number"
+              id="quantity"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              required
+            />
 
-        <label htmlFor="imageUrl">Image:</label>
-        <input
-          type="file"
-          id="imageUrl"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
-          required
-        />
+            <label htmlFor="imageUrl">Image:</label>
+            <input
+              type="file"
+              id="imageUrl"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              required
+            />
 
-        <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
 
-        <label htmlFor="unitType">Unit Type:</label>
-        <select
-          id="unitType"
-          value={unitType}
-          onChange={(e) => setUnitType(e.target.value)}
-          required
-        >
-          <option value="per kg">Per kg</option>
-          <option value="per litre">Per litre</option>
-          <option value="per unit">Per unit</option>
-        </select>
+            <label htmlFor="unitType">Unit Type:</label>
+            <select
+              id="unitType"
+              value={unitType}
+              onChange={(e) => setUnitType(e.target.value)}
+              required
+            >
+              <option value="per kg">Per kg</option>
+              <option value="per litre">Per litre</option>
+              <option value="per unit">Per unit</option>
+            </select>
 
-        <label htmlFor="category">Category:</label>
-        <select
-          id="category"
-          value={category}
-          onChange={(e) => setUnitType(e.target.value)}
-          required
-        >
-          <option value="Seeds">Seeds</option>
-          <option value="Vegetables">Vegetables</option>
-          <option value="fruits">Fruits</option>
-          <option value="Animal Products">Animal Products</option>
-        </select>
+            <label htmlFor="category">Category:</label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="Seeds">Seeds</option>
+              <option value="Vegetables">Vegetables</option>
+              <option value="fruits">Fruits</option>
+              <option value="Animal Products">Animal Products</option>
+            </select>
 
-        <button type="submit">Add Item</button>
-      </form>
-    </div>
+            <button type="submit">Add Item</button>
+          </form>
+        </div>
+      </Box>
+    </Box>
   );
 };
 
