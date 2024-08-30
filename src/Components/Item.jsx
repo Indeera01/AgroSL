@@ -105,17 +105,6 @@ const Item = ({ item, onCardClick }) => {
           {item.description}
         </Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: "center" }}>
-        <Button
-          size="small"
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleButtonClick}
-        >
-          Add To Cart
-        </Button>
-      </CardActions>
     </Card>
   );
 };

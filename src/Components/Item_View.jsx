@@ -57,7 +57,7 @@ const Item_View = () => {
         setError("Error fetching reviews");
         setLoading(false);
       });
-  }, [id]);
+  }, []);
 
   const handleAdd = () => {
     const newQuantity = quantity + 1;
