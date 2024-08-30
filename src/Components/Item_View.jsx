@@ -14,6 +14,7 @@ import Item_Review from "./Item_Review";
 import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
+import Item from "./Item";
 
 const Item_View = () => {
   const { id } = useParams();
@@ -153,7 +154,7 @@ const Item_View = () => {
             <Card
               sx={{
                 width: "100%",
-                backgroundColor: "#98BC74",
+                border: "2px solid black",
               }}
             >
               <CardMedia
