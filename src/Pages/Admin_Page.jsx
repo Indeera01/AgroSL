@@ -84,12 +84,19 @@ const Admin_Page = () => {
   };
 
   return (
-    <Box>
-      <Grid container spacing={10} direction="row" margin={3}>
+    <Box
+      sx={{
+        backgroundColor: "#e6ffe6",
+        padding: "20px",
+        minHeight: "100vh",
+      }}
+    >
+      <Grid container spacing={10} direction="row" margin={0}>
         <Box
           sx={{
             backgroundColor: "#98BC74",
-            padding: "10px",
+            padding: "20px",
+            borderRadius: "10px",
           }}
         >
           <Typography variant="h5">Search for users</Typography>
@@ -169,7 +176,10 @@ const Admin_Page = () => {
       </Grid>
 
       {usersClicked && (
-        <TableContainer component={Paper}>
+        <TableContainer
+          component={Paper}
+          sx={{ width: "90%", margin: "0 auto" }}
+        >
           <Table
             sx={{ minWidth: 650, backgroundColor: "#DFF2BF" }}
             aria-label="simple table"
