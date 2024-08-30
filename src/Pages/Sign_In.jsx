@@ -126,9 +126,15 @@ const Sign_In = () => {
         >
           Sign In
         </Button>
-        <Typography variant="body2" sx={{ mt: 2 }}>
+        <Typography variant="body2" sx={{ mt: 2 }} align="center">
           Don’t have an account?{" "}
-          <div>
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            width={"100%"}
+            gap={12}
+            mt={1}
+          >
             <Link
               color="secondary"
               href="/Sign_Up_Buyer"
@@ -139,7 +145,7 @@ const Sign_In = () => {
             <Link color="secondary" href="/Sign_Up_Delivery_Rider">
               Sign Up Delivery Rider
             </Link>
-          </div>
+          </Box>
         </Typography>
       </Container>
     </Box>
