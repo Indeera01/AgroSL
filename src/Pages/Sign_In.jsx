@@ -36,6 +36,8 @@ const Sign_In = () => {
           navigate(`/Home/${currentUser.uid}`);
         } else if (userType === "seller") {
           navigate(`/seller_dashboard/${currentUser.uid}`);
+        } else if (userType === "delivery_rider") {
+          navigate(`/delivery_rider_dashboard/${currentUser.uid}`);
         } else {
           alert("User type not recognized");
         }
@@ -126,9 +128,18 @@ const Sign_In = () => {
         </Button>
         <Typography variant="body2" sx={{ mt: 2 }}>
           Don’t have an account?{" "}
-          <Link color="secondary" href="/Sign_Up_Buyer">
-            Sign Up
-          </Link>
+          <div>
+            <Link
+              color="secondary"
+              href="/Sign_Up_Buyer"
+              style={{ display: "block", marginBottom: "8px" }}
+            >
+              Sign Up Buyer
+            </Link>
+            <Link color="secondary" href="/Sign_Up_Delivery_Rider">
+              Sign Up Delivery Rider
+            </Link>
+          </div>
         </Typography>
       </Container>
     </Box>
