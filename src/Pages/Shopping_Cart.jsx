@@ -12,12 +12,14 @@ import Navigation_Bar from "../Components/Navigation_Bar";
 import axios from "axios";
 import Cart_item from "../Components/Cart_item";
 import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const ShoppingCart = () => {
   const [user, setUser] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch logged-in user details from Firebase Authentication
@@ -89,14 +91,18 @@ const ShoppingCart = () => {
     );
   };
 
+  const handleContinueShopping = () => {
+    navigate(-1); // Navigate to the previous page
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "#e6ffe6" }}>
       <Navigation_Bar />
       <Grid container spacing={2}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={5}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <Cart_item
@@ -112,7 +118,8 @@ const ShoppingCart = () => {
             </Typography>
           )}
         </Grid>
-        <Grid item xs={12} md={4}>
+
+        <Grid item xs={12} md={6}>
           <Card sx={{ padding: 2, backgroundColor: "#98BC74", margin: "20px" }}>
             <CardContent>
               <Typography variant="h4" gutterBottom>
@@ -129,7 +136,12 @@ const ShoppingCart = () => {
               <Button variant="contained" color="primary" fullWidth>
                 Checkout
               </Button>
-              <Button variant="contained" color="primary" fullWidth>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={handleContinueShopping}
+              >
                 Continue Shopping
               </Button>
             </CardActions>

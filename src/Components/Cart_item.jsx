@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import { Box } from "@mui/material";
 
 const Cart_item = ({ item, onRemove, onQuantityChange }) => {
   console.log(item);
@@ -71,9 +72,13 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
   return (
     <Card
       sx={{
-        width: "25%",
+        display: "flex", // Use flex layout for side-by-side arrangement
+        flexDirection: { xs: "column", sm: "row" }, // Stack on small screens, side by side on larger screens
         backgroundColor: "#98BC74",
         margin: "20px",
+        height: "250px",
+        borderRadius: "16px", // Set the border radius for rounded edges
+        overflow: "hidden",
       }}
     >
       <CardMedia
@@ -81,46 +86,48 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
         alt={fullItem.item_name}
         image={fullItem.image_url}
         sx={{
-          width: "100%", // Make sure the image takes the full width of the parent Box
-          height: "auto", // Maintain aspect ratio based on the image's width
+          width: { xs: "40%", sm: "40%" }, // Full width on small screens, 40% on larger screens
+          height: "1005", // Maintain aspect ratio
           objectFit: "cover",
         }}
       />
-      <CardContent sx={{ p: 2 }}>
-        <Typography gutterBottom variant="h6" component="div">
-          {fullItem.item_name}
-        </Typography>
-        <Typography gutterBottom variant="h6" component="div">
-          LKR : {item.price} / unit
-        </Typography>
-        <Typography gutterBottom variant="body2" color="text.secondary">
-          Quantity:
+      <Box sx={{ display: "flex", flexDirection: "column", flex: "1" }}>
+        <CardContent sx={{ flex: "1 0 auto", p: 2 }}>
+          <Typography gutterBottom variant="h6" component="div">
+            {fullItem.item_name}
+          </Typography>
+          <Typography gutterBottom variant="h6" component="div">
+            LKR : {item.price} / unit
+          </Typography>
+          <Typography gutterBottom variant="body2" color="text.secondary">
+            Quantity:
+            <Button
+              size="small"
+              disabled={quantity <= 1} // Disable button if quantity is 1
+              onClick={handleDecrease}
+            >
+              <RemoveIcon />
+            </Button>
+            {quantity}
+            <Button size="small" onClick={handleAdd}>
+              <AddIcon />
+            </Button>
+          </Typography>
+          <Typography gutterBottom variant="body2" color="text.secondary">
+            Total: LKR {total}
+          </Typography>
+        </CardContent>
+        <CardActions sx={{ justifyContent: "center", p: 2 }}>
           <Button
             size="small"
-            disabled={quantity <= 1} // Disable button if quantity is 1
-            onClick={handleDecrease}
+            variant="contained"
+            color="error"
+            onClick={() => onRemove(item.item_id)} // Trigger remove function on button click
           >
-            <RemoveIcon />
+            Remove
           </Button>
-          {quantity}
-          <Button size="small" onClick={handleAdd}>
-            <AddIcon />
-          </Button>
-        </Typography>
-        <Typography gutterBottom variant="body2" color="text.secondary">
-          Total: LKR {total}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ justifyContent: "center" }}>
-        <Button
-          size="small"
-          variant="contained"
-          color="error"
-          onClick={() => onRemove(item.item_id)} // Trigger remove function on button click
-        >
-          Remove
-        </Button>
-      </CardActions>
+        </CardActions>
+      </Box>
     </Card>
   );
 };
