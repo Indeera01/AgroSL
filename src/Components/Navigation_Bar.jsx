@@ -22,7 +22,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ChatIcon from "@mui/icons-material/Chat";
 
-const pages = ["Become a Seller", "Category", "Contact us", "About"];
+const pages = ["Become a Seller", "Contact us", "About"];
 const settings = ["Profile", "Logout"];
 
 function ResponsiveAppBar() {
@@ -90,8 +90,6 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = (page) => {
     if (page === "Become a Seller") {
       navigate("/Sign_Up_Seller");
-    } else if (page === "Category") {
-      navigate("/Category");
     } else if (page === "Contact us") {
       navigate("/Contact_us");
     } else if (page === "About") {
@@ -205,12 +203,37 @@ function ResponsiveAppBar() {
             >
               LOGO
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", md: "flex" },
+                gap: { md: 8 },
+                marginLeft: { md: "100px" },
+              }}
+            >
               {pages.map((page) => (
                 <Button
                   key={page}
                   onClick={() => handleCloseNavMenu(page)}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    position: "relative",
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      width: "0",
+                      height: "2px",
+                      bottom: "-2px", // Adjust the underline position
+                      left: "0",
+                      backgroundColor: "white",
+                      transition: "width 0.3s ease-in-out",
+                    },
+                    "&:hover::after": {
+                      width: "100%",
+                    },
+                  }}
                 >
                   {page}
                 </Button>
@@ -221,9 +244,9 @@ function ResponsiveAppBar() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                gap: "20px",
+                gap: "60px",
               }}
-              mr={10}
+              mr={9}
             >
               <Badge badgeContent={cart.length} color="action">
                 <ShoppingCartIcon
