@@ -45,7 +45,7 @@ const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
   return (
     <Card
       sx={{
-        width: "20%",
+        width: "250px",
         height: "400px",
         backgroundColor: "#98BC74",
         margin: "20px",

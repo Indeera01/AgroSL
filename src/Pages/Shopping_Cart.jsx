@@ -99,7 +99,7 @@ const ShoppingCart = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <Box sx={{ backgroundColor: "#e6ffe6" }}>
+    <Box sx={{ backgroundColor: "#e6ffe6", height: "300vh" }}>
       <Navigation_Bar />
       <Grid container spacing={2}>
         <Grid item xs={12} md={5}>
@@ -113,9 +113,11 @@ const ShoppingCart = () => {
               />
             ))
           ) : (
-            <Typography variant="h4" component="h2">
-              No items in the cart
-            </Typography>
+            <Box margin={20}>
+              <Typography variant="h4" component="h2">
+                No items in the cart
+              </Typography>
+            </Box>
           )}
         </Grid>
 

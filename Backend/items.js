@@ -131,7 +131,7 @@ router.post("/api/items", async (req, res) => {
     // Generate item_id in the format ITxxxx
     const result = await pool.query("SELECT COUNT(*) FROM item");
     const itemCount = parseInt(result.rows[0].count) + 1;
-    const item_id = 'IT${String(itemCount).padStart(4, "0")}';
+    const item_id = `IT${String(itemCount).padStart(4, "0")}`;
 
     // Insert the new item into the database
     const insertResult = await pool.query(

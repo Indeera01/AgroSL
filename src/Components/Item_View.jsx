@@ -133,7 +133,7 @@ const Item_View = () => {
   }
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "#e6ffe6 " }}>
       <Navigation_Bar />
       <Box
         sx={{
@@ -141,6 +141,7 @@ const Item_View = () => {
           justifyContent: "space-between",
           alignItems: "flex-start",
           marginTop: "20px",
+          marginBottom: "10px",
         }}
       >
         <Box
@@ -205,15 +206,18 @@ const Item_View = () => {
           </Box>
           <Box
             sx={{
-              backgroundColor: "#98BC74",
-              padding: "5px",
+              backgroundColor: "white",
+              padding: "20px",
               border: "2px solid black",
               marginTop: "20px",
             }}
           >
             <Box
               component="form"
-              sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+              sx={{
+                "& > :not(style)": { width: "100%" },
+                marginBottom: "10px",
+              }}
               noValidate
               autoComplete="off"
             >
@@ -223,9 +227,10 @@ const Item_View = () => {
                 variant="outlined"
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
+                fullWidth
               />
             </Box>
-            <Stack spacing={1}>
+            <Stack spacing={2} marginLeft={14}>
               <Rating
                 name="half-rating"
                 value={ratingValue}
@@ -237,14 +242,15 @@ const Item_View = () => {
               variant="contained"
               color="primary"
               onClick={handleReviewSubmit}
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, mb: 1 }}
+              fullWidth
             >
               Submit Review
             </Button>
           </Box>
         </Box>
 
-        <Box sx={{ width: "50%" }}>
+        <Box sx={{ width: "50%", marginTop: "20px" }}>
           <Grid sx={{ width: "100%" }}>
             {reviews.length > 0 ? (
               reviews.map((review) => (

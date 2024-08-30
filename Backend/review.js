@@ -8,7 +8,7 @@ router.post("/reviews", async (req, res) => {
 
   const count = await pool.query("SELECT COUNT(*) FROM review");
   const rid = parseInt(count.rows[0].count) + 1;
-  const review_id = `r${String(rid).padStart(4, "0")}`;
+  const review_id = `rew${String(rid).padStart(4, "0")}`;
 
   try {
     const result = await pool.query(
