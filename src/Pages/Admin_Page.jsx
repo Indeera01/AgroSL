@@ -97,6 +97,7 @@ const Admin_Page = () => {
             backgroundColor: "#98BC74",
             padding: "20px",
             borderRadius: "10px",
+            marginBottom: "10px",
           }}
         >
           <Typography variant="h5">Search for users</Typography>
