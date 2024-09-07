@@ -105,7 +105,7 @@ const Item_View = () => {
     try {
       const buyer_id = user.user_id;
       const item_id = item.item_id;
-      const price = item.unit_price * quantity;
+      const price = item.unit_price;
 
       const response = await axios.post(`http://localhost:5001/cart`, {
         buyer_id: buyer_id,
