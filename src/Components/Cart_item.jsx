@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/material";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 const Cart_item = ({ item, onRemove, onQuantityChange }) => {
   console.log(item);
@@ -69,15 +70,20 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
 
   const total = quantity * item.price;
 
+  console.log("frull item:", fullItem.quantity);
+
   return (
     <Card
       sx={{
         display: "flex", // Use flex layout for side-by-side arrangement
-        flexDirection: { xs: "column", sm: "row" }, // Stack on small screens, side by side on larger screens
-        backgroundColor: "#98BC74",
-        margin: "20px",
-        height: "250px",
-        borderRadius: "16px", // Set the border radius for rounded edges
+        flexDirection: { xs: "row", sm: "row" }, // Stack on small screens, side by side on larger screens
+        backgroundColor: "white",
+        marginLeft: "100px",
+        marginRight: "100px",
+        marginTop: "5px",
+        height: { xs: "150px", sm: "150px" },
+        width: { xs: "80%", sm: "80%" },
+        borderRadius: "5px", // Set the border radius for rounded edges
         overflow: "hidden",
       }}
     >
@@ -87,17 +93,22 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
         image={fullItem.image_url}
         sx={{
           width: { xs: "40%", sm: "40%" }, // Full width on small screens, 40% on larger screens
-          height: "1005", // Maintain aspect ratio
+          height: { xs: "100%", sm: "100%" }, // Maintain aspect ratio
           objectFit: "cover",
         }}
       />
       <Box sx={{ display: "flex", flexDirection: "column", flex: "1" }}>
-        <CardContent sx={{ flex: "1 0 auto", p: 2 }}>
+        <CardContent sx={{ flex: "1 0 auto", p: 1 }}>
           <Typography gutterBottom variant="h6" component="div">
             {fullItem.item_name}
           </Typography>
-          <Typography gutterBottom variant="h6" component="div">
-            LKR : {item.price} / unit
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
+            sx={{ color: "#4B8412" }}
+          >
+            {item.price} LKR
           </Typography>
           <Typography gutterBottom variant="body2" color="text.secondary">
             Quantity:
@@ -109,24 +120,26 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
               <RemoveIcon />
             </Button>
             {quantity}
-            <Button size="small" onClick={handleAdd}>
+            <Button
+              size="small"
+              onClick={handleAdd}
+              disabled={quantity >= fullItem.quantity}
+            >
               <AddIcon />
             </Button>
+            <Button onClick={() => onRemove(item.item_id)}>
+              <DeleteForeverOutlinedIcon />
+            </Button>
           </Typography>
-          <Typography gutterBottom variant="body2" color="text.secondary">
+          <Typography
+            gutterBottom
+            variant="body2"
+            color="text.secondary"
+            sx={{ color: "#4B8412" }}
+          >
             Total: LKR {total}
           </Typography>
         </CardContent>
-        <CardActions sx={{ justifyContent: "center", p: 2 }}>
-          <Button
-            size="small"
-            variant="contained"
-            color="error"
-            onClick={() => onRemove(item.item_id)} // Trigger remove function on button click
-          >
-            Remove
-          </Button>
-        </CardActions>
       </Box>
     </Card>
   );

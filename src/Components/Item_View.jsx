@@ -113,6 +113,8 @@ const Item_View = () => {
         quantity: quantity,
         price: price,
       });
+
+      alert("Item Succssfully added to the cart");
     } catch (err) {
       console.error("Error adding item to cart:", err);
       setError(err.message);
@@ -180,11 +182,19 @@ const Item_View = () => {
                 </Typography>
                 <Typography gutterBottom variant="body2" color="text.secondary">
                   Quantity:
-                  <Button size="small" onClick={handleDecrease}>
+                  <Button
+                    size="small"
+                    onClick={handleDecrease}
+                    disabled={quantity <= 1}
+                  >
                     <RemoveIcon />
                   </Button>
                   {quantity}
-                  <Button size="small" onClick={handleAdd}>
+                  <Button
+                    size="small"
+                    onClick={handleAdd}
+                    disabled={quantity >= item.quantity}
+                  >
                     <AddIcon />
                   </Button>
                 </Typography>
