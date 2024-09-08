@@ -13,6 +13,7 @@ import axios from "axios";
 import Cart_item from "../Components/Cart_item";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import emptyImage from "../assets/empty cart.jpg";
 
 const ShoppingCart = () => {
   const [user, setUser] = useState(null);
@@ -99,9 +100,16 @@ const ShoppingCart = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <Box sx={{ backgroundColor: "#e6ffe6", height: "300vh" }}>
+    <Box
+      sx={{
+        backgroundColor: "#e6ffe6",
+        height: "100%",
+        paddingBottom: "1px",
+        minHeight: "100vh",
+      }}
+    >
       <Navigation_Bar />
-      <Grid container spacing={2}>
+      <Grid container spacing={2} marginTop={5} marginBottom={5}>
         <Grid item xs={12} md={5}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
@@ -113,42 +121,83 @@ const ShoppingCart = () => {
               />
             ))
           ) : (
-            <Box margin={20}>
-              <Typography variant="h4" component="h2">
-                No items in the cart
-              </Typography>
+            <Box
+              margin={5}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <img
+                src={emptyImage}
+                alt="Empty Cart"
+                style={{ width: "100%", marginBottom: "20px" }}
+              />
             </Box>
           )}
         </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Card sx={{ padding: 2, backgroundColor: "#98BC74", margin: "20px" }}>
-            <CardContent>
-              <Typography variant="h4" gutterBottom>
-                Order Summary
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                Total: LKR {calculateTotal()}
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                Delivery Fee: LKR
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button variant="contained" color="primary" fullWidth>
-                Checkout
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                onClick={handleContinueShopping}
-              >
-                Continue Shopping
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
+        {cartItems.length > 0 ? (
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              position: "sticky",
+              top: "100px",
+              alignSelf: "flex-start",
+            }}
+          >
+            <Card sx={{ padding: 2, backgroundColor: "white", margin: "20px" }}>
+              <CardContent>
+                <Typography variant="h4" gutterBottom sx={{ color: "#4B8412" }}>
+                  Order Summary
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  SubTotal ({cartItems.length} items) : {calculateTotal()} LKR
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Delivery Fee : 400 LKR
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Discount : _
+                </Typography>
+                <Typography
+                  variant="h5"
+                  align="center"
+                  sx={{ color: "#4B8412" }}
+                >
+                  Total: {calculateTotal() + 400} LKR
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button variant="contained" color="primary" fullWidth>
+                  Checkout
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleContinueShopping}
+                >
+                  Continue Shopping
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ height: "40px", marginTop: "200px" }}
+            onClick={handleContinueShopping}
+          >
+            Continue Shopping
+          </Button>
+        )}
       </Grid>
     </Box>
   );
