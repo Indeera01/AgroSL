@@ -160,4 +160,32 @@ router.get("/seller_orders/:sellerID", async (req, res) => {
   }
 });
 
+router.get("/orders_for_riders", async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM "order" WHERE sent_to_delivery = true'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+router.put("/orders_take/:orderID", async (req, res) => {
+  const orderId = req.params.orderID;
+
+  try {
+    const result = await pool.query(
+      'UPDATE "order" SET is_confirmed = $1 WHERE order_id = $2',
+      [true, orderId]
+    );
+
+    res.status(200).json({ message: "Order sent to delivery" });
+  } catch (error) {
+    console.error("Error taking the order:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function ViewOrdersRider() {
+function View_Orders_Rider() {
   const navigate = useNavigate();
   const { riderId } = useParams(); // Extract riderId from URL
 
@@ -53,4 +53,4 @@ const styles = {
   },
 };
 
-export default ViewOrdersRider;
+export default View_Orders_Rider;
