@@ -34,6 +34,9 @@ const styles = {
     alignComplaints: "center",
     padding: "20px",
     gap: "20px",
+    backgroundColor: "#E6F4EA",
+    width: "100%",
+    height: "200%",
   },
   row: {
     display: "flex",

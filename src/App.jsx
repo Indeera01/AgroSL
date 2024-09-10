@@ -30,6 +30,8 @@ import Admin_Page from "./Pages/Admin_Page";
 import Sign_Up_Admin from "./Pages/Sign_Up_Admin";
 import Sign_Up_Delivery_Rider from "./Pages/Sign_Up_Delivery_Rider";
 import Delivery_Rider_Dashboard from "./Pages/Delivery_Rider_Dashboard";
+import Rider_Orders from "./Pages/Rider_Orders";
+import Deliveries from "./Pages/Deliveries";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -100,6 +102,15 @@ const App = () => {
 
         <Route path="/admin" element={<Admin_Page />} />
         <Route path="/admin_signup" element={<Sign_Up_Admin />} />
+        <Route
+          path="/delivery_rider_dashboard/:riderId/orders"
+          element={<Rider_Orders />}
+        />
+
+        <Route
+          path="/delivery_rider_dashboard/:riderId/deliveries"
+          element={<Deliveries />}
+        />
       </Routes>
     </Router>
   );
