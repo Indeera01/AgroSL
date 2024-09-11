@@ -5,9 +5,9 @@ function View_Orders_Rider() {
   const navigate = useNavigate();
   const { riderId } = useParams(); // Extract riderId from URL
 
-  const handleViewDeliveries = () => {
+  const handleViewOrders = () => {
     if (riderId) {
-      navigate(`/delivery_rider_dashboard/${riderId}/deliveries`); // Use template string to navigate
+      navigate(`/delivery_rider_dashboard/${riderId}/orders`); // Use template string to navigate
     } else {
       console.error("riderId is undefined");
     }
@@ -21,7 +21,7 @@ function View_Orders_Rider() {
             ...styles.button,
             ":hover": styles.buttonHover,
           }}
-          onClick={handleViewDeliveries}
+          onClick={handleViewOrders}
         >
           View Orders
         </button>

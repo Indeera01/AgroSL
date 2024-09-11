@@ -3,21 +3,6 @@ const pool = require("./db.js");
 
 const router = express.Router();
 
-router.get("/orders", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM order");
-
-    if (result.rows.length === 0) {
-      return res.status(404).send("No items found");
-    } else {
-      return res.status(200).json(result.rows);
-    }
-  } catch (e) {
-    console.error(e);
-    return res.status(500).send("Server error");
-  }
-});
-
 router.post("/orders", async (req, res) => {
   const {
     order_id,
@@ -160,18 +145,6 @@ router.get("/seller_orders/:sellerID", async (req, res) => {
   }
 });
 
-router.get("/orders_for_riders", async (req, res) => {
-  try {
-    const result = await pool.query(
-      'SELECT * FROM "order" WHERE sent_to_delivery = true'
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
-});
-
 router.put("/orders_take/:orderID", async (req, res) => {
   const orderId = req.params.orderID;
 
@@ -185,6 +158,45 @@ router.put("/orders_take/:orderID", async (req, res) => {
   } catch (error) {
     console.error("Error taking the order:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/orders", async (req, res) => {
+  try {
+    // Log the request to debug
+    console.log("Fetching orders where sent_to_delivery is true");
+
+    // Execute the query
+    const deliveries = await pool.query(
+      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE sent_to_delivery = true'
+    );
+
+    // Check if any rows were returned
+    if (deliveries.rows.length === 0) {
+      return res.status(404).json({ message: "No orders found for delivery" });
+    }
+
+    res.status(200).json(deliveries.rows);
+  } catch (error) {
+    // Log the error for debugging
+    console.error("Error fetching orders:", error);
+
+    // Send a detailed error response
+    res
+      .status(500)
+      .json({ error: "Failed to fetch orders", details: error.message });
+  }
+});
+
+router.get("/orders_for_riders", async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM "order" WHERE sent_to_delivery = true'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 });
 

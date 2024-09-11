@@ -48,7 +48,7 @@ const Deliveries = () => {
   return (
     <div style={styles.container}>
       <Navigation_Bar_Seller />
-      <h1 style={styles.header}>Available Deliveries</h1>
+      <h1 style={styles.header}>Available Orders</h1>
       {deliveries.map((delivery) => (
         <div key={delivery.order_id} style={styles.card}>
           <div style={styles.cardHeader}>
