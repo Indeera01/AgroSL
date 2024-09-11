@@ -89,7 +89,7 @@ const Processing_Orders = () => {
 const styles = {
   container: {
     padding: "20px",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#E6F4EA",
   },
   header: {
     textAlign: "center",
