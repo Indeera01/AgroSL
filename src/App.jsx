@@ -18,7 +18,7 @@ import ShoppingCart from "./Pages/Shopping_Cart";
 import Inventory from "./Pages/Inventory";
 import Seller_Dashboard from "./Pages/Seller_Dashboard";
 import Post_Item from "./Components/Post_Item";
-import AddItem from "./Components/Add_Item";
+import AddItem from "./Pages/Add_Item";
 import Complaints from "./Pages/Complaints";
 import Reports_seller from "./Pages/Reports_seller";
 import Item_View from "./Components/Item_View";

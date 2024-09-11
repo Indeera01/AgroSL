@@ -74,9 +74,9 @@ const Complaints = () => {
           <p style={styles.description}>
             Description: {complaint_users.description}
           </p>
-          <p style={styles.detail}>Rider name: {complaint_users.rider_name}</p>
+          <p style={styles.detail}>Rider Name: {complaint_users.rider_name}</p>
           <p style={styles.detail}>
-            Seller name: {complaint_users.seller_name}
+            Seller Name: {complaint_users.seller_name}
           </p>
           <p style={styles.detail}>Order ID: {complaint_users.order_id}</p>
           <label style={styles.checkboxLabel}>
@@ -96,58 +96,67 @@ const Complaints = () => {
 
 const styles = {
   container: {
-    padding: "20px",
-    backgroundColor: "#f5f5f5",
+    padding: "40px",
+    backgroundColor: "#E6F4EA", // Subtle light background
+    fontFamily: "'Roboto', sans-serif",
   },
   header: {
     textAlign: "center",
-    color: "#333",
-    marginBottom: "20px",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    color: "#2C3E50",
+    marginBottom: "30px",
+    fontSize: "32px",
+    fontWeight: "600",
   },
   card: {
-    backgroundColor: "#fff",
-    padding: "20px",
-    margin: "10px auto",
-    maxWidth: "600px",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    backgroundColor: "#FFFFFF",
+    padding: "25px",
+    margin: "15px auto",
+    maxWidth: "700px",
+    borderRadius: "10px",
+    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+    transition: "box-shadow 0.3s ease",
+    fontSize: "16px",
+    lineHeight: "1.6",
   },
   cardHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "10px",
+    marginBottom: "20px",
   },
   complaintId: {
     fontWeight: "bold",
-    color: "#333",
+    color: "#34495E",
   },
   statusDropdown: {
-    padding: "5px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    padding: "8px",
+    borderRadius: "5px",
+    border: "1px solid #BDC3C7",
+    backgroundColor: "#ECF0F1",
+    fontSize: "14px",
+    fontWeight: "500",
+    cursor: "pointer",
+    transition: "all 0.2s ease-in-out",
   },
   description: {
-    fontSize: "14px",
-    color: "#555",
-    marginBottom: "10px",
+    fontSize: "15px",
+    color: "#7F8C8D",
+    marginBottom: "15px",
   },
   detail: {
-    fontSize: "13px",
-    color: "#777",
-    marginBottom: "5px",
+    fontSize: "14px",
+    color: "#95A5A6",
+    marginBottom: "10px",
   },
   checkboxLabel: {
     display: "flex",
     alignItems: "center",
-    fontSize: "14px",
-    color: "#555",
+    fontSize: "15px",
+    color: "#2C3E50",
   },
   checkbox: {
-    marginLeft: "5px",
+    marginLeft: "10px",
+    transform: "scale(1.2)",
   },
 };
 
