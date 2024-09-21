@@ -40,9 +40,9 @@ const Item_Review = ({ review }) => {
   return (
     <Card
       sx={{
-        minWidth: { md: 260, xs: 350 },
-        border: "2px solid black",
+        width: { md: 450, xs: 200 },
         marginRight: "20px",
+        marginTop: "2px",
       }}
     >
       <CardHeader
