@@ -19,6 +19,7 @@ import Item from "./Item";
 const Item_View = () => {
   const { id } = useParams();
   const [item, setItem] = useState(null);
+  const [store, setStore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -121,6 +122,29 @@ const Item_View = () => {
     }
   };
 
+  const getRatingCounts = (reviews) => {
+    const ratingCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+
+    reviews.forEach(({ rating }) => {
+      const roundedRating = Math.floor(rating); // You can change this to `Math.round` if needed
+      if (roundedRating >= 5) {
+        ratingCounts[5]++;
+      } else if (roundedRating >= 4) {
+        ratingCounts[4]++;
+      } else if (roundedRating >= 3) {
+        ratingCounts[3]++;
+      } else if (roundedRating >= 2) {
+        ratingCounts[2]++;
+      } else {
+        ratingCounts[1]++;
+      }
+    });
+
+    return ratingCounts;
+  };
+
+  const ratingCounts = getRatingCounts(reviews);
+
   if (loading) {
     return (
       <Box
@@ -135,136 +159,147 @@ const Item_View = () => {
   }
 
   return (
-    <Box sx={{ backgroundColor: "#e6ffe6 " }}>
+    <Box
+      sx={{
+        backgroundColor: "#e6ffe6",
+        height: "100%",
+        paddingBottom: "1px",
+        minHeight: "100vh",
+      }}
+    >
       <Navigation_Bar />
       <Box
         sx={{
+          padding: "20px",
+          backgroundColor: "white",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
           marginTop: "20px",
-          marginBottom: "10px",
+          marginBottom: "20px",
+          marginX: "200px",
+          borderRadius: "10px",
         }}
       >
+        <Box sx={{ width: "70%" }}>
+          <img
+            src={item.image_url}
+            style={{ width: "100%", height: "auto", borderRadius: "10px" }}
+          />
+        </Box>
+        <Box sx={{ width: "30%", marginLeft: "40px" }}>
+          <Typography variant="h6" gutterBottom>
+            Store Name
+          </Typography>
+          <Typography variant="h6">{item.item_name}</Typography>
+          <Rating
+            name="rating"
+            value={parseFloat(item.average_rating_value)}
+            precision={0.1}
+            readOnly
+          />
+          <Typography>{reviews.length} ratings</Typography>
+          <Typography variant="h7">{item.description}</Typography>
+          <Typography gutterBottom variant="h6" component="div">
+            LKR : {item.unit_price} / unit
+          </Typography>
+          <Typography gutterBottom variant="h6" component="div">
+            Units left: {item.quantity}
+          </Typography>
+          <Typography gutterBottom variant="body2" color="text.secondary">
+            Quantity:
+            <Button
+              size="small"
+              onClick={handleDecrease}
+              disabled={quantity <= 1}
+            >
+              <RemoveIcon />
+            </Button>
+            {quantity}
+            <Button
+              size="small"
+              onClick={handleAdd}
+              disabled={quantity >= item.quantity}
+            >
+              <AddIcon />
+            </Button>
+          </Typography>
+          <Typography gutterBottom variant="body2" color="text.secondary">
+            Total: {item.unit_price * quantity} LKR
+          </Typography>
+          <Button
+            size="medium"
+            variant="contained"
+            color="primary"
+            onClick={addToCart}
+          >
+            Add to cart
+          </Button>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          padding: "20px",
+          backgroundColor: "white",
+          marginTop: "20px",
+          marginBottom: "20px",
+          marginX: "200px",
+          borderRadius: "10px",
+          justifyContent: "center",
+        }}
+      >
+        <Typography gutterBottom variant="h5" color="primary">
+          Reviews and Ratings
+        </Typography>
         <Box
           sx={{
-            width: "25%",
-            margin: "0 auto",
-            marginTop: "20px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            padding: "10px",
+            borderRadius: "10px",
+            marginBottom: "10px",
+            width: "70%",
           }}
         >
-          <Box>
-            <Card
-              sx={{
-                width: "100%",
-                border: "2px solid black",
-              }}
-            >
-              <CardMedia
-                component="img"
-                alt={item.item_name}
-                image={item.image_url}
-                sx={{
-                  width: "100%", // Make sure the image takes the full width of the parent Box
-                  height: "auto", // Maintain aspect ratio based on the image's width
-                  objectFit: "cover",
-                }}
-              />
-              <CardContent sx={{ p: 2 }}>
-                <Typography gutterBottom variant="h6" component="div">
-                  {item.item_name}
-                </Typography>
-                <Typography gutterBottom variant="h6" component="div">
-                  LKR : {item.unit_price} / unit
-                </Typography>
-                <Typography gutterBottom variant="h6" component="div">
-                  Units left: {item.quantity}
-                </Typography>
-                <Typography gutterBottom variant="body2" color="text.secondary">
-                  Quantity:
-                  <Button
-                    size="small"
-                    onClick={handleDecrease}
-                    disabled={quantity <= 1}
-                  >
-                    <RemoveIcon />
-                  </Button>
-                  {quantity}
-                  <Button
-                    size="small"
-                    onClick={handleAdd}
-                    disabled={quantity >= item.quantity}
-                  >
-                    <AddIcon />
-                  </Button>
-                </Typography>
-                <Typography gutterBottom variant="body2" color="text.secondary">
-                  Total: {item.unit_price * quantity} LKR
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ justifyContent: "center" }}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="error"
-                  onClick={addToCart}
-                >
-                  Add to cart
-                </Button>
-              </CardActions>
-            </Card>
+          <Box sx={{ width: "50%" }}>
+            <Typography variant="h4" gutterBottom>
+              {item.average_rating_value}/5
+            </Typography>
+            <Rating
+              name="rating"
+              value={parseFloat(item.average_rating_value)}
+              precision={0.1}
+              readOnly
+            />
+            <Typography>{reviews.length} ratings</Typography>
           </Box>
-          <Box
-            sx={{
-              backgroundColor: "white",
-              padding: "20px",
-              border: "2px solid black",
-              marginTop: "20px",
-            }}
-          >
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": { width: "100%" },
-                marginBottom: "10px",
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                id="outlined-basic"
-                label="Add a Review"
-                variant="outlined"
-                value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
-                fullWidth
-              />
-            </Box>
-            <Stack spacing={2} marginLeft={14}>
-              <Rating
-                name="half-rating"
-                value={ratingValue}
-                onChange={handleRatingChange}
-                precision={0.1}
-              />
-            </Stack>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleReviewSubmit}
-              sx={{ mt: 2, mb: 1 }}
-              fullWidth
-            >
-              Submit Review
-            </Button>
+          <Box sx={{ width: "50%", display: "flex", flexDirection: "column" }}>
+            {Object.entries(ratingCounts).map(([rating, count]) => (
+              <Box
+                key={rating}
+                sx={{ display: "flex", alignItems: "center", mb: 1 }}
+              >
+                <Rating
+                  name={`rating-${rating}`}
+                  value={parseInt(rating)}
+                  precision={0.1}
+                  readOnly
+                />
+                <Typography variant="body1" sx={{ ml: 2 }}>
+                  ({count})
+                </Typography>
+              </Box>
+            ))}
           </Box>
         </Box>
-
-        <Box sx={{ width: "50%", marginTop: "20px" }}>
-          <Grid sx={{ width: "100%" }}>
+        <Box>
+          <Grid container spacing={2} sx={{ width: "100%" }}>
             {reviews.length > 0 ? (
               reviews.map((review) => (
-                <Item_Review key={review.review_id} review={review} />
+                <Grid item xs={12} sm={6} key={review.review_id}>
+                  <Item_Review review={review} />
+                </Grid>
               ))
             ) : (
               <Typography variant="h6" sx={{ mt: 2 }}>
