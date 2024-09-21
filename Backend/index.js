@@ -12,6 +12,7 @@ const delivery_rider = require("./delivery_riders.js");
 const complaints = require("./complaints.js");
 const cart = require("./cart.js");
 const admin = require("./admin.js");
+const stripeRoutes = require("./stripeRoutes.js");
 
 //middleware
 app.use(cors());
@@ -30,6 +31,7 @@ app.use("/", delivery_rider);
 app.use("/", complaints);
 app.use("/", cart);
 app.use("/", admin);
+app.use("/", stripeRoutes);
 
 app.listen(5001, () => {
   console.log("Server is running on port 5001");

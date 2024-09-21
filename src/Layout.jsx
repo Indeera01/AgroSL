@@ -5,7 +5,14 @@ import Items from "./Components/Items";
 
 const Layout = ({ Children }) => {
   return (
-    <Box sx={{ backgroundColor: "#e6ffe6" }} height={"200vh"}>
+    <Box
+      sx={{
+        backgroundColor: "#e6ffe6",
+        height: "100%",
+        paddingBottom: "1px",
+        minHeight: "100vh",
+      }}
+    >
       <Navigation_Bar />
       <Items />
       {Children}

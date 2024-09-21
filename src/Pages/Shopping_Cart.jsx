@@ -14,6 +14,12 @@ import Cart_item from "../Components/Cart_item";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import emptyImage from "../assets/empty cart.jpg";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51PwNGE05CsRawMoqM7YEL8tcA6xpOuDUJJ1oRSImOq9ndmJxlWHlqvlYLIg7aXlxJCXAQqCHbWAOVakInuTx4ql100M5xx4oan"
+);
 
 const ShoppingCart = () => {
   const [user, setUser] = useState(null);
@@ -21,6 +27,9 @@ const ShoppingCart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const stripe = useStripe();
+  const elements = useElements();
 
   useEffect(() => {
     // Fetch logged-in user details from Firebase Authentication
@@ -99,6 +108,107 @@ const ShoppingCart = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  const handleCheckout = async () => {
+    if (!stripe || !elements) return; // Ensure Stripe.js is loaded
+
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      console.error("Card Element not found");
+      return; // Exit if Card Element is not found
+    }
+
+    try {
+      const chargeAmount = Math.round(calculateTotal() * 100); // Total amount in cents
+      const chargeResponse = await axios.post(
+        "http://localhost:5001/create-charge",
+        {
+          amount: chargeAmount,
+        }
+      );
+
+      console.log("Charge Response:", chargeResponse.data);
+
+      // Only proceed if the charge was successful
+      if (!chargeResponse.data.success) {
+        throw new Error("Charge was not successful");
+      }
+
+      // Step 1: Create payment intent and get clientSecret + transferData
+      const response = await axios.post(
+        "http://localhost:5001/create-payment-intent",
+        {
+          user_id: user.user_id,
+          cartItems: cartItems, // Include cart items in the request body
+        }
+      );
+
+      const { clientSecret, transferData } = response.data;
+
+      // Step 2: Confirm payment with Stripe.js
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      });
+
+      if (result.error) {
+        console.error("Payment failed:", result.error.message);
+      } else {
+        if (result.paymentIntent.status === "succeeded") {
+          // Step 3: Transfer payment to sellers
+          await axios.post("http://localhost:5001/transfer-payment", {
+            paymentIntentId: result.paymentIntent.id,
+            transferData,
+          });
+
+          console.log("Payment and transfer successful!");
+          alert("Order placed succssesfully!");
+
+          try {
+            for (const item of cartItems) {
+              await axios.delete(
+                `http://localhost:5001/cart/${user.user_id}/${item.item_id}`
+              );
+            }
+            // Optionally clear cartItems state
+            setCartItems([]);
+            console.log("Payment and transfer successful, cart cleared!");
+          } catch (deleteError) {
+            console.error("Error deleting cart items:", deleteError);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
+  };
+
+  // const handleCheckout = async () => {
+  //   if (!stripe || !elements) return; // Ensure Stripe.js is loaded
+
+  //   try {
+  //     // Step 1: Create checkout session
+  //     const response = await axios.post(
+  //       "http://localhost:5001/create-checkout-session",
+  //       {
+  //         user_id: user.user_id,
+  //         cartItems: cartItems, // Include cart items in the request body
+  //       }
+  //     );
+
+  //     const { id: sessionId } = response.data; // Get the session ID
+
+  //     // Step 2: Redirect to Stripe Checkout
+  //     const result = await stripe.redirectToCheckout({ sessionId });
+
+  //     if (result.error) {
+  //       console.error("Error redirecting to checkout:", result.error.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during checkout:", error);
+  //   }
+  // };
+
   return (
     <Box
       sx={{
@@ -168,13 +278,20 @@ const ShoppingCart = () => {
                 <Typography
                   variant="h5"
                   align="center"
+                  gutterBottom
                   sx={{ color: "#4B8412" }}
                 >
                   Total: {calculateTotal() + 400} LKR
                 </Typography>
+                <CardElement />
               </CardContent>
               <CardActions>
-                <Button variant="contained" color="primary" fullWidth>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleCheckout}
+                >
                   Checkout
                 </Button>
                 <Button

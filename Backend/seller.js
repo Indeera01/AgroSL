@@ -36,20 +36,20 @@ router.get("/getseller/:id", async (req, res) => {
 });
 
 router.post("/sellers", async (req, res) => {
-  const { user_id, NIC, store_name } = req.body;
+  const { user_id, NIC, store_name, stripe_account_id } = req.body;
 
   try {
     // Validate input
-    if (!user_id || !NIC || !store_name) {
+    if (!user_id || !NIC || !store_name || !stripe_account_id) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
     // Insert new seller into the database
     const result = await pool.query(
       `INSERT INTO "seller" (
-            "user_id", "NIC", "store_name"
-          ) VALUES ($1, $2, $3) RETURNING *`,
-      [user_id, NIC, store_name]
+            "user_id", "NIC", "store_name", "stripe_account_id"
+          ) VALUES ($1, $2, $3, $4) RETURNING *`,
+      [user_id, NIC, store_name, stripe_account_id]
     );
     console.log("details stored successfully");
     res.status(201).json(result.rows[0]);
