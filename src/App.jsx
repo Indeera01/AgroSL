@@ -33,6 +33,13 @@ import Delivery_Rider_Dashboard from "./Pages/Delivery_Rider_Dashboard";
 import Rider_Orders from "./Pages/Rider_Orders";
 import Deliveries from "./Pages/Deliveries";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51PwNGE05CsRawMoqM7YEL8tcA6xpOuDUJJ1oRSImOq9ndmJxlWHlqvlYLIg7aXlxJCXAQqCHbWAOVakInuTx4ql100M5xx4oan"
+);
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -56,62 +63,67 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/Sign_in" element={<Sign_In />} />
-        <Route path="/Sign_Up_Buyer" element={<Sign_Up_Buyer />} />
-        <Route path="/Sign_Up_Seller" element={<Sign_Up_Seller />} />
-        <Route
-          path="/Sign_Up_Delivery_Rider"
-          element={<Sign_Up_Delivery_Rider />}
-        />
-        <Route path="/" element={<Layout />} />
-        <Route
-          path="/Home/:id"
-          element={<PrivateRoute element={<Layout />} />}
-        />
-        <Route path="Home/:id/Tracking/:id" element={<Tracking />} />
-        <Route path="/Success" element={<Success />} />
-        <Route
-          path="/Profile/:id"
-          element={<PrivateRoute element={<User_Profile user={user} />} />}
-        />
-        <Route path="/cart" element={<ShoppingCart />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/seller_dashboard/:id" element={<Seller_Dashboard />} />
-        <Route
-          path="/delivery_rider_dashboard/:riderId"
-          element={<Delivery_Rider_Dashboard />}
-        />
+    <Elements stripe={stripePromise}>
+      <Router>
+        <Routes>
+          <Route path="/Sign_in" element={<Sign_In />} />
+          <Route path="/Sign_Up_Buyer" element={<Sign_Up_Buyer />} />
+          <Route path="/Sign_Up_Seller" element={<Sign_Up_Seller />} />
+          <Route
+            path="/Sign_Up_Delivery_Rider"
+            element={<Sign_Up_Delivery_Rider />}
+          />
+          <Route path="/" element={<Layout />} />
+          <Route
+            path="/Home/:id"
+            element={<PrivateRoute element={<Layout />} />}
+          />
+          <Route path="Home/:id/Tracking/:id" element={<Tracking />} />
+          <Route path="/Success" element={<Success />} />
+          <Route
+            path="/Profile/:id"
+            element={<PrivateRoute element={<User_Profile user={user} />} />}
+          />
+          <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/inventory" element={<Inventory />} />
+          <Route path="/seller_dashboard/:id" element={<Seller_Dashboard />} />
+          <Route
+            path="/delivery_rider_dashboard/:riderId"
+            element={<Delivery_Rider_Dashboard />}
+          />
 
-        <Route path="/seller_dashboard/:sellerId" element={<Post_Item />} />
-        <Route path="/add_item/:sellerId" element={<AddItem />} />
-        <Route
-          path="/sellerdashboard/:seller_id/complaints"
-          element={<Complaints />}
-        />
-        <Route path="/reports_seller" element={<Reports_seller />} />
-        <Route path="/item/:id" element={<Item_View />} />
+          <Route path="/seller_dashboard/:sellerId" element={<Post_Item />} />
+          <Route path="/add_item/:sellerId" element={<AddItem />} />
+          <Route
+            path="/sellerdashboard/:seller_id/complaints"
+            element={<Complaints />}
+          />
+          <Route path="/reports_seller" element={<Reports_seller />} />
+          <Route path="/item/:id" element={<Item_View />} />
 
-        <Route path="/sellerdashboard/:seller_id/orders" element={<Orders />} />
-        <Route
-          path="/sellerdashboard/:seller_id/processingorders"
-          element={<Processing_Orders />}
-        />
+          <Route
+            path="/sellerdashboard/:seller_id/orders"
+            element={<Orders />}
+          />
+          <Route
+            path="/sellerdashboard/:seller_id/processingorders"
+            element={<Processing_Orders />}
+          />
 
-        <Route path="/admin" element={<Admin_Page />} />
-        <Route path="/admin_signup" element={<Sign_Up_Admin />} />
-        <Route
-          path="/delivery_rider_dashboard/:riderId/orders"
-          element={<Rider_Orders />}
-        />
+          <Route path="/admin" element={<Admin_Page />} />
+          <Route path="/admin_signup" element={<Sign_Up_Admin />} />
+          <Route
+            path="/delivery_rider_dashboard/:riderId/orders"
+            element={<Rider_Orders />}
+          />
 
-        <Route
-          path="/delivery_rider_dashboard/:riderId/deliveries"
-          element={<Deliveries />}
-        />
-      </Routes>
-    </Router>
+          <Route
+            path="/delivery_rider_dashboard/:riderId/deliveries"
+            element={<Deliveries />}
+          />
+        </Routes>
+      </Router>
+    </Elements>
   );
 };
 
