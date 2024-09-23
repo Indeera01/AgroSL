@@ -13,6 +13,7 @@ const complaints = require("./complaints.js");
 const cart = require("./cart.js");
 const admin = require("./admin.js");
 const stripeRoutes = require("./stripeRoutes.js");
+const twilio = require("./twilio.js");
 
 //middleware
 app.use(cors());
@@ -32,6 +33,7 @@ app.use("/", complaints);
 app.use("/", cart);
 app.use("/", admin);
 app.use("/", stripeRoutes);
+app.use("/", twilio);
 
 app.listen(5001, () => {
   console.log("Server is running on port 5001");

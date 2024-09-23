@@ -32,6 +32,8 @@ import Sign_Up_Delivery_Rider from "./Pages/Sign_Up_Delivery_Rider";
 import Delivery_Rider_Dashboard from "./Pages/Delivery_Rider_Dashboard";
 import Rider_Orders from "./Pages/Rider_Orders";
 import Deliveries from "./Pages/Deliveries";
+import Chat from "./Pages/Chat";
+import Chat_Page from "./Pages/Chat_Page";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -121,6 +123,8 @@ const App = () => {
             path="/delivery_rider_dashboard/:riderId/deliveries"
             element={<Deliveries />}
           />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat_page/:userId" element={<Chat_Page />} />
         </Routes>
       </Router>
     </Elements>

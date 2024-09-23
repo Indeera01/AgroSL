@@ -237,7 +237,7 @@ function ResponsiveAppBar() {
                 <Badge badgeContent={0} color="action">
                   <ChatIcon
                     fontSize="large"
-                    onClick={() => navigate("/notifications")}
+                    onClick={() => navigate(`/chat_page/${user.user_id}`)}
                   />
                 </Badge>
               </Box>

@@ -15,6 +15,20 @@ import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Item from "./Item";
+import Modal from "@mui/material/Modal";
+import Chat from "../Pages/Chat";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const Item_View = () => {
   const { id } = useParams();
@@ -31,6 +45,10 @@ const Item_View = () => {
   const location = useLocation(); // Access useLocation
   const user = location.state?.user;
   console.log(user);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     axios
@@ -235,6 +253,17 @@ const Item_View = () => {
           >
             Add to cart
           </Button>
+          <Button onClick={handleOpen}>Chat with Seller</Button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Chat userId={user.user_id} chatPartnerId={item.seller_id} />
+            </Box>
+          </Modal>
         </Box>
       </Box>
       <Box
