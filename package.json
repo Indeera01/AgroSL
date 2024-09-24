@@ -21,13 +21,16 @@
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.5.0",
     "@toolpad/core": "^0.5.2",
+    "@twilio/conversations": "^2.6.0",
     "appwrite": "^15.0.0",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
     "firebase": "^10.12.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "twilio-chat": "^6.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

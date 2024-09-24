@@ -1,9 +1,8 @@
 const express = require("express");
 const pool = require("./db.js");
 const router = express.Router();
-const stripe = require("stripe")(
-  "sk_test_51PwNGE05CsRawMoqRxPc3XRkxlzbwmIIukRYCZPBGU8PSKNIw9z87HnWAf3HhVFdk6WjzE62d4z7g9np4ydpsHxj00KFdRahtR"
-);
+require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const getSellerStripeId = async (sellerId) => {
   try {
