@@ -80,7 +80,7 @@ router.get("/api/orders", async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT * FROM "order" WHERE seller_id = $1`,
+      `SELECT * FROM "order" WHERE seller_id = $1 `,
       [seller_id]
     );
     res.status(200).json(result.rows);
@@ -145,12 +145,12 @@ router.get("/seller_orders/:sellerID", async (req, res) => {
   }
 });
 
-router.put("/orders_take/:orderID", async (req, res) => {
-  const orderId = req.params.orderID;
+router.put("/orders/:orderId", async (req, res) => {
+  const orderId = req.params.orderId;
 
   try {
     const result = await pool.query(
-      'UPDATE "order" SET is_confirmed = $1 WHERE order_id = $2',
+      'UPDATE "order" SET deliver_took = $1 WHERE order_id = $2',
       [true, orderId]
     );
 
@@ -161,6 +161,26 @@ router.put("/orders_take/:orderID", async (req, res) => {
   }
 });
 
+router.delete("/orders/:orderId", async (req, res) => {
+  const { orderId } = req.params; // Extract orderId from URL parameters
+
+  try {
+    const result = await pool.query(
+      'DELETE FROM "order" WHERE order_id = $1 RETURNING *',
+      [orderId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).send("Order not found");
+    } else {
+      return res.status(200).json({ message: "Order deleted successfully" });
+    }
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send("Server error");
+  }
+});
+
 router.get("/orders", async (req, res) => {
   try {
     // Log the request to debug
@@ -168,7 +188,7 @@ router.get("/orders", async (req, res) => {
 
     // Execute the query
     const deliveries = await pool.query(
-      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE sent_to_delivery = true'
+      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE deliver_took=false and sent_to_delivery = true '
     );
 
     // Check if any rows were returned

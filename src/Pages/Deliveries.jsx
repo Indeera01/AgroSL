@@ -1,37 +1,31 @@
-// import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom"; // Import useParams
 import Navigation_Bar_Seller from "../Components/Navigation_Bar_Seller";
-import { auth } from "../../firebase";
 import axios from "axios";
-import { useState, useEffect } from "react";
 
 const Deliveries = () => {
   const [deliveries, setDeliveries] = useState([]);
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { riderId } = useParams(); // Extract riderId from the URL
+
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        axios
-          .get(`http://localhost:5001/users/${currentUser.uid}`)
-          .then((res) => {
-            setUser(res.data);
-            console.log("User data:", res.data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            setError(err.message);
-            setLoading(false);
-          });
-      } else {
+    const fetchDeliveries = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5001/deliveries/${riderId}`
+        );
+        setDeliveries(res.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
         setLoading(false);
       }
-    });
+    };
 
-    return () => unsubscribe(); // Clean up the listener on unmount
-  }, []);
+    fetchDeliveries();
+  }, [riderId]); // Re-run this effect when riderId changes
 
   if (loading) {
     return <div>Loading...</div>;
@@ -41,25 +35,22 @@ const Deliveries = () => {
     return <div>Error: {error}</div>;
   }
 
-  if (!user) {
-    return <div>No user logged in</div>;
+  if (deliveries.length === 0) {
+    return <div>No deliveries found</div>;
   }
 
   return (
     <div style={styles.container}>
       <Navigation_Bar_Seller />
-      <h1 style={styles.header}>Available Orders</h1>
+      <h1 style={styles.header}>Available Deliveries</h1>
       {deliveries.map((delivery) => (
         <div key={delivery.order_id} style={styles.card}>
           <div style={styles.cardHeader}>
-            <p style={styles.orderId}>Order ID: {delivery.order_id}</p>
+            <p style={styles.deliveryId}>Delivery ID: {delivery.delivery_id}</p>
           </div>
-          <p style={styles.detail}>Buyer ID: {delivery.buyer_id}</p>
-          <p style={styles.detail}>Item ID: {delivery.item_id}</p>
-          <p style={styles.detail}>
-            Order Date: {new Date(delivery.order_date).toLocaleDateString()}
-          </p>
-          <p style={styles.detail}>Quantity: {delivery.order_quantity}</p>
+          <p style={styles.detail}>Order ID: {delivery.order_id}</p>
+
+          <p style={styles.detail}>Address ID: {delivery.address_id}</p>
         </div>
       ))}
     </div>
@@ -92,7 +83,7 @@ const styles = {
     alignItems: "center",
     marginBottom: "10px",
   },
-  orderId: {
+  deliveryId: {
     fontWeight: "bold",
     color: "#333",
   },
@@ -100,15 +91,6 @@ const styles = {
     fontSize: "13px",
     color: "#777",
     marginBottom: "5px",
-  },
-  takeButton: {
-    marginTop: "10px",
-    padding: "10px 20px",
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
   },
 };
 
