@@ -8,8 +8,8 @@ router.get("/deliveries/:riderId", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "SELECT * FROM delivery_orders_view WHERE delivery_rider_id = $1",
-      [riderId]
+      "SELECT * FROM delivery_orders_view WHERE delivery_rider_id = $1 and is_delivered_to_buyer=$2",
+      [riderId, false]
     );
 
     if (result.rows.length === 0) {
@@ -73,6 +73,28 @@ router.post("/deliveries", async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to add delivery record", details: err.message });
+  }
+});
+
+router.put("/delivery-status/:deliveryId", async (req, res) => {
+  const { deliveryId } = req.params;
+  const { delivery_status } = req.body;
+
+  try {
+    await pool.query(
+      `
+      UPDATE delivery
+      SET delivery_status = $1::delivery_status_enum, 
+      is_delivered_to_buyer = CASE WHEN $1 = 'Delivered' THEN true ELSE false END
+      WHERE delivery_id = $2
+    `,
+      [delivery_status, deliveryId]
+    );
+
+    res.json({ message: "Delivery status updated successfully" });
+  } catch (error) {
+    console.error("Error updating delivery status:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

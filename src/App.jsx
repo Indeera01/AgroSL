@@ -35,6 +35,7 @@ import Deliveries from "./Pages/Deliveries";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import AddProof from "./Pages/AddProof";
 
 const stripePromise = loadStripe(
   "pk_test_51PwNGE05CsRawMoqM7YEL8tcA6xpOuDUJJ1oRSImOq9ndmJxlWHlqvlYLIg7aXlxJCXAQqCHbWAOVakInuTx4ql100M5xx4oan"
@@ -121,6 +122,7 @@ const App = () => {
             path="/delivery_rider_dashboard/:riderId/deliveries"
             element={<Deliveries />}
           />
+          <Route path="/add-proof/:delivery_id" element={<AddProof />} />
         </Routes>
       </Router>
     </Elements>
