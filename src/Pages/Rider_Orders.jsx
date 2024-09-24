@@ -195,7 +195,7 @@ const Rider_Orders = () => {
   useEffect(() => {
     if (user) {
       axios
-        .get(`http://localhost:5001/orders?sent_to_delivery=true`) // Modify the API endpoint to fetch orders
+        .get(`http://localhost:5001/orders`) // Modify the API endpoint to fetch orders
         .then((res) => {
           setOrders(res.data);
         })
@@ -207,25 +207,26 @@ const Rider_Orders = () => {
 
   // Handle 'Take It' button click
   const handleTakeOrder = (orderId) => {
-    const deliveryId = `del${Date.now()}`; // Generate delivery_id with a timestamp for uniqueness
+    // Generate delivery_id with a timestamp for uniqueness
     const deliveryData = {
-      delivery_id: deliveryId,
       order_id: orderId,
-      delivery_rider_id: user.uid, // Extracted from user state
+      delivery_rider_id: user.user_id, // Extracted from user state
       is_delivered_to_buyer: false,
     };
+    console.log("Delivery Data:", deliveryData);
+    console.log("Current User:", user);
 
     // Move order to delivery table and update the order table
     axios
-      .post(`http://localhost:5001/delivery`, deliveryData) // Add to delivery table
+      .post(`http://localhost:5001/deliveries`, { deliveryData }) // Add to delivery table
       .then(() => {
         return axios.put(`http://localhost:5001/orders/${orderId}`, {
-          is_confirmed: true,
+          deliver_took: true,
         }); // Update order table
       })
-      .then(() => {
+      /*.then(() => {
         return axios.delete(`http://localhost:5001/orders/${orderId}`); // Delete order from order table
-      })
+      })*/
       .then(() => {
         // Refresh the orders list after taking an order
         setOrders(orders.filter((order) => order.order_id !== orderId));

@@ -3,12 +3,17 @@ const pool = require("./db.js");
 
 const router = express.Router();
 
-router.get("/delivery", async (req, res) => {
+router.get("/deliveries/:riderId", async (req, res) => {
+  const { riderId } = req.params; // Extract riderId from URL params
+
   try {
-    const result = await pool.query("SELECT * FROM delivery");
+    const result = await pool.query(
+      "SELECT * FROM delivery_orders_view WHERE delivery_rider_id = $1",
+      [riderId]
+    );
 
     if (result.rows.length === 0) {
-      return res.status(404).send("No items found");
+      return res.status(404).send("No deliveries found for this rider");
     } else {
       return res.status(200).json(result.rows);
     }
@@ -18,23 +23,56 @@ router.get("/delivery", async (req, res) => {
   }
 });
 
-router.post("/delivery", async (req, res) => {
-  const { delivery_id, order_id, delivery_rider_id, is_delivered_to_buyer } =
-    req.body;
+router.post("/deliveries", async (req, res) => {
+  const { deliveryData } = req.body;
+  const { order_id, delivery_rider_id, is_delivered_to_buyer } = deliveryData;
+  if (!order_id || !delivery_rider_id) {
+    return res.status(400).json({
+      error: "Missing required fields: order_id and delivery_rider_id",
+    });
+  }
 
   try {
-    // Insert into delivery table
-    const result = await pool.query(
+    // Fetch the last inserted delivery_id
+    const lastIdResult = await pool.query(
+      `SELECT delivery_id FROM delivery ORDER BY delivery_id DESC LIMIT 1`
+    );
+
+    let newDeliveryId;
+    if (lastIdResult.rows.length > 0) {
+      const lastDeliveryId = lastIdResult.rows[0].delivery_id;
+      const numericPart = parseInt(lastDeliveryId.substring(1)) + 1;
+      newDeliveryId = `D${numericPart.toString().padStart(4, "0")}`;
+    } else {
+      newDeliveryId = "D0001"; // First delivery entry
+    }
+
+    // Ensure the new ID is unique
+    const existingIdCheck = await pool.query(
+      `SELECT delivery_id FROM delivery WHERE delivery_id = $1`,
+      [newDeliveryId]
+    );
+
+    if (existingIdCheck.rows.length > 0) {
+      return res.status(400).json({ error: "Delivery ID already exists" });
+    }
+
+    // Insert the new delivery record
+    await pool.query(
       `INSERT INTO delivery (delivery_id, order_id, delivery_rider_id, is_delivered_to_buyer) 
        VALUES ($1, $2, $3, $4)`,
-      [delivery_id, order_id, delivery_rider_id, is_delivered_to_buyer]
+      [newDeliveryId, order_id, delivery_rider_id, is_delivered_to_buyer]
     );
-    res
-      .status(201)
-      .json({ message: "Delivery record added successfully", result });
+
+    res.status(201).json({
+      message: "Delivery record added successfully",
+      deliveryId: newDeliveryId,
+    });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Failed to add delivery record" });
+    console.error("Error adding delivery record:", err.message);
+    res
+      .status(500)
+      .json({ error: "Failed to add delivery record", details: err.message });
   }
 });
 
