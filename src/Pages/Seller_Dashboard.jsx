@@ -6,9 +6,18 @@ import Post_Item from "../Components/Post_Item";
 import View_Reports from "../Components/View_Reports";
 import View_Inventory from "../Components/View_Inventory";
 import View_Processing_Orders from "../Components/View_Processing_Orders";
+import { Box } from "@mui/material";
+
 export default function Seller_Dashboard() {
   return (
-    <div>
+    <Box
+      sx={{
+        backgroundColor: "#e6ffe6",
+        height: "100%",
+        paddingBottom: "1px",
+        minHeight: "100vh",
+      }}
+    >
       <Navigation_Bar_Seller />
       <div style={styles.dashboard}>
         <div style={styles.row}>
@@ -22,7 +31,7 @@ export default function Seller_Dashboard() {
           <View_Processing_Orders />
         </div>
       </div>
-    </div>
+    </Box>
   );
 }
 
@@ -34,7 +43,6 @@ const styles = {
     alignComplaints: "center",
     padding: "20px",
     gap: "20px",
-    backgroundColor: "#E6F4EA",
     width: "100%",
     height: "200%",
   },

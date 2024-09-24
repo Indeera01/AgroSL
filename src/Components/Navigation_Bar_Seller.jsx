@@ -16,6 +16,10 @@ import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import User_Profile from "../Pages/User_Profile";
 import Logo from "../assets/white logo.png";
+import { Badge } from "@mui/material";
+import ChatIcon from "@mui/icons-material/Chat";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const settings = ["Profile", "Logout"];
 
@@ -23,7 +27,28 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [showUserProfile, setShowUserProfile] = React.useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch logged-in user details from Firebase Authentication
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      axios
+        .get(`http://localhost:5001/users/${currentUser.uid}`)
+        .then((res) => {
+          setUser(res.data);
+          setUpdatedUser(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
+    }
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -112,6 +137,13 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 1 }} />
 
             <Box sx={{ flexGrow: 0 }}>
+              <Badge badgeContent={0} color="action">
+                <ChatIcon
+                  fontSize="large"
+                  onClick={() => navigate(`/chat_page/${user.user_id}`)}
+                  sx={{ marginRight: 5 }}
+                />
+              </Badge>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
