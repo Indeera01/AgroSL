@@ -2,17 +2,20 @@ const express = require("express");
 const pool = require("./db.js");
 const router = express.Router();
 
+require("dotenv").config();
+
 const twilio = require("twilio");
 const AccessToken = twilio.jwt.AccessToken;
 const ChatGrant = AccessToken.ChatGrant;
 
 // Environment variables setup
-const accountSid = "AC91e9232068fb91a526ead78bca30c730";
-const apiKey = "SK82f2964b50a266755f8cce85dad1eea7";
-const apiSecret = "0eF0lkuXSiSJH4CHV0tO5danRhoSPtqp";
-const chatServiceSid = "IS247e8c1e0a684eff86dd30bdc58d11f2";
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const apiKey = process.env.TWILIO_API_KEY;
+const apiSecret = process.env.TWILIO_API_SECRET;
+const chatServiceSid = process.env.TWILIO_CHAT_SERVICE_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 
-const client = twilio(accountSid, "61a61c8ff61c612cda666495658de29f");
+const client = twilio(accountSid, authToken);
 
 // Generate token for chat access
 router.post("/token", async (req, res) => {
@@ -46,7 +49,7 @@ router.post("/token", async (req, res) => {
 // Create or fetch conversation between two users
 router.post("/conversation", async (req, res) => {
   const { user1Id, user2Id } = req.body;
-  const client = twilio(accountSid, "61a61c8ff61c612cda666495658de29f");
+  const client = twilio(accountSid, authToken);
 
   try {
     // Check if conversation between users already exists (you may want to store conversation SIDs in your database)

@@ -233,7 +233,7 @@ const ChatPage = () => {
                 sx={{ color: "gray", marginLeft: "55px" }}
               >
                 {chat.lastMessage
-                  ? `${chat.lastMessageAuthor === userId ? "You" : chat.lastMessageAuthor}: ${chat.lastMessage}`
+                  ? `${chat.lastMessageAuthor === userId ? "You" : chat.friendlyName}: ${chat.lastMessage}`
                   : "No messages yet"}
               </Typography>
             </Paper>

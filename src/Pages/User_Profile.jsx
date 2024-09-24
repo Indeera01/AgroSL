@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Box, Typography, CircularProgress, Avatar, List, ListItem, ListItemText, Button, TextField, Divider } from '@mui/material';
-import axios from 'axios';
-import { auth } from '../../firebase'; 
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  TextField,
+  Divider,
+} from "@mui/material";
+import axios from "axios";
+import { auth } from "../../firebase";
 
 function stringToColor(string) {
   let hash = 0;
@@ -12,7 +23,7 @@ function stringToColor(string) {
     hash = string.charCodeAt(i) + ((hash << 5) - hash);
   }
 
-  let color = '#';
+  let color = "#";
 
   for (i = 0; i < 3; i += 1) {
     const value = (hash >> (i * 8)) & 0xff;
@@ -27,9 +38,9 @@ function stringAvatar(name) {
     sx: {
       bgcolor: stringToColor(name),
       width: 70,
-      height: 70
+      height: 70,
     },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
   };
 }
 
@@ -45,7 +56,8 @@ const User_Profile = ({ onClose }) => {
     // Fetch logged-in user details from Firebase Authentication
     const currentUser = auth.currentUser;
     if (currentUser) {
-      axios.get(`http://localhost:5001/users/${currentUser.uid}`)
+      axios
+        .get(`http://localhost:5001/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setUpdatedUser(res.data);
@@ -75,7 +87,8 @@ const User_Profile = ({ onClose }) => {
   };
 
   const handleSaveClick = () => {
-    axios.put(`http://localhost:5001/users/${id}`, updatedUser)
+    axios
+      .put(`http://localhost:5001/users/${id}`, updatedUser)
       .then((res) => {
         setUser(res.data);
         setIsEditing(false);
@@ -139,14 +152,28 @@ const User_Profile = ({ onClose }) => {
       zIndex={9999}
     >
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2, bgcolor: 'white', padding: 4, borderRadius: 10, boxShadow: 3 }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          bgcolor: "white",
+          padding: 4,
+          borderRadius: 10,
+          boxShadow: 3,
+        }}
         alignItems="center"
         width="30%"
       >
-        <Typography variant="h3" align="center">Profile</Typography>
+        <Typography variant="h3" align="center">
+          Profile
+        </Typography>
         <Avatar {...stringAvatar(`${user.first_name} ${user.last_name}`)} />
         {isEditing ? (
-          <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} width={'100%'}>
+          <Box
+            component="form"
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+            width={"100%"}
+          >
             <TextField
               label="First Name"
               name="first_name"
@@ -171,15 +198,25 @@ const User_Profile = ({ onClose }) => {
               value={updatedUser.email}
               onChange={handleInputChange}
             />
-            <Button variant="contained" color="primary" onClick={handleSaveClick}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSaveClick}
+            >
               Save
             </Button>
-            <Button variant="contained" color="secondary" onClick={handleCloseClick}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleCloseClick}
+            >
               Close
             </Button>
           </Box>
         ) : (
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          <List
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
             <ListItem>
               <ListItemText primary="First Name" secondary={user.first_name} />
             </ListItem>
@@ -189,17 +226,24 @@ const User_Profile = ({ onClose }) => {
             </ListItem>
             <Divider />
             <ListItem>
-              <ListItemText primary="Phone Number" secondary={user.mobile_number} />
+              <ListItemText
+                primary="Phone Number"
+                secondary={user.mobile_number}
+              />
             </ListItem>
             <Divider />
             <ListItem>
               <ListItemText primary="Email" secondary={user.email} />
             </ListItem>
-            <Box display={'flex'} justifyContent={'space-evenly'}>
+            <Box display={"flex"} justifyContent={"space-evenly"}>
               <Button variant="contained" color="secondary" onClick={onClose}>
                 Close
               </Button>
-              <Button variant="contained" color="secondary" onClick={handleEditClick}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleEditClick}
+              >
                 Edit
               </Button>
             </Box>
