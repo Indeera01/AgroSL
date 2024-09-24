@@ -137,6 +137,13 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 1 }} />
 
             <Box sx={{ flexGrow: 0 }}>
+              <Badge badgeContent={0} color="action">
+                <ChatIcon
+                  fontSize="large"
+                  onClick={() => navigate(`/chat_page/${user.user_id}`)}
+                  sx={{ marginRight: 5 }}
+                />
+              </Badge>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -167,12 +174,6 @@ function ResponsiveAppBar() {
                   </MenuItem>
                 ))}
               </Menu>
-              <Badge badgeContent={0} color="action">
-                <ChatIcon
-                  fontSize="large"
-                  onClick={() => navigate(`/chat_page/${user.user_id}`)}
-                />
-              </Badge>
             </Box>
           </Toolbar>
         </Container>

@@ -1,11 +1,28 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Client as TwilioConversationsClient } from "@twilio/conversations";
+import { Box, Button } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 
-const Chat = ({ userId, chatPartnerId }) => {
+const Chat = ({ userId, chatPartnerId, partnerName }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [conversation, setConversation] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5001/users/${userId}`)
+      .then((res) => {
+        setUser(res.data);
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching user:", err);
+        setError("Error fetching user");
+        // setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     const setupChat = async () => {
@@ -15,6 +32,7 @@ const Chat = ({ userId, chatPartnerId }) => {
           "http://localhost:5001/token",
           {
             identity: userId,
+            friendlyName: user.first_name,
           }
         );
 
@@ -50,7 +68,7 @@ const Chat = ({ userId, chatPartnerId }) => {
     };
 
     setupChat();
-  }, [userId, chatPartnerId]);
+  }, [user, userId, chatPartnerId]);
 
   const handleSendMessage = async () => {
     if (conversation && newMessage.trim()) {
@@ -60,22 +78,26 @@ const Chat = ({ userId, chatPartnerId }) => {
   };
 
   return (
-    <div>
+    <Box>
       <div>
         {messages.map((msg) => (
           <div key={msg.index}>
-            <strong>{msg.author === userId ? "You" : "Other"}:</strong>{" "}
+            <strong>{msg.author === userId ? "You" : partnerName}:</strong>{" "}
             {msg.body}
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-      />
-      <button onClick={handleSendMessage}>Send</button>
-    </div>
+      <Box marginTop={2}>
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        <Button onClick={handleSendMessage}>
+          <SendIcon />
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

@@ -12,9 +12,12 @@ const apiKey = "SK82f2964b50a266755f8cce85dad1eea7";
 const apiSecret = "0eF0lkuXSiSJH4CHV0tO5danRhoSPtqp";
 const chatServiceSid = "IS247e8c1e0a684eff86dd30bdc58d11f2";
 
+const client = twilio(accountSid, "61a61c8ff61c612cda666495658de29f");
+
 // Generate token for chat access
-router.post("/token", (req, res) => {
-  const identity = req.body.identity; // Get the user identity from the request
+router.post("/token", async (req, res) => {
+  const { identity, friendlyName } = req.body;
+
   const token = new twilio.jwt.AccessToken(accountSid, apiKey, apiSecret, {
     identity: identity,
   });
@@ -24,7 +27,20 @@ router.post("/token", (req, res) => {
   });
 
   token.addGrant(chatGrant);
-  res.send({ token: token.toJwt() });
+
+  try {
+    // Create or update the user with the friendly name in Twilio Chat
+    await client.conversations
+      .services(chatServiceSid)
+      .users(identity)
+      .update({ friendlyName: friendlyName });
+
+    // Send the token back to the client
+    res.send({ token: token.toJwt() });
+  } catch (error) {
+    console.error("Error creating/updating user:", error);
+    res.status(500).send("Error creating/updating user");
+  }
 });
 
 // Create or fetch conversation between two users

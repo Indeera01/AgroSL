@@ -25,8 +25,9 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  // border: "2px solid #000",
   boxShadow: 24,
+  borderRadius: 3,
   p: 4,
 };
 
@@ -78,6 +79,21 @@ const Item_View = () => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5001/getseller/${item?.seller_id}`)
+      .then((res) => {
+        setStore(res.data.store_name);
+        console.log("Fetched store:", res.data.store_name);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching store:", err);
+        setError("Error fetching store");
+        setLoading(false);
+      });
+  }, [item]);
 
   const handleAdd = () => {
     const newQuantity = quantity + 1;
@@ -183,6 +199,8 @@ const Item_View = () => {
         height: "100%",
         paddingBottom: "1px",
         minHeight: "100vh",
+        filter: open ? "blur(4px)" : "none", // Apply blur effect conditionally
+        transition: "filter 0.3s ease", // Smooth transition for blur effect
       }}
     >
       <Navigation_Bar />
@@ -207,7 +225,7 @@ const Item_View = () => {
         </Box>
         <Box sx={{ width: "30%", marginLeft: "40px" }}>
           <Typography variant="h6" gutterBottom>
-            Store Name
+            {store}
           </Typography>
           <Typography variant="h6">{item.item_name}</Typography>
           <Rating
@@ -245,15 +263,29 @@ const Item_View = () => {
           <Typography gutterBottom variant="body2" color="text.secondary">
             Total: {item.unit_price * quantity} LKR
           </Typography>
-          <Button
-            size="medium"
-            variant="contained"
-            color="primary"
-            onClick={addToCart}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            Add to cart
-          </Button>
-          <Button onClick={handleOpen}>Chat with Seller</Button>
+            <Box marginTop={2}>
+              <Button
+                size="medium"
+                variant="contained"
+                color="primary"
+                onClick={addToCart}
+              >
+                Add to cart
+              </Button>
+            </Box>
+
+            <Box marginTop={2}>
+              <Button onClick={handleOpen}>Chat with Seller</Button>
+            </Box>
+          </Box>
+
           <Modal
             open={open}
             onClose={handleClose}
@@ -261,7 +293,11 @@ const Item_View = () => {
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
-              <Chat userId={user.user_id} chatPartnerId={item.seller_id} />
+              <Chat
+                userId={user.user_id}
+                chatPartnerId={item.seller_id}
+                partnerName="Seller"
+              />
             </Box>
           </Modal>
         </Box>
