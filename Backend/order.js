@@ -221,4 +221,38 @@ router.get("/orders_for_riders", async (req, res) => {
   }
 });
 
+router.get("/api/orders_for_buyers/:buyer_id", async (req, res) => {
+  const { buyer_id } = req.params;
+  try {
+    const result = await pool.query(
+      'SELECT * FROM "order" WHERE sent_to_delivery = true and buyer_id=$1',
+      [buyer_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+router.put("/api/orders_for_buyer/:order_id/cancel", async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    const result = await pool.query(
+      'UPDATE "order" SET is_confirmed = $1 WHERE order_id = $2 ',
+      [false, orderId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.status(200).json({ message: "Order sent to delivery" });
+  } catch (error) {
+    console.error("Error sending order to delivery:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

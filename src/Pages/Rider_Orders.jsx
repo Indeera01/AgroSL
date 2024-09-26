@@ -197,10 +197,18 @@ const Rider_Orders = () => {
       axios
         .get(`http://localhost:5001/orders`) // Modify the API endpoint to fetch orders
         .then((res) => {
-          setOrders(res.data);
-        })
+          if (res.data.length === 0) {
+            setOrders([]); // No orders available
+          } else {
+            setOrders(res.data);
+          }
+        }) // Orders available)
         .catch((err) => {
-          setError(err.message);
+          if (err.response && err.response.status === 404) {
+            setError("No orders found.");
+          } else {
+            setError(err.message);
+          }
         });
     }
   }, [user]);
@@ -253,7 +261,7 @@ const Rider_Orders = () => {
       <Navigation_Bar_Seller />
       <h1 style={styles.header}>Available Orders for Delivery</h1>
       {orders.length === 0 ? (
-        <p>No orders available for delivery</p>
+        <p>No orders available for delivery</p> // Display this message if no orders are found
       ) : (
         orders.map((order) => (
           <div key={order.order_id} style={styles.card}>
