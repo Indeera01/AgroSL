@@ -27,6 +27,7 @@ const ShoppingCart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -75,6 +76,11 @@ const ShoppingCart = () => {
       fetchCartItems(user.user_id); // Call the function with user.uid
     }
   }, [user]); // Dependency array includes user
+  //added by damitha
+
+  const handleViewPastOrders = () => {
+    navigate(`/orders_for_buyer/${user.user_id}`); // Use template string to navigate
+  };
 
   const handleRemoveItem = async (id) => {
     try {
@@ -301,6 +307,15 @@ const ShoppingCart = () => {
                   onClick={handleContinueShopping}
                 >
                   Continue Shopping
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleViewPastOrders}
+                >
+                  view past orders
                 </Button>
               </CardActions>
             </Card>
