@@ -73,7 +73,18 @@ const Item = ({ item, onCardClick }) => {
   };
 
   return (
-    <Card sx={{ minWidth: { md: 260, xs: 350 } }} onClick={handleCardClick}>
+    <Card
+      sx={{
+        minWidth: { md: 260, xs: 350 },
+        borderRadius: "10px", // Optional: rounded corners
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Optional: soft shadow
+        transition: "transform 0.3s, box-shadow 0.3s",
+        "&:hover": {
+          transform: "scale(1.05)",
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+        },
+      }}
+    >
       <CardHeader
         avatar={<Avatar {...stringAvatar(storeName)} />}
         title={storeName}
@@ -102,10 +113,85 @@ const Item = ({ item, onCardClick }) => {
           Available Quantity: {item.quantity}
         </Typography>
         <Typography gutterBottom variant="body2" color="text.secondary">
-          {item.description}
+          {item.description.length > 100
+            ? `${item.description.substring(0, 100)}...`
+            : item.description}
         </Typography>
       </CardContent>
+
+      {/* Add to Cart Button */}
+      <CardActions sx={{ justifyContent: "center", paddingBottom: 2 }}>
+        <Button
+          size="medium"
+          variant="contained"
+          color="primary"
+          onClick={handleCardClick}
+        >
+          Add to Cart
+        </Button>
+      </CardActions>
     </Card>
+
+    /*
+    <Card
+      sx={{
+        minWidth: { md: 260, xs: 350 },
+        borderRadius: "10px", // Rounded corners for a modern look
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Soft shadow for elegance
+        transition: "transform 0.3s, box-shadow 0.3s", // Smooth transition
+        "&:hover": {
+          transform: "scale(1.05)", // Slight zoom on hover
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", // Stronger shadow on hover
+        },
+        cursor: "pointer", // Indicate that it's clickable
+      }}
+      onClick={handleCardClick}
+    >
+      <CardHeader
+        avatar={<Avatar {...stringAvatar(storeName)} />}
+        title={storeName}
+        sx={{
+          padding: "8px",
+          marginLeft: "5px",
+          fontWeight: "bold", // Make the store name bold
+        }}
+      />
+      <CardMedia
+        component="img"
+        alt={item.item_name}
+        height="140"
+        image={item.image_url}
+        sx={{
+          borderRadius: "10px 10px 0 0", // Rounded top corners to match the card
+          transition: "transform 0.3s", // Smooth image scaling
+          "&:hover": {
+            transform: "scale(1.05)", // Slight zoom on image hover
+          },
+        }}
+      />
+      <CardContent sx={{ p: 2 }}>
+        <Rating
+          name="rating"
+          value={parseFloat(item.average_rating_value)}
+          precision={0.1}
+          readOnly
+        />
+        <Typography gutterBottom variant="h6" component="div">
+          {item.item_name}
+        </Typography>
+        <Typography gutterBottom variant="h6" component="div">
+          LKR : {item.unit_price} / unit
+        </Typography>
+        <Typography gutterBottom variant="body2" color="text.secondary">
+          Available Quantity: {item.quantity}
+        </Typography>
+        <Typography gutterBottom variant="body2" color="text.secondary">
+          {item.description.length > 100
+            ? `${item.description.substring(0, 100)}...`
+            : item.description}
+        </Typography>
+      </CardContent>
+    </Card>*/
   );
 };
 
