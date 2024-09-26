@@ -25,3 +25,4 @@ dist-ssr
 .idx/dev.nix
 Backend/db.js
 firebase.js
+/.expo
