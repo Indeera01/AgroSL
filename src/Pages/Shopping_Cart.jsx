@@ -215,7 +215,7 @@ const ShoppingCart = () => {
   //   }
   // };
 
-  return (
+  /*return (
     <Box
       sx={{
         backgroundColor: "#e6ffe6",
@@ -329,6 +329,146 @@ const ShoppingCart = () => {
           >
             Continue Shopping
           </Button>
+        )}
+      </Grid>
+    </Box>
+  );*/
+
+  //added by damitha.new return func to display the continue shopping and view past orders when cart is empty
+  return (
+    <Box
+      sx={{
+        backgroundColor: "#e6ffe6",
+        height: "100%",
+        paddingBottom: "1px",
+        minHeight: "100vh",
+      }}
+    >
+      <Navigation_Bar />
+      <Grid container spacing={2} marginTop={5} marginBottom={5}>
+        <Grid item xs={12} md={5}>
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => (
+              <Cart_item
+                key={item.item_id}
+                item={item}
+                onRemove={handleRemoveItem}
+                onQuantityChange={handleQuantityChange}
+              />
+            ))
+          ) : (
+            <Box
+              margin={5}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <img
+                src={emptyImage}
+                alt="Empty Cart"
+                style={{ width: "100%", marginBottom: "20px" }}
+              />
+              <Typography variant="h6" sx={{ marginBottom: "10px" }}>
+                Your cart is empty.
+              </Typography>
+            </Box>
+          )}
+        </Grid>
+
+        {cartItems.length > 0 ? (
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              position: "sticky",
+              top: "100px",
+              alignSelf: "flex-start",
+            }}
+          >
+            <Card sx={{ padding: 2, backgroundColor: "white", margin: "20px" }}>
+              <CardContent>
+                <Typography variant="h4" gutterBottom sx={{ color: "#4B8412" }}>
+                  Order Summary
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  SubTotal ({cartItems.length} items) : {calculateTotal()} LKR
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Delivery Fee : 400 LKR
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Discount : _
+                </Typography>
+                <Typography
+                  variant="h5"
+                  align="center"
+                  gutterBottom
+                  sx={{ color: "#4B8412" }}
+                >
+                  Total: {calculateTotal() + 400} LKR
+                </Typography>
+                <CardElement />
+              </CardContent>
+              <CardActions>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleCheckout}
+                >
+                  Checkout
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleContinueShopping}
+                >
+                  Continue Shopping
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleViewPastOrders}
+                >
+                  View Past Orders
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ) : (
+          <Grid item xs={12} md={6}>
+            {/* Display Continue Shopping and View Past Orders buttons even when cart is empty */}
+            <Card sx={{ padding: 2, backgroundColor: "white", margin: "20px" }}>
+              <CardContent>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{ marginBottom: "10px" }}
+                  onClick={handleContinueShopping}
+                >
+                  Continue Shopping
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleViewPastOrders}
+                >
+                  View Past Orders
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
         )}
       </Grid>
     </Box>
