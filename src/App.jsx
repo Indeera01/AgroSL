@@ -39,6 +39,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import AddProof from "./Pages/AddProof";
 import Buyer_Orders from "./Pages/Buyer_Orders";
+import ComplaintPage from "./Pages/ComplaintPage";
 
 const stripePromise = loadStripe(
   "pk_test_51PwNGE05CsRawMoqM7YEL8tcA6xpOuDUJJ1oRSImOq9ndmJxlWHlqvlYLIg7aXlxJCXAQqCHbWAOVakInuTx4ql100M5xx4oan"
@@ -134,6 +135,7 @@ const App = () => {
             path="/orders_for_buyer/:buyer_id"
             element={<Buyer_Orders />}
           />
+          <Route path="/complain" element={<ComplaintPage />} />
         </Routes>
       </Router>
     </Elements>
