@@ -224,10 +224,9 @@ router.get("/orders_for_riders", async (req, res) => {
 router.get("/api/orders_for_buyers/:buyer_id", async (req, res) => {
   const { buyer_id } = req.params;
   try {
-    const result = await pool.query(
-      'SELECT * FROM "order" WHERE sent_to_delivery = true and buyer_id=$1',
-      [buyer_id]
-    );
+    const result = await pool.query('SELECT * FROM "order" WHERE buyer_id=$1', [
+      buyer_id,
+    ]);
     res.json(result.rows);
   } catch (err) {
     console.error(err.message);
