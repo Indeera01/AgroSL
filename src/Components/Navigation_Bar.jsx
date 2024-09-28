@@ -83,7 +83,7 @@ function ResponsiveAppBar() {
 
       fetchCartItems(user.user_id); // Call the function with user.uid
     }
-  }, [user]);
+  }, [user, cart]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -138,6 +138,7 @@ function ResponsiveAppBar() {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Box
+              onClick={() => navigate("/")}
               component="img"
               src={Logo}
               alt="AgroSL Logo"
