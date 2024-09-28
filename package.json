@@ -22,6 +22,7 @@
     "@stripe/stripe-js": "^4.5.0",
     "@toolpad/core": "^0.5.2",
     "@twilio/conversations": "^2.6.0",
+    "@vercel/speed-insights": "^1.0.12",
     "appwrite": "^15.0.0",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
