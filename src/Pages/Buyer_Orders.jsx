@@ -130,7 +130,7 @@ const Buyer_Orders = () => {
         const data = response.data;
 
         // Filter orders where sent_to_delivery is false (if needed)
-        const filteredData = data.filter((order) => !order.sent_to_delivery);
+        const filteredData = data.filter((order) => order.sent_to_delivery);
         console.log("Filtered orders: ", filteredData);
 
         // Sort by order_id (optional sorting, based on your data structure)
