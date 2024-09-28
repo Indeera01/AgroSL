@@ -175,6 +175,14 @@ const ShoppingCart = () => {
               await axios.delete(
                 `http://localhost:5001/cart/${user.user_id}/${item.item_id}`
               );
+
+              await axios.post(`http://localhost:5001/orders`, {
+                buyer_id: user.user_id,
+                item_id: item.item_id,
+                is_confirmed: true,
+                seller_id: item.seller_id,
+                order_quantity: item.quantity,
+              });
             }
             // Optionally clear cartItems state
             setCartItems([]);
