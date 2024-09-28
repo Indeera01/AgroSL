@@ -75,7 +75,7 @@ const Item = ({ item, onCardClick }) => {
   return (
     <Card
       sx={{
-        minWidth: { md: 260, xs: 350 },
+        width: { md: 260, xs: 350 },
         borderRadius: "10px", // Optional: rounded corners
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Optional: soft shadow
         transition: "transform 0.3s, box-shadow 0.3s",
