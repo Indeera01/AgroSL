@@ -59,4 +59,41 @@ router.post("/sellers", async (req, res) => {
   }
 });
 
+router.get("/seller/stats/:seller_id", async (req, res) => {
+  const { seller_id } = req.params;
+
+  try {
+    // Get connection from the pool
+    const client = await pool.connect();
+
+    // SQL Queries to fetch counts from orders, deliveries, and items tables
+    const orderCountQuery = 'SELECT COUNT(*) FROM "order" WHERE seller_id = $1';
+
+    const itemCountQuery = "SELECT COUNT(*) FROM item WHERE seller_id = $1";
+
+    // Execute the queries
+    const orderCountResult = await client.query(orderCountQuery, [seller_id]);
+
+    const itemCountResult = await client.query(itemCountQuery, [seller_id]);
+
+    // Parse the results
+    const orderCount = parseInt(orderCountResult.rows[0].count, 10);
+
+    const itemCount = parseInt(itemCountResult.rows[0].count, 10);
+
+    // Send the result as JSON
+    res.json({
+      orders: orderCount,
+
+      items: itemCount,
+    });
+
+    // Release the client connection
+    client.release();
+  } catch (error) {
+    console.error("Error fetching stats:", error);
+    res.status(500).send("Error fetching stats");
+  }
+});
+
 module.exports = router;

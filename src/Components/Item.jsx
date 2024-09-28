@@ -127,7 +127,7 @@ const Item = ({ item, onCardClick }) => {
           color="primary"
           onClick={handleCardClick}
         >
-          Add to Cart
+          View Item
         </Button>
       </CardActions>
     </Card>
