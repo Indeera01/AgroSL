@@ -34,7 +34,11 @@ const Item = ({ item, onCardClick }) => {
 
         alert("Item successfully added to the cart");
       } catch (err) {
-        console.error("Error adding item to cart:", err);
+        if (err.response && err.response.status === 409) {
+          alert("This item is already in the cart");
+        } else {
+          console.error("Error adding item to cart:", err);
+        }
       }
     } else {
       // Redirect to login page if the user is not logged in

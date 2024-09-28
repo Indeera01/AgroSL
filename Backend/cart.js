@@ -81,9 +81,16 @@ router.post("/cart", async (req, res) => {
 
     console.log("Item stored successfully:", result.rows[0]);
     res.status(201).json(result.rows[0]);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (err) {
+    if (err.code === "23505") {
+      // Unique violation error code
+      res.status(409).json({ error: "This item is already in your cart." });
+    } else {
+      console.error("Error adding item to cart:", err);
+      res
+        .status(500)
+        .json({ error: "An error occurred while adding to the cart." });
+    }
   }
 });
 
