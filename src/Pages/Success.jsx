@@ -27,7 +27,7 @@ const Success = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: "rgba(0, 0, 0, 0.5)", // Add dark overlay on background image
+          background: "rgba(0, 0, 0, 0.5)",
           zIndex: 1,
         },
       }}
@@ -45,7 +45,7 @@ const Success = () => {
           background:
             "linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9))",
           position: "relative",
-          zIndex: 2, // Ensures container is above the background overlay
+          zIndex: 2,
         }}
       >
         <CheckCircleIcon color="success" sx={{ fontSize: 100, mb: 2 }} />
