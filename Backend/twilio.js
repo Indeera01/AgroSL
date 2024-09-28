@@ -2,7 +2,7 @@ const express = require("express");
 const pool = require("./db.js");
 const router = express.Router();
 
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 
 const twilio = require("twilio");
 const AccessToken = twilio.jwt.AccessToken;
