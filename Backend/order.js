@@ -4,26 +4,24 @@ const pool = require("./db.js");
 const router = express.Router();
 
 router.post("/orders", async (req, res) => {
-  const {
-    order_id,
-    buyer_id,
-    item_id,
-    order_date,
-    is_confirmed,
-    seller_id,
-    order_quantity,
-  } = req.body;
+  const { buyer_id, item_id, is_confirmed, seller_id, order_quantity } =
+    req.body;
   try {
+    const count = await pool.query('SELECT COUNT(*) FROM "order"');
+    const rid = parseInt(count.rows[0].count) + 1;
+    const order_id = `ORD${String(rid).padStart(4, "0")}`;
+
     const result = await pool.query(
-      'insert into "order" (order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity) values ($1, $2, $3, $4, $5, $6,$7) returning *',
+      'insert into "order" (order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity, sent_to_delivery) values ($1, $2, $3, $4, $5, $6, $7, $8) returning *',
       [
         order_id,
         buyer_id,
         item_id,
-        order_date,
+        new Date(),
         is_confirmed,
         seller_id,
         order_quantity,
+        true,
       ]
     );
 
@@ -188,8 +186,8 @@ router.get("/orders", async (req, res) => {
 
     // Execute the query
     const deliveries = await pool.query(
-      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE deliver_took=$1 and sent_to_delivery = $2 ',
-      [false, true]
+      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE sent_to_delivery = $1 ',
+      [true]
     );
 
     // Check if any rows were returned
