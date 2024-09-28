@@ -5,20 +5,46 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Avatar, CardHeader, Rating } from "@mui/material";
+import { Avatar, CardHeader, Rating, IconButton } from "@mui/material";
 import axios from "axios";
-import backgroundImg from "../assets/background.jpg";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCartCheckoutSharp";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Item = ({ item, onCardClick }) => {
   const [storeName, setStoreName] = React.useState("Unknown Seller");
+  const buyer_id = useParams().id;
+  const navigate = useNavigate(); // To handle redirection
 
   const handleCardClick = () => {
     onCardClick(item);
   };
 
+  const addToCart = async () => {
+    if (buyer_id) {
+      try {
+        const item_id = item.item_id;
+        const price = item.unit_price;
+
+        const response = await axios.post(`http://localhost:5001/cart`, {
+          buyer_id: buyer_id,
+          item_id: item_id,
+          quantity: 1,
+          price: price,
+        });
+
+        alert("Item successfully added to the cart");
+      } catch (err) {
+        console.error("Error adding item to cart:", err);
+      }
+    } else {
+      // Redirect to login page if the user is not logged in
+      navigate("/Sign_In");
+    }
+  };
+
   const handleButtonClick = (event) => {
-    event.stopPropagation();
-    console.log("add to cart clicked");
+    event.stopPropagation(); // Prevent the click from bubbling up to the card
+    addToCart();
   };
 
   useEffect(() => {
@@ -65,7 +91,6 @@ const Item = ({ item, onCardClick }) => {
       .get(`http://localhost:5001/getseller/${id}`)
       .then((res) => {
         setStoreName(res.data.store_name || "Unknown Seller");
-        console.log(storeName);
       })
       .catch((err) => {
         console.error("Error fetching seller:", err);
@@ -76,99 +101,51 @@ const Item = ({ item, onCardClick }) => {
     <Card
       sx={{
         width: { md: 260, xs: 350 },
-        borderRadius: "10px", // Optional: rounded corners
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Optional: soft shadow
+        borderRadius: "10px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         transition: "transform 0.3s, box-shadow 0.3s",
         "&:hover": {
           transform: "scale(1.05)",
           boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
         },
-      }}
-    >
-      <CardHeader
-        avatar={<Avatar {...stringAvatar(storeName)} />}
-        title={storeName}
-        sx={{ padding: "8px", marginLeft: "5px" }}
-      />
-      <CardMedia
-        component="img"
-        alt={item.item_name}
-        height="140"
-        image={item.image_url}
-      />
-      <CardContent sx={{ p: 2 }}>
-        <Rating
-          name="rating"
-          value={parseFloat(item.average_rating_value)}
-          precision={0.1}
-          readOnly
-        />
-        <Typography gutterBottom variant="h6" component="div">
-          {item.item_name}
-        </Typography>
-        <Typography gutterBottom variant="h6" component="div">
-          LKR : {item.unit_price} / unit
-        </Typography>
-        <Typography gutterBottom variant="body2" color="text.secondary">
-          Available Quantity: {item.quantity}
-        </Typography>
-        <Typography gutterBottom variant="body2" color="text.secondary">
-          {item.description.length > 100
-            ? `${item.description.substring(0, 100)}...`
-            : item.description}
-        </Typography>
-      </CardContent>
-
-      {/* Add to Cart Button */}
-      <CardActions sx={{ justifyContent: "center", paddingBottom: 2 }}>
-        <Button
-          size="medium"
-          variant="contained"
-          color="primary"
-          onClick={handleCardClick}
-        >
-          View Item
-        </Button>
-      </CardActions>
-    </Card>
-
-    /*
-    <Card
-      sx={{
-        minWidth: { md: 260, xs: 350 },
-        borderRadius: "10px", // Rounded corners for a modern look
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Soft shadow for elegance
-        transition: "transform 0.3s, box-shadow 0.3s", // Smooth transition
-        "&:hover": {
-          transform: "scale(1.05)", // Slight zoom on hover
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", // Stronger shadow on hover
-        },
-        cursor: "pointer", // Indicate that it's clickable
+        cursor: "pointer",
       }}
       onClick={handleCardClick}
     >
       <CardHeader
         avatar={<Avatar {...stringAvatar(storeName)} />}
         title={storeName}
-        sx={{
-          padding: "8px",
-          marginLeft: "5px",
-          fontWeight: "bold", // Make the store name bold
-        }}
+        sx={{ padding: "8px", marginLeft: "5px" }}
       />
-      <CardMedia
-        component="img"
-        alt={item.item_name}
-        height="140"
-        image={item.image_url}
-        sx={{
-          borderRadius: "10px 10px 0 0", // Rounded top corners to match the card
-          transition: "transform 0.3s", // Smooth image scaling
-          "&:hover": {
-            transform: "scale(1.05)", // Slight zoom on image hover
-          },
-        }}
-      />
+
+      <div style={{ position: "relative" }}>
+        <CardMedia
+          component="img"
+          alt={item.item_name}
+          height="140"
+          image={item.image_url}
+        />
+        <IconButton
+          sx={{
+            position: "absolute",
+            color: "black",
+            bottom: "8px",
+            right: "8px",
+            zIndex: 5,
+            backgroundColor: "white",
+            borderRadius: "50%",
+            padding: "8px",
+            "&:hover": {
+              backgroundColor: "white",
+              scale: 1.2,
+            },
+          }}
+          onClick={handleButtonClick}
+        >
+          <ShoppingCartIcon sx={{ fontSize: "30px" }} />
+        </IconButton>
+      </div>
+
       <CardContent sx={{ p: 2 }}>
         <Rating
           name="rating"
@@ -185,13 +162,13 @@ const Item = ({ item, onCardClick }) => {
         <Typography gutterBottom variant="body2" color="text.secondary">
           Available Quantity: {item.quantity}
         </Typography>
-        <Typography gutterBottom variant="body2" color="text.secondary">
+        <Typography mb={-2} variant="body2" color="text.secondary">
           {item.description.length > 100
             ? `${item.description.substring(0, 100)}...`
             : item.description}
         </Typography>
       </CardContent>
-    </Card>*/
+    </Card>
   );
 };
 
