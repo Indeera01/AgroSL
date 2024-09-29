@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import User_Profile from "../Pages/User_Profile";
 import Logo from "../assets/white logo.png";
 import { Badge } from "@mui/material";
-import ChatIcon from "@mui/icons-material/Chat";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -94,6 +93,11 @@ function ResponsiveAppBar() {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Box
+              onClick={() =>
+                navigate(
+                  user ? `/seller_dashboard/${user.user_id}` : "/Sign_In"
+                )
+              }
               component="img"
               src={Logo}
               alt="AgroSL Logo"
@@ -137,13 +141,6 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 1 }} />
 
             <Box sx={{ flexGrow: 0 }}>
-              <Badge badgeContent={0} color="action">
-                <ChatIcon
-                  fontSize="large"
-                  onClick={() => navigate(`/chat_page/${user.user_id}`)}
-                  sx={{ marginRight: 5 }}
-                />
-              </Badge>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />

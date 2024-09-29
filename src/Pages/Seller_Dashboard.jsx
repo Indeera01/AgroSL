@@ -9,10 +9,12 @@ import {
   CircularProgress,
   Card,
   CardContent,
+  Badge,
 } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import axios from "axios";
+import ChatIcon from "@mui/icons-material/Chat";
 
 export default function Seller_Dashboard() {
   const navigate = useNavigate();
@@ -52,6 +54,14 @@ export default function Seller_Dashboard() {
         });
     }
   }, []);
+
+  const handleChatMessagePress = () => {
+    if (!user) {
+      alert("Please log in to chat with seller");
+      return;
+    }
+    navigate(`/chat_page/${user?.user_id}`);
+  };
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -261,6 +271,28 @@ export default function Seller_Dashboard() {
             </>
           )}
         </Box>
+      </Box>
+      <Box
+        position="fixed"
+        bottom="12%"
+        right="4%"
+        zIndex="1000"
+        bgcolor="white"
+        padding={2}
+        borderRadius="50%"
+        boxShadow="0px 8px 10px rgba(0, 0, 0, 0.8)"
+        onClick={() => handleChatMessagePress()}
+        sx={{
+          cursor: "pointer",
+          transition: "transform 0.2s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.2)",
+          },
+        }}
+      >
+        <Badge badgeContent={0} color="error">
+          <ChatIcon fontSize="large" color="black" />
+        </Badge>
       </Box>
     </Box>
   );
