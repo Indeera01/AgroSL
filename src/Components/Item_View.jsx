@@ -125,7 +125,6 @@ const Item_View = () => {
 
         if (response.status === 200) {
           setReviews([...reviews, response.data]);
-
           setReviewText("");
           setRatingValue(0);
         }
@@ -380,11 +379,30 @@ const Item_View = () => {
                 </Grid>
               ))
             ) : (
-              <Typography variant="h6" sx={{ mt: 2 }}>
+              <Typography variant="h6" sx={{ mt: 2, ml: 4 }}>
                 No reviews yet
               </Typography>
             )}
           </Grid>
+
+          {/* Review submission form */}
+          <Stack spacing={2} mt={3}>
+            <TextField
+              label="Write a review"
+              multiline
+              rows={4}
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+            />
+            <Rating
+              name="simple-controlled"
+              value={ratingValue}
+              onChange={(event, newValue) => setRatingValue(newValue)}
+            />
+            <Button variant="contained" onClick={handleReviewSubmit}>
+              Submit Review
+            </Button>
+          </Stack>
         </Box>
       </Box>
     </Box>

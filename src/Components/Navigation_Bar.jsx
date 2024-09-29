@@ -41,21 +41,27 @@ function ResponsiveAppBar() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch logged-in user details from Firebase Authentication
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      axios
-        .get(`http://localhost:5001/users/${currentUser.uid}`)
-        .then((res) => {
+    // Listen for changes in the user's authentication state
+    const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+      if (currentUser) {
+        try {
+          const res = await axios.get(
+            `http://localhost:5001/users/${currentUser.uid}`
+          );
           setUser(res.data);
-          setUpdatedUser(res.data);
           setLoading(false);
-        })
-        .catch((err) => {
+        } catch (err) {
           setError(err.message);
           setLoading(false);
-        });
-    }
+        }
+      } else {
+        setUser(null);
+        setLoading(false);
+      }
+    });
+
+    // Clean up the subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
