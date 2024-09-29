@@ -4,7 +4,13 @@ import { Client as TwilioChatClient } from "twilio-chat";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import Chat from "../Pages/Chat";
-import { Box, Typography, Paper, Avatar } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  Avatar,
+  CircularProgress,
+} from "@mui/material"; // Import CircularProgress
 import Navigation_Bar from "../Components/Navigation_Bar";
 import Navigation_Bar_Seller from "../Components/Navigation_Bar_Seller";
 
@@ -13,9 +19,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: { md: "40%", xs: "90%" },
   bgcolor: "background.paper",
-  // border: "2px solid #000",
   borderRadius: 3,
   boxShadow: 24,
   p: 4,
@@ -28,30 +33,29 @@ const ChatPage = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
-  const [chats, setChats] = useState([]); // Store the chat participants
+  const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState({
     id: " ",
     friendlyName: "Other",
     lastMessage: "",
     author: "",
-  }); // Store the selected user for modal
+  });
   const [user, setUser] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   const { userId } = useParams();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5001/users/${userId}`)
-      .then((res) => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5001/users/${userId}`);
         setUser(res.data);
-        // setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error fetching user:", err);
-        setError("Error fetching user");
-        // setLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    fetchUser();
+  }, [userId]);
 
   const handleOpen = (chat) => {
     setSelectedChat(chat);
@@ -61,67 +65,64 @@ const ChatPage = () => {
 
   useEffect(() => {
     const fetchChatTokenAndInitialize = async () => {
+      if (!user) return; // Ensure user is loaded
+
       try {
+        setLoading(true); // Start loading
         const { data } = await axios.post("http://localhost:5001/token", {
           identity: userId,
           friendlyName: user.first_name,
         });
 
-        // Initialize Twilio Chat Client
         const client = await TwilioChatClient.create(data.token);
         setChatClient(client);
 
-        // Fetch user's channels
         const userChannels = await client.getSubscribedChannels();
         setChannels(userChannels.items);
 
-        // Set to store unique usernames
         const uniqueUserDetails = new Map();
 
-        // Fetch members (participants) from each channel
         for (const channel of userChannels.items) {
           const members = await channel.getMembers();
-          const messages = await channel.getMessages(); // Get messages for the channel
+          const messages = await channel.getMessages();
 
           const lastMessage =
             messages.items.length > 0
               ? messages.items[messages.items.length - 1]
-              : null; // Default to null if no messages exist
+              : null;
 
           for (const member of members) {
             if (member.identity !== userId) {
-              const userDetails = await member.getUser(); // Get user's details
+              const userDetails = await member.getUser();
               const lastMessageBody = lastMessage
                 ? lastMessage.body
-                : "No messages yet"; // Handle cases with no messages
-
-              // If there's a last message, also get the author
+                : "No messages yet";
               const lastMessageAuthor = lastMessage ? lastMessage.author : null;
 
               uniqueUserDetails.set(member.identity, {
                 friendlyName: userDetails.friendlyName,
-                lastMessage: lastMessageBody, // Last message body
-                lastMessageAuthor: lastMessageAuthor, // Last message author
+                lastMessage: lastMessageBody,
+                lastMessageAuthor: lastMessageAuthor,
               });
             }
           }
         }
 
-        // Convert Set to array and update the state
         const chatsArray = Array.from(
           uniqueUserDetails,
           ([id, { friendlyName, lastMessage, lastMessageAuthor }]) => ({
             id,
             friendlyName,
             lastMessage,
-            lastMessageAuthor, // This should now correctly contain the author
+            lastMessageAuthor,
           })
         );
 
         setChats(chatsArray);
-        console.log(chatsArray);
       } catch (error) {
         console.error("Error setting up chat client:", error);
+      } finally {
+        setLoading(false); // End loading, even on error
       }
     };
 
@@ -130,15 +131,12 @@ const ChatPage = () => {
 
   const stringToColor = (string) => {
     let hash = 0;
-    let i;
-
-    for (i = 0; i < string.length; i += 1) {
+    for (let i = 0; i < string.length; i += 1) {
       hash = string.charCodeAt(i) + ((hash << 5) - hash);
     }
 
     let color = "#";
-
-    for (i = 0; i < 3; i += 1) {
+    for (let i = 0; i < 3; i += 1) {
       const value = (hash >> (i * 8)) & 0xff;
       color += `00${value.toString(16)}`.slice(-2);
     }
@@ -168,11 +166,11 @@ const ChatPage = () => {
         height: "100%",
         paddingBottom: "1px",
         minHeight: "100vh",
-        display: "flex", // Add flex display
-        flexDirection: "column", // Ensure content is stacked vertically
+        display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        filter: open ? "blur(4px)" : "none", // Apply blur effect conditionally
-        transition: "filter 0.3s ease", // Smooth transition for blur effect
+        filter: open ? "blur(4px)" : "none",
+        transition: "filter 0.3s ease",
       }}
     >
       {user?.user_type === "seller" ? (
@@ -193,55 +191,57 @@ const ChatPage = () => {
           minHeight: "400px",
         }}
       >
-        <Typography variant="h5" color="primary" gutterBottom>
+        <Typography variant="h5" color="primary" gutterBottom mb={5}>
           Your Chats
         </Typography>
-        <Box
-          sx={{
-            width: "100%",
-            marginTop: "10px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {chats.map((chat, index) => (
-            <Paper
-              key={index}
-              sx={{
-                minWidth: "70%",
-                padding: "10px",
-                margin: "5px 0",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-                display: "flex",
-                flexDirection: "column", // Stack items vertically
-                alignItems: "flex-start", // Align items to the start
-              }}
-              elevation={6}
-              onClick={() => handleOpen(chat)}
-            >
-              <Box display="flex" alignItems="center">
-                <Avatar {...stringAvatar(chat.friendlyName)} />
-                <Typography variant="body1" sx={{ marginLeft: "10px" }}>
-                  {chat.friendlyName}
-                </Typography>
-              </Box>
-              {/* Conditional rendering for the author's name */}
-              <Typography
-                variant="body2"
-                sx={{ color: "gray", marginLeft: "55px" }}
+        {loading ? ( // Conditional rendering for loading state
+          <CircularProgress />
+        ) : (
+          <Box
+            sx={{
+              width: "100%",
+              marginTop: "10px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {chats.map((chat, index) => (
+              <Paper
+                key={index}
+                sx={{
+                  minWidth: "70%",
+                  padding: "10px",
+                  margin: "5px 0",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                }}
+                elevation={6}
+                onClick={() => handleOpen(chat)}
               >
-                {chat.lastMessage
-                  ? `${chat.lastMessageAuthor === userId ? "You" : chat.friendlyName}: ${chat.lastMessage}`
-                  : "No messages yet"}
-              </Typography>
-            </Paper>
-          ))}
-        </Box>
+                <Box display="flex" alignItems="center">
+                  <Avatar {...stringAvatar(chat.friendlyName)} />
+                  <Typography variant="body1" sx={{ marginLeft: "10px" }}>
+                    {chat.friendlyName}
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="body2"
+                  sx={{ color: "gray", marginLeft: "55px" }}
+                >
+                  {chat.lastMessage
+                    ? `${chat.lastMessageAuthor === userId ? "You" : chat.friendlyName}: ${chat.lastMessage}`
+                    : "No messages yet"}
+                </Typography>
+              </Paper>
+            ))}
+          </Box>
+        )}
       </Box>
 
-      {/* Modal to display the Chat component */}
       <Modal
         open={open}
         onClose={handleClose}
