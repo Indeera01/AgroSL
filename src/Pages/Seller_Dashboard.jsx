@@ -11,10 +11,12 @@ import {
   CardContent,
   Badge,
 } from "@mui/material";
+import CardMedia from "@mui/material/CardMedia";
 import { useParams, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import axios from "axios";
 import ChatIcon from "@mui/icons-material/Chat";
+import Reports_seller from "./Reports_seller";
 
 export default function Seller_Dashboard() {
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ export default function Seller_Dashboard() {
     deliveries: 0,
     items: 0,
   });
+  const [store, setStore] = useState(null);
 
   useEffect(() => {
     // Fetch logged-in user details
@@ -54,6 +57,32 @@ export default function Seller_Dashboard() {
         });
     }
   }, []);
+
+  useEffect(() => {
+    // Fetch store name when user data is available
+    if (user?.user_id) {
+      const fetchStore = async (userID) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5001/getseller/${userID}`
+          );
+          setStore(response.data.store_name);
+          console.log("Store", response.data.store_name);
+        } catch (err) {
+          // Handle 404 or any other errors gracefully
+          if (err.response && err.response.status === 404) {
+            setStore(null); // Set Items to empty array if 404 error
+          } else {
+            setError(err.message);
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchStore(user.user_id); // Call the function with user.uid
+    }
+  }, [user]);
 
   const handleChatMessagePress = () => {
     if (!user) {
@@ -147,7 +176,7 @@ export default function Seller_Dashboard() {
             </ListItem>
 
             {/* View Reports Button */}
-            <ListItem
+            {/* <ListItem
               button
               onClick={() => handleNavigation("/reports_seller")}
               sx={{
@@ -163,7 +192,7 @@ export default function Seller_Dashboard() {
               }}
             >
               <ListItemText primary="View Reports" />
-            </ListItem>
+            </ListItem> */}
 
             {/* View Complaints Button */}
             <ListItem
@@ -204,16 +233,97 @@ export default function Seller_Dashboard() {
             <Typography color="error">{error}</Typography>
           ) : (
             <>
-              <Box sx={{ marginBottom: "20px" }}>
-                <Typography
-                  variant="h5"
-                  gutterBottom
-                  sx={{ fontWeight: "600", color: "#333" }}
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{ fontWeight: "600", color: "#333" }}
+              >
+                Welcome, {user.first_name} {user.last_name}
+              </Typography>
+              <Box
+                sx={{
+                  marginBottom: "20px",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <Card
+                  sx={{
+                    width: "25%",
+                    margin: "20px",
+                    backgroundColor: "#f5f5f5",
+                  }}
                 >
-                  Welcome, {user.first_name} {user.last_name}
-                </Typography>
-
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      width: "100%", // Make sure the image takes the full width of the parent Box
+                      height: "auto", // Maintain aspect ratio based on the image's width
+                      objectFit: "cover",
+                    }}
+                    image={
+                      user.image_url
+                        ? user.image_url
+                        : "https://firebasestorage.googleapis.com/v0/b/agrosl-7abb2.appspot.com/o/items%2Fdefault_user.jpg?alt=media&token=9d2d5193-73f0-4ba2-9776-06b91c4ca354"
+                    }
+                    title={user.first_name}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {store}
+                    </Typography>
+                    <Typography variant="h6">
+                      Owner : {user.first_name} {user.last_name}
+                    </Typography>
+                    <Typography variant="h6">Emial : {user.email}</Typography>
+                    <Typography variant="h6">
+                      Mobile Number : {user.mobile_number}
+                    </Typography>
+                  </CardContent>
+                </Card>
                 <Box
+                  sx={{
+                    width: "40%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignContent: "center",
+                  }}
+                >
+                  <Card
+                    sx={{
+                      padding: "10px",
+                      backgroundColor: "#f5f5f5",
+                      height: "200px",
+                      margin: "20px",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography variant="h6" color="primary">
+                        Number of Orders
+                      </Typography>
+                      <Typography variant="h4">{stats.orders}</Typography>
+                    </CardContent>
+                  </Card>
+
+                  <Card
+                    sx={{
+                      padding: "10px",
+                      backgroundColor: "#f5f5f5",
+                      height: "200px",
+                      margin: "20px",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography variant="h6" color="primary">
+                        Number of Items
+                      </Typography>
+                      <Typography variant="h4">{stats.items}</Typography>
+                    </CardContent>
+                  </Card>
+                </Box>
+
+                {/* <Box
                   sx={{
                     padding: "15px",
                     borderRadius: "8px",
@@ -241,33 +351,12 @@ export default function Seller_Dashboard() {
                       {user.mobile_number}
                     </span>
                   </Typography>
-                </Box>
+                </Box> */}
               </Box>
 
               {/* Statistics Section */}
-              <Box sx={{ display: "flex", gap: "20px" }}>
-                <Card
-                  sx={{ flex: 1, padding: "10px", backgroundColor: "#f5f5f5" }}
-                >
-                  <CardContent>
-                    <Typography variant="h6" color="primary">
-                      Number of Orders
-                    </Typography>
-                    <Typography variant="h4">{stats.orders}</Typography>
-                  </CardContent>
-                </Card>
 
-                <Card
-                  sx={{ flex: 1, padding: "10px", backgroundColor: "#f5f5f5" }}
-                >
-                  <CardContent>
-                    <Typography variant="h6" color="primary">
-                      Number of Items
-                    </Typography>
-                    <Typography variant="h4">{stats.items}</Typography>
-                  </CardContent>
-                </Card>
-              </Box>
+              <Reports_seller />
             </>
           )}
         </Box>

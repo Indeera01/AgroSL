@@ -19,18 +19,19 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 
 const Reports_seller = () => {
   const [orders, setOrders] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [store, setStore] = useState(null);
+
   const [highest, setHighest] = useState(null);
   const [lowest, setLowest] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
   const [reportGenerated, setReportGenerated] = useState(false);
+  const [startDate, setStartDate] = useState(dayjs().startOf("month")); // Set to first day of current month
+  const [endDate, setEndDate] = useState(dayjs().endOf("month"));
 
   useEffect(() => {
     // Fetch logged-in user details from Firebase Authentication
@@ -80,32 +81,6 @@ const Reports_seller = () => {
     }
   };
 
-  useEffect(() => {
-    // Fetch store name when user data is available
-    if (user?.user_id) {
-      const fetchStore = async (userID) => {
-        try {
-          const response = await axios.get(
-            `http://localhost:5001/getseller/${userID}`
-          );
-          setStore(response.data.store_name);
-          console.log("Store", response.data.store_name);
-        } catch (err) {
-          // Handle 404 or any other errors gracefully
-          if (err.response && err.response.status === 404) {
-            setStore(null); // Set Items to empty array if 404 error
-          } else {
-            setError(err.message);
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchStore(user.user_id); // Call the function with user.uid
-    }
-  }, [user]);
-
   const pieChartData = orders.reduce((acc, order) => {
     // Find the index of the item by its name
     const itemIndex = acc.findIndex((item) => item.label === order.item_name);
@@ -152,8 +127,18 @@ const Reports_seller = () => {
   }
 
   return (
-    <Box sx={{ backgroundColor: "#e6ffe6" }}>
-      <Navigation_Bar_Seller />
+    <Box
+      sx={{
+        backgroundColor: "white",
+      }}
+    >
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{ fontWeight: "600", color: "black" }}
+      >
+        View your sales
+      </Typography>
       <Grid
         container
         spacing={2}
@@ -202,41 +187,6 @@ const Reports_seller = () => {
           marginTop: "20px",
         }}
       >
-        <Box
-          sx={{
-            width: "25%",
-            margin: "0 auto",
-            marginTop: "20px",
-            backgroundColor: "#4B8412",
-            padding: "2px",
-            marginBottom: "20px",
-          }}
-        >
-          <Card sx={{ backgroundColor: "#DFF2BF" }}>
-            <CardMedia
-              component="img"
-              sx={{
-                width: "100%", // Make sure the image takes the full width of the parent Box
-                height: "auto", // Maintain aspect ratio based on the image's width
-                objectFit: "cover",
-              }}
-              image={
-                user.image_url
-                  ? user.image_url
-                  : "https://firebasestorage.googleapis.com/v0/b/agrosl-7abb2.appspot.com/o/items%2Fdefault_user.jpg?alt=media&token=9d2d5193-73f0-4ba2-9776-06b91c4ca354"
-              }
-              title={user.first_name}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {store}
-              </Typography>
-              <Typography variant="h6">
-                Owner : {user.first_name} {user.last_name}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
         <Grid sx={{ margin: "20px" }}>
           <Box
             sx={{
@@ -244,8 +194,9 @@ const Reports_seller = () => {
               margin: "0 auto",
               marginTop: "20px",
               marginBottom: "20px",
-              padding: "5px",
+              padding: "20px",
               backgroundColor: "#DFF2BF",
+              borderRadius: "10px",
             }}
           >
             <Typography variant="h4" component="div">
@@ -285,7 +236,7 @@ const Reports_seller = () => {
                   <TableRow>
                     <TableCell align="center">Item Name</TableCell>
                     <TableCell align="center">Unit Price</TableCell>
-                    <TableCell align="center">Total Units</TableCell>
+                    <TableCell align="center">Total Units Sold</TableCell>
                     <TableCell align="center">Total Sale(LKR)</TableCell>
                   </TableRow>
                 </TableHead>
