@@ -109,6 +109,11 @@ const Item_View = () => {
   };
 
   const handleReviewSubmit = async () => {
+    if (!user) {
+      alert("Please log in to submit reviews for items");
+      return;
+    }
+
     if (reviewText.trim() && ratingValue > 0) {
       try {
         const response = await axios.post("http://localhost:5001/reviews", {
@@ -137,6 +142,10 @@ const Item_View = () => {
   };
 
   const addToCart = async () => {
+    if (!user) {
+      alert("Please log in to add items to the cart");
+      return;
+    }
     try {
       const buyer_id = user.user_id;
       const item_id = item.item_id;
@@ -151,7 +160,11 @@ const Item_View = () => {
 
       alert("Item Succssfully added to the cart");
     } catch (err) {
-      console.error("Error adding item to cart:", err);
+      if (err.response && err.response.status === 409) {
+        alert("This item is already in the cart");
+      } else {
+        console.error("Error adding item to cart:", err);
+      }
       setError(err.message);
     }
   };
@@ -294,8 +307,8 @@ const Item_View = () => {
           >
             <Box sx={style}>
               <Chat
-                userId={user.user_id}
-                chatPartnerId={item.seller_id}
+                userId={user?.user_id}
+                chatPartnerId={item?.seller_id}
                 partnerName="Seller"
               />
             </Box>

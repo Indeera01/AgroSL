@@ -70,9 +70,8 @@ function ResponsiveAppBar() {
           setCart(response.data);
           console.log("Cart items:", response.data);
         } catch (err) {
-          // Handle 404 or any other errors gracefully
           if (err.response && err.response.status === 404) {
-            setCart([]); // Set cartItems to empty array if 404 error
+            setCart([]);
           } else {
             setError(err.message);
           }
@@ -83,7 +82,7 @@ function ResponsiveAppBar() {
 
       fetchCartItems(user.user_id); // Call the function with user.uid
     }
-  }, [user, cart]);
+  }, [user]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
