@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -6,39 +6,39 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
+import TextField from "@mui/material/TextField";
 
 const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
-  console.log(item);
-  const [quantity, setQuantity] = useState(item.quantity);
+  const [quantity, setQuantity] = useState(item.quantity.toString()); // Store as string initially
   const [error, setError] = useState(null);
 
-  const updateQuantity = async (newQuantity) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:5001/items_update/${item.item_id}`,
-        { quantity: newQuantity }
-      );
-      setQuantity(response.data.quantity);
-      onQuantityChange(item.item_id, response.data.quantity);
-    } catch (err) {
-      console.error("Error updating quantity:", err);
-      setError(err.message);
+  const updateQuantity = async () => {
+    const newQuantity = parseInt(quantity, 10);
+
+    if (!isNaN(newQuantity) && newQuantity > 0) {
+      try {
+        const response = await axios.put(
+          `http://localhost:5001/items_update/${item.item_id}`,
+          { quantity: newQuantity }
+        );
+        setQuantity(response.data.quantity.toString()); // Keep quantity as string
+        onQuantityChange(item.item_id, response.data.quantity);
+      } catch (err) {
+        console.error("Error updating quantity:", err);
+        setError(err.message);
+      }
+    } else {
+      setError("Quantity must be a positive number.");
+      alert("Quantity must be a positive number.");
     }
   };
 
-  const handleAdd = () => {
-    const newQuantity = quantity + 1;
-    updateQuantity(newQuantity);
-  };
+  const handleQuantityChange = (e) => {
+    const value = e.target.value;
 
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      updateQuantity(newQuantity);
-    } else {
-      onRemove(item.item_id);
+    // Allow empty input, or numbers only
+    if (value === "" || /^[0-9\b]+$/.test(value)) {
+      setQuantity(value); // Keep the value as string for now
     }
   };
 
@@ -56,8 +56,8 @@ const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
         alt={item.item_name}
         image={item.image_url}
         sx={{
-          width: "100%", // Make sure the image takes the full width of the parent Box
-          height: "50%", // Maintain aspect ratio based on the image's width
+          width: "100%",
+          height: "50%",
           objectFit: "cover",
         }}
       />
@@ -67,25 +67,30 @@ const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
         </Typography>
         <Typography gutterBottom variant="body2" color="text.secondary">
           Quantity:
-          <Button
+          <TextField
             size="small"
-            disabled={quantity <= 1} // Disable button if quantity is 1
-            onClick={handleDecrease}
-          >
-            <RemoveIcon />
-          </Button>
-          {quantity}
-          <Button size="small" onClick={handleAdd}>
-            <AddIcon />
-          </Button>
+            type="text" // Allow text input to handle empty string
+            value={quantity}
+            onChange={handleQuantityChange}
+            inputProps={{ min: 0 }}
+            sx={{ width: "80px", marginLeft: "10px" }}
+          />
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "center" }}>
         <Button
           size="small"
           variant="contained"
+          color="primary"
+          onClick={updateQuantity}
+        >
+          Update
+        </Button>
+        <Button
+          size="small"
+          variant="contained"
           color="error"
-          onClick={() => onRemove(item.item_id)} // Trigger remove function on button click
+          onClick={() => onRemove(item.item_id)}
         >
           Remove
         </Button>
