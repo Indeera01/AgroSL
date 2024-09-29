@@ -20,7 +20,6 @@ import NotificationIcon from "@mui/icons-material/Notifications";
 import { Badge } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import ChatIcon from "@mui/icons-material/Chat";
 import Logo from "../assets/white logo.png";
 
 const pages = [
@@ -137,7 +136,7 @@ function ResponsiveAppBar() {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Box
-              onClick={() => navigate("/")}
+              onClick={() => navigate(user ? `/Home/${user.user_id}` : "/")}
               component="img"
               src={Logo}
               alt="AgroSL Logo"
@@ -232,12 +231,6 @@ function ResponsiveAppBar() {
                   <ShoppingCartIcon
                     fontSize="large"
                     onClick={() => navigate("/cart")}
-                  />
-                </Badge>
-                <Badge badgeContent={0} color="action">
-                  <ChatIcon
-                    fontSize="large"
-                    onClick={() => navigate(`/chat_page/${user.user_id}`)}
                   />
                 </Badge>
               </Box>
