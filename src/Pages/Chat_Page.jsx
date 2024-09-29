@@ -19,7 +19,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: { md: "40%", xs: "90%" },
+  width: { md: "35%", xs: "90%" },
   bgcolor: "background.paper",
   borderRadius: 3,
   boxShadow: 24,
