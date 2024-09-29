@@ -15,6 +15,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Inventory_item from "../Components/Inventory_item";
+import AddCardIcon from "@mui/icons-material/AddCard";
+import { useNavigate } from "react-router-dom";
 
 const Inventory = () => {
   const [user, setUser] = useState(null);
@@ -22,6 +24,15 @@ const Inventory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [store, setStore] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handlePostItemClick = () => {
+    // Extract seller ID from the current URL
+    const sellerId = window.location.pathname.split("/")[2];
+    // Navigate to the add item page, passing the seller ID
+    navigate(`/add_item/${sellerId}`);
+  };
 
   useEffect(() => {
     // Fetch logged-in user details from Firebase Authentication
@@ -119,62 +130,47 @@ const Inventory = () => {
       <Navigation_Bar_Seller />
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
+          display: "flex", // Make the Box a flex container
+          flexDirection: "column", // Ensure items stack vertically
+          justifyContent: "center", // Center horizontally
+          alignItems: "center", // Align content to the center
           marginTop: "20px",
         }}
       >
         <Box
           sx={{
-            width: "25%",
-            margin: "0 auto",
-            marginTop: "20px",
-            backgroundColor: "#4B8412",
-            padding: "2px",
-          }}
-        >
-          <Card sx={{ backgroundColor: "#DFF2BF" }}>
-            <CardMedia
-              component="img"
-              sx={{
-                width: "100%", // Make sure the image takes the full width of the parent Box
-                height: "auto", // Maintain aspect ratio based on the image's width
-                objectFit: "cover",
-              }}
-              image={
-                user.image_url
-                  ? user.image_url
-                  : "https://firebasestorage.googleapis.com/v0/b/agrosl-7abb2.appspot.com/o/items%2Fdefault_user.jpg?alt=media&token=9d2d5193-73f0-4ba2-9776-06b91c4ca354"
-              }
-              title={user.first_name}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {store}
-              </Typography>
-              <Typography variant="h6">
-                Owner : {user.first_name} {user.last_name}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
-        <Box
-          sx={{
-            width: "50%",
+            width: "90%",
             margin: "0 auto",
             marginTop: "20px",
             marginBottom: "20px",
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "10px",
           }}
         >
-          <Box>
-            <Box>
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ color: "#4B8412", textAlign: "center", margin: "10px" }}
+          >
+            Your Inventory
+          </Typography>
+          <Box
+            sx={{
+              display: "flex", // Make the Box a flex container
+              flexDirection: "row", // Ensure tables are side by side
+              justifyContent: "space-between", // Add space between tables
+              width: "100%", // Set the width of the container
+              gap: "20px", // Adjust gap between the two tables
+            }}
+          >
+            <Box sx={{ width: "75%" }}>
               <TableContainer component={Paper}>
                 <Table
-                  sx={{ minWidth: 650, backgroundColor: "#DFF2BF" }}
+                  sx={{ backgroundColor: "#DFF2BF" }}
                   aria-label="simple table"
                 >
-                  <TableHead sx={{ backgroundColor: "#4B8412" }}>
+                  <TableHead sx={{}}>
                     <TableRow>
                       <TableCell align="center">Item Name</TableCell>
                       <TableCell align="center">Unit price</TableCell>
@@ -202,10 +198,10 @@ const Inventory = () => {
                 </Table>
               </TableContainer>
             </Box>
-            <Box sx={{ marginTop: "40px" }}>
+            <Box sx={{ width: "25%" }}>
               <TableContainer component={Paper}>
                 <Table
-                  sx={{ minWidth: 650, backgroundColor: "#F08080" }}
+                  sx={{ backgroundColor: "#F08080" }}
                   aria-label="simple table"
                 >
                   <TableHead sx={{ backgroundColor: "#E31837" }}>
@@ -242,48 +238,75 @@ const Inventory = () => {
             </Box>
           </Box>
         </Box>
-      </Box>
-      <Box
-        sx={{
-          margin: "20px",
-          backgroundColor: "#4B8412",
-          padding: "10px",
-          display: "inline-flex", // Allows the Box to adjust its size based on content
-          flexDirection: "column", // Ensures that the Grid is contained within the Box
-          width: "auto", // Allows the Box to grow with its content
-          minWidth: 0,
-        }}
-      >
-        <Typography
-          variant="h4"
-          component="div"
-          sx={{ color: "white", textAlign: "center", margin: "20px" }}
+        <Box
+          sx={{
+            margin: "20px",
+            backgroundColor: "white",
+            padding: "10px",
+            display: "inline-flex", // Allows the Box to adjust its size based on content
+            flexDirection: "column", // Ensures that the Grid is contained within the Box
+            width: "auto", // Allows the Box to grow with its content
+            minWidth: 0,
+            borderRadius: "10px",
+            minWidth: "90%",
+          }}
         >
-          Update Inventory
-        </Typography>
-        <Box>
-          <Grid
-            container
-            spacing={2} // Adjust spacing between items as needed
-            direction="row" // Display items in a row
-            alignItems="flex-start" // Align items to the start of the container vertically
-            justifyContent="flex-start" // Align items to the start of the container horizontally
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ color: "#4B8412", textAlign: "center", margin: "20px" }}
           >
-            {items.length > 0 ? (
-              items.map((item) => (
-                <Inventory_item
-                  key={item.item_id}
-                  item={item}
-                  onRemove={handleRemoveItem}
-                  onQuantityChange={handleQuantityChange}
+            Update Your Inventory
+          </Typography>
+          <Box>
+            <Grid
+              container
+              spacing={2} // Adjust spacing between items as needed
+              direction="row" // Display items in a row
+              alignItems="flex-start" // Align items to the start of the container vertically
+              justifyContent="flex-start" // Align items to the start of the container horizontally
+            >
+              {items.length > 0 ? (
+                items.map((item) => (
+                  <Inventory_item
+                    key={item.item_id}
+                    item={item}
+                    onRemove={handleRemoveItem}
+                    onQuantityChange={handleQuantityChange}
+                  />
+                ))
+              ) : (
+                <Typography variant="h4" component="h2">
+                  No items in the Inventory
+                </Typography>
+              )}
+              <Box
+                sx={{
+                  width: "250px",
+                  height: "400px",
+                  backgroundColor: "#98BC74",
+                  margin: "20px",
+                  borderRadius: "5px",
+                  display: "flex", // Flexbox for centering
+                  flexDirection: "column",
+                  alignItems: "center", // Vertical centering
+                  justifyContent: "center", // Horizontal centering
+                  cursor: "pointer",
+                }}
+                onClick={handlePostItemClick}
+              >
+                <AddCardIcon
+                  sx={{
+                    fontSize: "80px", // Adjust size as needed
+                    color: "black", // Optional: Change the color
+                  }}
                 />
-              ))
-            ) : (
-              <Typography variant="h4" component="h2">
-                No items in the cart
-              </Typography>
-            )}
-          </Grid>
+                <Typography variant="h6" color={"black"}>
+                  Add New Product
+                </Typography>
+              </Box>
+            </Grid>
+          </Box>
         </Box>
       </Box>
     </Box>
