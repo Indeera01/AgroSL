@@ -64,7 +64,7 @@ router.get("/users/:user_id", async (req, res) => {
   }
 });
 
-router.post("/users", async (req, res) => {
+/*router.post("/users", async (req, res) => {
   const { user_id, first_name, last_name, mobile_number, email, user_type } =
     req.body;
 
@@ -76,6 +76,42 @@ router.post("/users", async (req, res) => {
           ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
       [user_id, first_name, last_name, mobile_number, email, user_type]
     );
+    console.log("Account stored successfully:", result.rows[0]); // Log the successful insertion
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error inserting user:", error.message); // Log the detailed error message
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+*/
+router.post("/users", async (req, res) => {
+  const {
+    user_id,
+    first_name,
+    last_name,
+    mobile_number,
+    email,
+    user_type,
+    image_url,
+  } = req.body; // Add image_url to the destructuring
+
+  try {
+    // Insert new user into the database including the image_url
+    const result = await pool.query(
+      `INSERT INTO users (
+            user_id, first_name, last_name, mobile_number, email, user_type, image_url
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [
+        user_id,
+        first_name,
+        last_name,
+        mobile_number,
+        email,
+        user_type,
+        image_url,
+      ] // Add image_url to the values array
+    );
+
     console.log("Account stored successfully:", result.rows[0]); // Log the successful insertion
     res.status(201).json(result.rows[0]);
   } catch (error) {
