@@ -672,8 +672,8 @@ const SignUp = () => {
 
         <Typography mt={2}>
           Already have an account?{" "}
-          <Link href="/login" color={"#007bff"}>
-            Log In
+          <Link href="/Sign_In" color={"#000"}>
+            Sign In
           </Link>
         </Typography>
       </Container>
