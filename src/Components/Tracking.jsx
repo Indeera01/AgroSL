@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Stepper,
   Step,
@@ -10,48 +10,52 @@ import {
   Paper,
   Divider,
   Button,
-  Grid,
-  Link
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from '@mui/material';
+  useMediaQuery,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Tracking = () => {
-  const [delivery, setDelivery] = useState(null);
+  const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const nav = useNavigate();
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const handleConfirmDelivery = () => {
     const formatDate = () => {
       const date = new Date();
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
       return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
-  
+
     const confirmationDate = formatDate();
-    axios.patch(`http://localhost:5000/delivery/${delivery[0].id}`, { is_delivered_to_buyer: true, Confirmation: confirmationDate })
+    axios
+      .patch(`http://localhost:5001/delivery/${orderData.delivery_id}`, {
+        is_delivered_to_buyer: true,
+        confirmation_date: confirmationDate,
+      })
       .then((res) => {
-        setDelivery(prevDelivery => {
-          const updatedDelivery = { ...prevDelivery[0], is_delivered_to_buyer: true, Confirmation: confirmationDate };
-          return [updatedDelivery];
-        });
-        alert('Delivery confirmed');
+        setOrderData((prevOrderData) => ({
+          ...prevOrderData,
+          is_delivered_to_buyer: true,
+          confirmation_date: confirmationDate,
+        }));
+        alert("Delivery confirmed");
       })
       .catch((err) => {
-        alert('Error confirming delivery: ' + err.message);
+        alert("Error confirming delivery: " + err.message);
       });
   };
 
   useEffect(() => {
-    axios.get('http://localhost:5001/delivery')
+    axios
+      .get("http://localhost:5001/delivery-by-orderID/ORD0006")
       .then((res) => {
-        setDelivery(res.data);
+        setOrderData(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -67,6 +71,7 @@ const Tracking = () => {
         justifyContent="center"
         alignItems="center"
         height="100vh"
+        p={10}
       >
         <CircularProgress />
       </Box>
@@ -88,7 +93,7 @@ const Tracking = () => {
     );
   }
 
-  if (!delivery) {
+  if (!orderData) {
     return (
       <Box
         display="flex"
@@ -103,26 +108,33 @@ const Tracking = () => {
     );
   }
 
+  // Steps based on the `delivery` table structure
   const steps = [
     {
-      title: 'Seller',
-      description: `${delivery[0].delivered_to_sc ? 'Handed over to the nearby center' : 'Preparing Your Order'}`,
-      isCompleted: delivery[0].delivered_to_sc,
+      title: "Order Processed",
+      description: "The order has been processed.",
+      isCompleted: orderData.delivery_status !== "Delivery Processing",
     },
     {
-      title: `Delivered to nearby Center : ${delivery[0].starting_center_id}`,
-      description: `Time: ${delivery[0].delivered_to_sc ? delivery[0].delivered_to_sc : 'Not yet delivered'}`,
-      isCompleted: delivery[0].delivered_to_sc,
+      title: "Sent to Starting Center",
+      description: orderData.delivered_to_sc
+        ? `Delivered to starting center at ${orderData.delivered_to_sc}`
+        : "Not yet delivered to starting center",
+      isCompleted: orderData.delivered_to_sc !== null,
     },
     {
-      title: `Delivered to the Center near you : ${delivery[0].destination_center_id}`,
-      description: `Time: ${delivery[0].delivered_to_dc ? delivery[0].delivered_to_dc : 'Not yet delivered'}`,
-      isCompleted: delivery[0].delivered_to_dc,
+      title: "Sent to Destination Center",
+      description: orderData.delivered_to_dc
+        ? `Delivered to destination center at ${orderData.delivered_to_dc}`
+        : "Not yet delivered to destination center",
+      isCompleted: orderData.delivered_to_dc !== null,
     },
     {
-      title: 'Delivered to Buyer',
-      description: `Time: ${delivery[0].is_delivered_to_buyer ? delivery[0].Confirmation : 'Not yet delivered'}`,
-      isCompleted: delivery[0].is_delivered_to_buyer,
+      title: "Delivered to Buyer",
+      description: orderData.is_delivered_to_buyer
+        ? `Delivered to buyer on ${orderData.confirmation_date}`
+        : "Not yet delivered to buyer",
+      isCompleted: orderData.is_delivered_to_buyer,
     },
   ];
 
@@ -136,43 +148,108 @@ const Tracking = () => {
   };
 
   return (
-    <Box width={isMobile ? '95%' : '80%'} ml={isMobile ? '2.5%' : '10%'}>
-      <Box p={isMobile ? 1 : 3} display="flex" flexDirection="column" height="auto" bgcolor="yellow">
-        <Typography variant="h6" gutterBottom align='center' mb={4}>
+    <Box
+      width={isMobile ? "95%" : "60%"}
+      ml={isMobile ? "2.5%" : "20%"}
+      mt={8}
+      sx={{
+        backgroundColor: "background.paper",
+        borderRadius: "16px",
+        boxShadow: 3,
+        p: 4,
+      }}
+    >
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Typography
+          variant="h4"
+          gutterBottom
+          align="center"
+          sx={{ fontWeight: "bold", mb: 4 }}
+        >
           Delivery Progress
         </Typography>
-        <Typography variant='body1' gutterBottom mb={4}> 
-          Your Order Delivery Id : {delivery[0].delivery_id}<br/>
-          Your Order Id : {delivery[0].order_id}<br/>
-          Delivery Man : {delivery[0].delivery_rider_id ? delivery[0].delivery_rider_id : 'Not Yet Assigned'}        </Typography>
-        <Stepper activeStep={getCurrentStep()} orientation={isMobile ? 'vertical' : 'horizontal'}>
+
+        <Typography
+          variant="body1"
+          gutterBottom
+          align="center"
+          sx={{ mb: 2, fontSize: "1.2rem" }}
+        >
+          Order ID: <strong>{orderData.order_id}</strong>
+          <br />
+          Delivery ID: <strong>{orderData.delivery_id}</strong>
+        </Typography>
+
+        <Stepper
+          activeStep={getCurrentStep()}
+          alternativeLabel={!isMobile}
+          orientation={isMobile ? "vertical" : "horizontal"}
+          sx={{ width: "100%", mt: 2, mb: 4 }}
+        >
           {steps.map((step, index) => (
             <Step key={index} completed={step.isCompleted}>
-              <StepLabel>
-                <div>
-                  <strong>{step.title}</strong>
-                  <div>{step.description}</div>
-                </div>
+              <StepLabel
+                sx={{
+                  "& .MuiStepLabel-label": {
+                    fontSize: isMobile ? "1rem" : "1.2rem",
+                    fontWeight: step.isCompleted ? "bold" : "normal",
+                  },
+                }}
+              >
+                {step.title}
               </StepLabel>
             </Step>
           ))}
         </Stepper>
-        <Box mt={4}>
-          {steps.map((step, index) => (
-            step.isCompleted ? 
-              <React.Fragment key={index}>
-                <Typography variant="h6">{step.title}</Typography>
-                <Typography variant="h7">{step.description}</Typography>
-                <Divider />
-              </React.Fragment>
-            : null
-          ))}
-        </Box>
+
+        <Paper
+          elevation={2}
+          sx={{
+            p: 3,
+            borderRadius: 4,
+            backgroundColor: "#f5f5f5",
+            width: "100%",
+            mb: 4,
+          }}
+        >
+          {steps.map(
+            (step, index) =>
+              step.isCompleted && (
+                <React.Fragment key={index}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: "1.1rem",
+                      fontWeight: "bold",
+                      color: "primary.main",
+                      mb: 1,
+                    }}
+                  >
+                    {step.title}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {step.description}
+                  </Typography>
+                  {index !== steps.length - 1 && <Divider sx={{ my: 2 }} />}
+                </React.Fragment>
+              )
+          )}
+        </Paper>
+
         <Button
-          variant='contained'
-          sx={{ width: 'auto', borderRadius: 3, marginTop: 5, alignSelf: 'center' }}
+          variant="contained"
+          sx={{
+            px: 4,
+            py: 1.5,
+            borderRadius: 8,
+            fontSize: "1rem",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "primary.dark",
+            },
+          }}
           onClick={handleConfirmDelivery}
-          disabled={delivery[0].is_delivered_to_buyer}
+          disabled={orderData.is_delivered_to_buyer}
         >
           Confirm Delivery
         </Button>

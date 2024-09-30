@@ -98,4 +98,50 @@ router.put("/delivery-status/:deliveryId", async (req, res) => {
   }
 });
 
+router.get("/delivery-by-orderID/:orderID", async (req, res) => {
+  const { orderID } = req.params;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM delivery WHERE order_id = $1",
+      [orderID]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).send("No delivery found for this order");
+    } else {
+      return res.status(200).json(result.rows[0]);
+    }
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send("Server error");
+  }
+});
+
+router.patch("/delivery/:deliveryId", async (req, res) => {
+  const { deliveryId } = req.params;
+  const { is_delivered_to_buyer, confirmation_date } = req.body;
+
+  try {
+    const result = await pool.query(
+      `
+      UPDATE delivery 
+      SET is_delivered_to_buyer = $1, 
+          delivered_to_dc = $2
+      WHERE delivery_id = $3
+      `,
+      [is_delivered_to_buyer, confirmation_date, deliveryId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Delivery not found" });
+    }
+
+    res.status(200).json({ message: "Delivery updated successfully" });
+  } catch (err) {
+    console.error("Error updating delivery:", err);
+    res.status(500).json({ message: "Internal server error", error: err });
+  }
+});
+
 module.exports = router;
