@@ -93,11 +93,18 @@ function ResponsiveAppBar() {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Box
-              onClick={() =>
-                navigate(
-                  user ? `/seller_dashboard/${user.user_id}` : "/Sign_In"
-                )
-              }
+              onClick={() => {
+                if (user) {
+                  const userType = user.user_type; // Assuming userType is a property of user object
+                  if (userType === "seller") {
+                    navigate(`/seller_dashboard/${user.user_id}`);
+                  } else if (userType === "delivery_rider") {
+                    navigate(`/delivery_rider_dashboard/${user.user_id}`); // Example for delivery rider
+                  } else {
+                    navigate("/Sign_In");
+                  }
+                }
+              }}
               component="img"
               src={Logo}
               alt="AgroSL Logo"

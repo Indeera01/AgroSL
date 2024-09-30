@@ -116,18 +116,11 @@ const Tracking = () => {
       isCompleted: orderData.delivery_status !== "Delivery Processing",
     },
     {
-      title: "Sent to Starting Center",
+      title: "Sent to delivery rider",
       description: orderData.delivered_to_sc
-        ? `Delivered to starting center at ${orderData.delivered_to_sc}`
-        : "Not yet delivered to starting center",
+        ? `Delivered to delivery rider ( ${orderData.delivery_rider_id} ) on ${orderData.delivered_to_sc}`
+        : "Not yet delivered to delivery rider",
       isCompleted: orderData.delivered_to_sc !== null,
-    },
-    {
-      title: "Sent to Destination Center",
-      description: orderData.delivered_to_dc
-        ? `Delivered to destination center at ${orderData.delivered_to_dc}`
-        : "Not yet delivered to destination center",
-      isCompleted: orderData.delivered_to_dc !== null,
     },
     {
       title: "Delivered to Buyer",
