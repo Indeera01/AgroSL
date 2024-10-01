@@ -13,7 +13,7 @@ router.get("/deliveries/:riderId", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).send("No deliveries found for this rider");
+      return res.status(200).json([]);
     } else {
       return res.status(200).json(result.rows);
     }
