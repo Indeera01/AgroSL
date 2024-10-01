@@ -7,7 +7,7 @@ router.post("/reviews", async (req, res) => {
   const { item_id, description, rating, buyer_id } = req.body;
 
   const count = await pool.query("SELECT COUNT(*) FROM review");
-  const rid = parseInt(count.rows[0].count) + 1;
+  const rid = parseInt(count.rows[0].count) + 2;
   const review_id = `rew${String(rid).padStart(4, "0")}`;
 
   try {
@@ -16,6 +16,9 @@ router.post("/reviews", async (req, res) => {
         VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [review_id, item_id, description, rating, buyer_id]
     );
+
+    console.log("Review stored successfully:", result.rows[0]);
+    res.status(201).json(result.rows[0]);
   } catch (e) {
     console.error("Error creating review:", e);
     return res.status(500).send("Server error");
