@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import { Box, CircularProgress, Typography, Grid } from "@mui/material";
+import { Box, CircularProgress, Typography, Grid, Badge } from "@mui/material";
 import Navigation_Bar from "./Navigation_Bar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -17,19 +17,9 @@ import Stack from "@mui/material/Stack";
 import Item from "./Item";
 import Modal from "@mui/material/Modal";
 import Chat from "../Pages/Chat";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: { md: "35%", xs: "90%" },
-  bgcolor: "background.paper",
-  // border: "2px solid #000",
-  boxShadow: 24,
-  borderRadius: 3,
-  p: 4,
-};
+import ChatIcon from "@mui/icons-material/Chat";
+import { ClockIcon } from "@mui/x-date-pickers";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Item_View = () => {
   const { id } = useParams();
@@ -47,7 +37,7 @@ const Item_View = () => {
   const user = location.state?.user;
   console.log(user);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -123,8 +113,11 @@ const Item_View = () => {
           buyer_id: user.user_id,
         });
 
-        if (response.status === 200) {
+        if (response.status === 201) {
           setReviews([...reviews, response.data]);
+          // Alert the user about the successful submission
+          alert("Review submitted successfully!");
+          // Clear the input fields
           setReviewText("");
           setRatingValue(0);
         }
@@ -211,8 +204,6 @@ const Item_View = () => {
         height: "100%",
         paddingBottom: "1px",
         minHeight: "100vh",
-        filter: open ? "blur(4px)" : "none", // Apply blur effect conditionally
-        transition: "filter 0.3s ease", // Smooth transition for blur effect
       }}
     >
       <Navigation_Bar />
@@ -297,21 +288,6 @@ const Item_View = () => {
               <Button onClick={handleOpen}>Chat with Seller</Button>
             </Box>
           </Box>
-
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <Chat
-                userId={user?.user_id}
-                chatPartnerId={item?.seller_id}
-                partnerName="Seller"
-              />
-            </Box>
-          </Modal>
         </Box>
       </Box>
       <Box
@@ -405,6 +381,48 @@ const Item_View = () => {
           </Stack>
         </Box>
       </Box>
+      {open && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: "70%",
+            left: "85%",
+            bottom: "20%",
+            transform: "translate(-50%, -50%)",
+            width: { md: "25%", xs: "60%" },
+            height: "50%", // Add height so the chat box has a fixed size
+            maxHeight: "600px", // You can control the max height of the outer box
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: 3,
+            p: 1,
+            display: "flex", // Ensure that the content inside can be flexed
+            flexDirection: "column", // Align the content in a column (close button and chat)
+            overflow: "hidden", // Prevent the outer box itself from scrolling
+          }}
+        >
+          <Button
+            onClick={handleClose}
+            sx={{ alignSelf: "flex-end", color: "red" }}
+          >
+            {" "}
+            {/* Align Close button to the top right */}
+            <CloseIcon />
+          </Button>
+          <Box
+            sx={{
+              flexGrow: 1,
+              overflow: "hidden",
+            }}
+          >
+            <Chat
+              userId={user?.user_id}
+              chatPartnerId={item?.seller_id}
+              partnerName="Seller"
+            />
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
