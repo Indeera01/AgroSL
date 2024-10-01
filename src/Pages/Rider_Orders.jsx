@@ -232,9 +232,9 @@ const Rider_Orders = () => {
           deliver_took: true,
         }); // Update order table
       })
-      /*.then(() => {
-        return axios.delete(`http://localhost:5001/orders/${orderId}`); // Delete order from order table
-      })*/
+      .then(() => {
+        return axios.put(`http://localhost:5001/orders/${orderId}`); // Delete order from order table
+      })
       .then(() => {
         // Refresh the orders list after taking an order
         setOrders(orders.filter((order) => order.order_id !== orderId));

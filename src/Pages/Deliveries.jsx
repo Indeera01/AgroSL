@@ -157,10 +157,6 @@ const Deliveries = () => {
     }
   };
 
-  const handleAddProof = (deliveryId) => {
-    navigate(`/add-proof/${deliveryId}`); // Navigate to the proof of delivery page
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -177,6 +173,7 @@ const Deliveries = () => {
     <div style={styles.container}>
       <Navigation_Bar_Seller />
       <h1 style={styles.header}>Available Deliveries</h1>
+
       {deliveries.map((delivery) => (
         <div key={delivery.order_id} style={styles.card}>
           <div style={styles.cardHeader}>
@@ -196,13 +193,6 @@ const Deliveries = () => {
             <option value="Delivery Shipped">Delivery Shipped</option>
             <option value="Delivered">Delivered</option>
           </select>
-
-          <button
-            onClick={() => handleAddProof(delivery.delivery_id)}
-            style={styles.button}
-          >
-            Add Proof of Delivery
-          </button>
         </div>
       ))}
     </div>

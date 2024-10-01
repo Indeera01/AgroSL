@@ -186,8 +186,8 @@ router.get("/orders", async (req, res) => {
 
     // Execute the query
     const deliveries = await pool.query(
-      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE sent_to_delivery = $1 ',
-      [true]
+      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE sent_to_delivery = $1 and deliver_took=$2 ',
+      [true, false]
     );
 
     // Check if any rows were returned
