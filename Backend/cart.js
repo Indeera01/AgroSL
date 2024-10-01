@@ -39,6 +39,29 @@ router.get("/cart/:userID", async (req, res) => {
   }
 });
 
+// Modify /cart/:userID route to include seller's name
+router.get("/cartWithSellerName/:userID", async (req, res) => {
+  const userID = req.params.userID;
+  try {
+    const result = await pool.query(
+      `SELECT c.*, i.item_name, i.unit_price, s.last_name AS seller_name 
+       FROM shopping_cart c 
+       JOIN item i ON c.item_id = i.item_id
+       JOIN users s ON i.seller_id = s.user_id 
+       WHERE c.buyer_id = $1`,
+      [userID]
+    );
+    if (result.rows.length > 0) {
+      res.status(200).json(result.rows);
+    } else {
+      res.status(404).json({ message: "No cart items found" });
+    }
+  } catch (e) {
+    console.error("Error retrieving cart items:", e);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.delete("/cart/:buyer_id/:item_id", async (req, res) => {
   const { buyer_id, item_id } = req.params;
 
