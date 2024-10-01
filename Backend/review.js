@@ -6,22 +6,28 @@ const router = express.Router();
 router.post("/reviews", async (req, res) => {
   const { item_id, description, rating, buyer_id } = req.body;
 
-  const count = await pool.query("SELECT COUNT(*) FROM review");
-  const rid = parseInt(count.rows[0].count) + 2;
-  const review_id = `rew${String(rid).padStart(4, "0")}`;
+  if (!item_id || !description || !rating || !buyer_id) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
 
   try {
+    const countResult = await pool.query("SELECT COUNT(*) FROM review");
+    const rid = parseInt(countResult.rows[0].count) + 1;
+    const review_id = `rew${String(rid).padStart(4, "0")}`;
+
     const result = await pool.query(
       `INSERT INTO review (review_id, item_id, description, rating, buyer_id)
-        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [review_id, item_id, description, rating, buyer_id]
     );
 
-    console.log("Review stored successfully:", result.rows[0]);
-    res.status(201).json(result.rows[0]);
-  } catch (e) {
-    console.error("Error creating review:", e);
-    return res.status(500).send("Server error");
+    res.status(201).json({
+      message: "Review successfully created",
+      review: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Error creating review:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
