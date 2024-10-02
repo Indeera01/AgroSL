@@ -176,6 +176,8 @@ const ShoppingCart = () => {
                 `http://localhost:5001/cart/${user.user_id}/${item.item_id}`
               );
 
+              console.log(item);
+
               await axios.post(`http://localhost:5001/orders`, {
                 buyer_id: user.user_id,
                 item_id: item.item_id,
@@ -353,7 +355,7 @@ const ShoppingCart = () => {
       }}
     >
       <Navigation_Bar />
-      <Grid container spacing={2} marginTop={5} marginBottom={5}>
+      <Grid container spacing={2} marginTop={"20px"} marginBottom={5}>
         <Grid item xs={12} md={5}>
           {cartItems.length > 0 ? (
             cartItems.map((item) => (

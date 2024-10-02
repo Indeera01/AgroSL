@@ -53,7 +53,7 @@ const Item_View = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, [id]);
+  }, [id, reviews]);
 
   useEffect(() => {
     axios

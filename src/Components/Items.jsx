@@ -114,7 +114,18 @@ const Items = () => {
 
   return (
     <Box ml={5} mt={3}>
-      <Box mb={4} sx={{ display: "flex", gap: 3 }} width={"70%"}>
+      <Box
+        mb={4}
+        sx={{
+          display: "flex",
+          gap: 3,
+          top: "100px",
+          position: "sticky",
+          backgroundColor: "#e6ffe6",
+          zIndex: "1000",
+        }}
+        width={"100%"}
+      >
         <TextField
           label="Search"
           variant="outlined"
