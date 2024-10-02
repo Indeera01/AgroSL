@@ -21,7 +21,7 @@ router.post("/orders", async (req, res) => {
         is_confirmed,
         seller_id,
         order_quantity,
-        true,
+        false,
       ]
     );
 
