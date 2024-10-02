@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Navigation_Bar_Seller from "../Components/Navigation_Bar_Seller";
 
 const Complaints = () => {
   const [complaints, setComplaints] = useState([]);
@@ -52,6 +53,7 @@ const Complaints = () => {
 
   return (
     <div style={styles.container}>
+      <Navigation_Bar_Seller />
       <h1 style={styles.header}>Complaints</h1>
       {complaints.map((complaint_users) => (
         <div key={complaint_users.complaint_id} style={styles.card}>
@@ -96,9 +98,11 @@ const Complaints = () => {
 
 const styles = {
   container: {
-    padding: "40px",
     backgroundColor: "#E6F4EA", // Subtle light background
     fontFamily: "'Roboto', sans-serif",
+    height: "100%",
+    paddingBottom: "1px",
+    minHeight: "100vh",
   },
   header: {
     textAlign: "center",

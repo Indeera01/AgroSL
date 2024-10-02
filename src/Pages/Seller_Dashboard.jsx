@@ -252,13 +252,14 @@ export default function Seller_Dashboard() {
                     width: "25%",
                     margin: "20px",
                     backgroundColor: "#f5f5f5",
+                    height: "440px",
                   }}
                 >
                   <CardMedia
                     component="img"
                     sx={{
                       width: "100%", // Make sure the image takes the full width of the parent Box
-                      height: "auto", // Maintain aspect ratio based on the image's width
+                      height: "250px", // Maintain aspect ratio based on the image's width
                       objectFit: "cover",
                     }}
                     image={
@@ -275,7 +276,7 @@ export default function Seller_Dashboard() {
                     <Typography variant="h6">
                       Owner : {user.first_name} {user.last_name}
                     </Typography>
-                    <Typography variant="h6">Emial : {user.email}</Typography>
+                    <Typography variant="h6">Email : {user.email}</Typography>
                     <Typography variant="h6">
                       Mobile Number : {user.mobile_number}
                     </Typography>

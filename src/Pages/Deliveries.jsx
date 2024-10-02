@@ -116,6 +116,7 @@ const Deliveries = () => {
           `http://localhost:5001/deliveries/${riderId}`
         );
         setDeliveries(res.data);
+        console.log(deliveries);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -165,9 +166,9 @@ const Deliveries = () => {
     return <div>Error: {error}</div>;
   }
 
-  if (deliveries.length === 0) {
-    return <div>No deliveries found</div>;
-  }
+  // if (deliveries.length === 0) {
+  //   return <div>No deliveries found</div>;
+  // }
 
   return (
     <div style={styles.container}>
@@ -201,8 +202,10 @@ const Deliveries = () => {
 
 const styles = {
   container: {
-    padding: "20px",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#E6F4EA",
+    height: "100%",
+    paddingBottom: "1px",
+    minHeight: "100vh",
   },
   header: {
     textAlign: "center",

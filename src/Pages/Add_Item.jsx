@@ -285,9 +285,16 @@ const AddItem = () => {
   };
 
   return (
-    <Box bgcolor={"#f5f5f5"} minHeight={"100vh"} p={3}>
+    <Box
+      sx={{
+        backgroundColor: "#E6F4EA",
+        height: "100%",
+        paddingBottom: "1px",
+        minHeight: "100vh",
+      }}
+    >
       <Navigation_Bar_Seller />
-      <Box mt={4} mb={4}>
+      <Box sx={{ padding: "20px" }}>
         <Typography variant="h4" align="center" gutterBottom>
           Add New Item
         </Typography>

@@ -103,8 +103,10 @@ const Orders = () => {
 
 const styles = {
   container: {
-    padding: "20px",
     backgroundColor: "#E6F4EA",
+    height: "100%",
+    paddingBottom: "1px",
+    minHeight: "100vh",
   },
   header: {
     textAlign: "center",
