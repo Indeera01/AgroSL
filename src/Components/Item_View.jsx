@@ -114,7 +114,18 @@ const Item_View = () => {
         });
 
         if (response.status === 201) {
-          setReviews([...reviews, response.data]);
+          setReviews([
+            ...reviews,
+            {
+              item_id: id,
+              description: reviewText,
+              rating: ratingValue,
+              buyer_id: user.user_id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+            },
+          ]);
+          console.log(response.data);
           // Alert the user about the successful submission
           alert("Review submitted successfully!");
           // Clear the input fields
