@@ -120,7 +120,7 @@ router.post("/users", async (req, res) => {
   }
 });
 
-router.put("/users/:user_id", async (req, res) => {
+/*router.put("/users/:user_id", async (req, res) => {
   const { first_name, last_name, mobile_number, email, address_id, user_type } =
     req.body;
 
@@ -156,6 +156,63 @@ router.put("/users/:user_id", async (req, res) => {
   } catch (e) {
     console.error("Error updating user:", e);
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+*/
+router.put("/users/:user_id", async (req, res) => {
+  const { first_name, last_name, mobile_number, email, user_type, addressup } =
+    req.body;
+
+  try {
+    // Start transaction
+    await pool.query("BEGIN");
+    const count = await pool.query("SELECT COUNT(*) FROM address");
+    const rid = parseInt(count.rows[0].count) + 1;
+    const newAddressId = `add${String(rid).padStart(4, "0")}`;
+    console.log(first_name, last_name, addressup.pb_number, newAddressId);
+    // Insert new address and get the new address ID
+    const addressResult = await pool.query(
+      `INSERT INTO address (address_id,pb_number, street_name, city, district) 
+      VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [
+        newAddressId,
+        addressup.pb_number,
+        addressup.street_name,
+        addressup.city,
+        addressup.district,
+      ]
+    );
+    console.log(addressResult.rows[0]);
+    // Update the user with the new address ID
+    await pool.query(
+      `UPDATE users 
+      SET first_name = $1, last_name = $2, mobile_number = $3, email = $4, address_id = $5 
+      WHERE user_id = $6`,
+      [
+        first_name,
+        last_name,
+        mobile_number,
+        email,
+        newAddressId,
+        req.params.user_id,
+      ]
+    );
+
+    // Commit transaction
+    await pool.query("COMMIT");
+
+    // Fetch the updated user information
+    const userResult = await pool.query(
+      `SELECT * FROM "users" WHERE user_id = $1`,
+      [req.params.user_id]
+    );
+
+    res.status(200).json(userResult.rows[0]);
+  } catch (error) {
+    // Rollback in case of error
+    await pool.query("ROLLBACK");
+    console.log("Error updating user:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 

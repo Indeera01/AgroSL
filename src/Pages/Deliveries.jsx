@@ -181,7 +181,9 @@ const Deliveries = () => {
             <p style={styles.deliveryId}>Delivery ID: {delivery.delivery_id}</p>
           </div>
           <p style={styles.detail}>Order ID: {delivery.order_id}</p>
-          <p style={styles.detail}>Address ID: {delivery.address_id}</p>
+          <p style={styles.detail}>Buyer Name: {delivery.buyer_first_name}</p>
+          <p style={styles.detail}>Ordered Date: {delivery.order_date}</p>
+          <p style={styles.detail}>Address: {delivery.address_id}</p>
 
           <select
             value={delivery.delivery_status}
