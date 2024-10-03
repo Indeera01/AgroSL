@@ -136,7 +136,7 @@
   "addresses": [
     {
       "address_id": "101",
-      "PB_number": "10",
+      "pb_number": "10",
       "street_name": "Main Street",
       "city": "Colombo",
       "district": "Colombo",
@@ -144,7 +144,7 @@
     },
     {
       "address_id": "102",
-      "PB_number": "20",
+      "pb_number": "20",
       "street_name": "Second Street",
       "city": "Kandy",
       "district": "Kandy",
@@ -152,7 +152,7 @@
     },
     {
       "address_id": "103",
-      "PB_number": "30",
+      "pb_number": "30",
       "street_name": "Third Street",
       "city": "Galle",
       "district": "Galle",
