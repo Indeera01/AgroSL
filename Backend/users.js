@@ -274,4 +274,29 @@ router.get("/api/delivery_rider_dashboard/:id/orders", async (req, res) => {
   }
 });
 
+router.delete("/users/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Delete the user with the specified id
+    const result = await pool.query(
+      "DELETE FROM users WHERE user_id = $1 RETURNING *",
+      [id]
+    );
+
+    // Check if the user existed and was deleted
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Respond with the deleted user details
+    res
+      .status(200)
+      .json({ message: "User deleted successfully", user: result.rows[0] });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

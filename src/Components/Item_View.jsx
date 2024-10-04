@@ -429,7 +429,7 @@ const Item_View = () => {
             <Chat
               userId={user?.user_id}
               chatPartnerId={item?.seller_id}
-              partnerName="Seller"
+              partnerName={store}
             />
           </Box>
         </Box>
