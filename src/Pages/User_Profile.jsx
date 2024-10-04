@@ -618,12 +618,50 @@ const User_Profile = ({ onClose }) => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({});
-  const [addressup, setAddress] = useState({
-    pb_number: "",
-    street_name: "",
-    city: "",
-    district: "",
+  const [addressup, setAddressup] = useState({
+    pb_number: "Not set yet",
+    street_name: "Not set yet",
+    city: "Not set yet",
+    district: "Not set yet",
   });
+
+  // useEffect(() => {
+  //   // Fetch logged-in user details from Firebase Authentication
+  //   const currentUser = auth.currentUser;
+  //   if (currentUser) {
+  //     axios
+  //       .get(`http://localhost:5001/users/${currentUser.uid}`)
+  //       .then((res) => {
+  //         setUser(res.data);
+  //         setUpdatedUser(res.data);
+  //         console.log(updatedUser);
+  //         setLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         setError(err.message);
+  //         setLoading(false);
+  //       });
+
+  //     if (updatedUser?.address_id) {
+  //       axios
+  //         .get(`http://localhost:5001/get_user_address/${currentUser.uid}`)
+  //         .then((res) => {
+  //           console.log(res.data);
+  //           setAddressup({
+  //             pb_number: res.data.pb_number,
+  //             street_name: res.data.street_name,
+  //             city: res.data.city,
+  //             district: res.data.district,
+  //           });
+  //           setLoading(false);
+  //         })
+  //         .catch((err) => {
+  //           setError(err.message);
+  //           setLoading(false);
+  //         });
+  //     }
+  //   }
+  // }, []);
 
   useEffect(() => {
     // Fetch logged-in user details from Firebase Authentication
@@ -633,7 +671,7 @@ const User_Profile = ({ onClose }) => {
         .get(`http://localhost:5001/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
-          setUpdatedUser(res.data);
+          setUpdatedUser(res.data); // This will trigger the next useEffect
           setLoading(false);
         })
         .catch((err) => {
@@ -642,6 +680,29 @@ const User_Profile = ({ onClose }) => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    // Only run this effect if updatedUser is set and it has an address_id
+    if (updatedUser?.address_id) {
+      const currentUser = auth.currentUser;
+      axios
+        .get(`http://localhost:5001/get_user_address/${currentUser.uid}`)
+        .then((res) => {
+          console.log(res.data);
+          setAddressup({
+            pb_number: res.data.user_address.pb_number,
+            street_name: res.data.user_address.street_name,
+            city: res.data.user_address.city,
+            district: res.data.user_address.district,
+          });
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
+    }
+  }, [updatedUser]); // Watch for updatedUser changes
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -665,7 +726,7 @@ const User_Profile = ({ onClose }) => {
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
-    setAddress((prevAddress) => ({
+    setAddressup((prevAddress) => ({
       ...prevAddress,
       [name]: value,
     }));
@@ -769,7 +830,10 @@ const User_Profile = ({ onClose }) => {
             <Typography variant="h4" gutterBottom>
               User Profile
             </Typography>
-            <Avatar {...stringAvatar(`${user.first_name} ${user.last_name}`)} />
+            <Avatar
+              {...stringAvatar(`${user.first_name} ${user.last_name}`)}
+              src={user?.image_url}
+            />
           </Box>
           <Divider sx={{ my: 3 }} />
 

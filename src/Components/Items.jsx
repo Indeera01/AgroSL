@@ -119,10 +119,11 @@ const Items = () => {
         sx={{
           display: "flex",
           gap: 3,
-          top: "100px",
+          top: "80px",
           position: "sticky",
           backgroundColor: "#e6ffe6",
           zIndex: "1000",
+          padding: "40px",
         }}
         width={"100%"}
       >
@@ -145,7 +146,7 @@ const Items = () => {
             </MenuItem>
             <MenuItem value="Fruits">Fruits</MenuItem>
             <MenuItem value="Seeds">Seeds</MenuItem>
-            <MenuItem value="Seeds">Vegetables</MenuItem>
+            <MenuItem value="Vegetables">Vegetables</MenuItem>
             <MenuItem value="Animal Products">Animal Products</MenuItem>
           </Select>
         </FormControl>

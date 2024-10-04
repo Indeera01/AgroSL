@@ -299,4 +299,28 @@ router.delete("/users/:id", async (req, res) => {
   }
 });
 
+router.get("/get_user_address/:uid", async (req, res) => {
+  const { uid } = req.params;
+
+  try {
+    // Query the user table to get the user_type for the given uid
+
+    const result = await pool.query(
+      "SELECT * FROM user_address_view WHERE user_id = $1",
+      [uid]
+    );
+
+    if (result.rows.length > 0) {
+      // Send back the user_type if the user is found
+      return res.json({ user_address: result.rows[0] });
+    } else {
+      // If the user is not found, send a 404 response
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (e) {
+    console.error("Error retrieving user_address:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
