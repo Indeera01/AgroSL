@@ -268,7 +268,7 @@ const Rider_Orders = () => {
             <div style={styles.cardHeader}>
               <p style={styles.orderId}>Order ID: {order.order_id}</p>
             </div>
-            <p style={styles.detail}>Buyer ID: {order.buyer_id}</p>
+
             <p style={styles.detail}>Item ID: {order.item_id}</p>
             <p style={styles.detail}>
               Order Date: {new Date(order.order_date).toLocaleDateString()}

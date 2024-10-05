@@ -164,7 +164,7 @@ const Buyer_Orders = () => {
   return (
     <div style={styles.container}>
       <Navigation_Bar_Seller />
-      <h1 style={styles.header}>Orders</h1>
+      <h1 style={styles.header}>Orders on Delivery</h1>
       {orders.length === 0 ? (
         <p>No orders found</p>
       ) : (

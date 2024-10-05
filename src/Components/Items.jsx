@@ -123,7 +123,7 @@ const Items = () => {
           position: "sticky",
           backgroundColor: "#e6ffe6",
           zIndex: "1000",
-          padding: "40px",
+          padding: "15px",
         }}
         width={"100%"}
       >

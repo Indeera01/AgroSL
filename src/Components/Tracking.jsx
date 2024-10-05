@@ -53,7 +53,7 @@ const Tracking = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/delivery-by-orderID/ORD0006")
+      .get("http://localhost:5001/delivery-by-orderID/ORD0007")
       .then((res) => {
         setOrderData(res.data);
         setLoading(false);
