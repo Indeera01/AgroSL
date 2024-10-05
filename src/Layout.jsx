@@ -32,7 +32,7 @@ const Layout = ({ Children }) => {
       sx={{
         backgroundColor: "#e6ffe6",
         height: "100%",
-        paddingBottom: "1px",
+        paddingBottom: "15px",
         minHeight: "100vh",
       }}
     >

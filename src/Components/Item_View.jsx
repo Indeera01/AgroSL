@@ -251,7 +251,7 @@ const Item_View = () => {
           <Typography>{reviews.length} ratings</Typography>
           <Typography variant="h7">{item.description}</Typography>
           <Typography gutterBottom variant="h6" component="div">
-            LKR : {item.unit_price} / unit
+            LKR : {item.unit_price} / {item.unit_type}
           </Typography>
           <Typography gutterBottom variant="h6" component="div">
             Units left: {item.quantity}

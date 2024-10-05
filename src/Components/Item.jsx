@@ -161,7 +161,7 @@ const Item = ({ item, onCardClick }) => {
           {item.item_name}
         </Typography>
         <Typography gutterBottom variant="h6" component="div">
-          LKR : {item.unit_price} / unit
+          LKR : {item.unit_price} / {item.unit_type}
         </Typography>
         <Typography gutterBottom variant="body2" color="text.secondary">
           Available Quantity: {item.quantity}
