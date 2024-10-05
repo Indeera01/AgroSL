@@ -406,10 +406,11 @@ const ShoppingCart = () => {
                   Order Summary
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  SubTotal ({cartItems.length} items) : {calculateTotal()} LKR
+                  SubTotal ({cartItems.length} items) : {calculateTotal()}.00
+                  LKR
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  Delivery Fee : 400 LKR
+                  Delivery Fee : 400.00 LKR
                 </Typography>
                 <Typography variant="h6" gutterBottom>
                   Discount : _
@@ -420,7 +421,7 @@ const ShoppingCart = () => {
                   gutterBottom
                   sx={{ color: "#4B8412" }}
                 >
-                  Total: {calculateTotal() + 400} LKR
+                  Total: {calculateTotal() + 400}.00 LKR
                 </Typography>
                 <CardElement />
               </CardContent>
