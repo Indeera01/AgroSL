@@ -315,6 +315,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import Firebase auth
 import Navigation_Bar_Seller from "../Components/Navigation_Bar_Seller"; // Import the Navigation_Bar_Seller component
+import { Box } from "@mui/material";
 
 const ComplaintPage = () => {
   const location = useLocation();
@@ -375,8 +376,14 @@ const ComplaintPage = () => {
   };
 
   return (
-    <>
-      {/* Add Navigation_Bar_Seller at the top */}
+    <Box
+      sx={{
+        backgroundColor: "#e6ffe6",
+        height: "100%",
+        paddingBottom: "1px",
+        minHeight: "100vh",
+      }}
+    >
       <Navigation_Bar_Seller />
 
       <div style={styles.container}>
@@ -422,7 +429,7 @@ const ComplaintPage = () => {
           </button>
         </form>
       </div>
-    </>
+    </Box>
   );
 };
 
@@ -435,6 +442,7 @@ const styles = {
     backgroundColor: "#F9F9F9",
     borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    marginTop: "20px",
   },
   header: {
     textAlign: "center",

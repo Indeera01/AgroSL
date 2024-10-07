@@ -195,8 +195,10 @@ const Buyer_Orders = () => {
 };
 const styles = {
   container: {
-    padding: "20px",
-    backgroundColor: "#E6F4EA",
+    backgroundColor: "#e6ffe6",
+    height: "100%",
+    paddingBottom: "1px",
+    minHeight: "100vh",
   },
   header: {
     textAlign: "center",
