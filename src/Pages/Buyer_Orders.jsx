@@ -130,13 +130,13 @@ const Buyer_Orders = () => {
         const data = response.data;
 
         // Filter orders where sent_to_delivery is false (if needed)
-        const filteredData = data.filter((order) => order.sent_to_delivery);
-        console.log("Filtered orders: ", filteredData);
+        // const filteredData = data.filter((order) => order.sent_to_delivery);
+        // console.log("Filtered orders: ", filteredData);
 
         // Sort by order_id (optional sorting, based on your data structure)
-        filteredData.sort((a, b) => b.order_id.localeCompare(a.order_id));
+        data.sort((a, b) => b.order_id.localeCompare(a.order_id));
 
-        setOrders(filteredData);
+        setOrders(data);
       } catch (error) {
         console.error("Error fetching orders: ", error);
       }
@@ -161,6 +161,11 @@ const Buyer_Orders = () => {
     });
   };
 
+  // Function to handle track order button click
+  const handleTrackOrder = (order_id) => {
+    navigate(`/home/tracking/${order_id}`);
+  };
+
   return (
     <div style={styles.container}>
       <Navigation_Bar_Seller />
@@ -173,26 +178,37 @@ const Buyer_Orders = () => {
             <div style={styles.cardHeader}>
               <p style={styles.orderId}>Order ID: {order.order_id}</p>
             </div>
-            <p style={styles.detail}>Seller ID: {order.seller_id}</p>
+            <p style={styles.detail}>Seller Name: {order.seller_name}</p>
             <p style={styles.detail}>Item ID: {order.item_id}</p>
             <p style={styles.detail}>
               Order Date: {formatDate(order.order_date)}
             </p>
             <p style={styles.detail}>Quantity: {order.order_quantity}</p>
 
-            {/* Add Complain button */}
-            <button
-              style={styles.complainButton}
-              onClick={() => handleComplain(order)}
-            >
-              Complain
-            </button>
+            <div style={styles.buttonContainer}>
+              {/* Add Complain button */}
+              <button
+                style={styles.complainButton}
+                onClick={() => handleComplain(order)}
+              >
+                Complain
+              </button>
+
+              {/* Add Track Order button */}
+              <button
+                style={styles.trackOrderButton}
+                onClick={() => handleTrackOrder(order.order_id)}
+              >
+                Track Order
+              </button>
+            </div>
           </div>
         ))
       )}
     </div>
   );
 };
+
 const styles = {
   container: {
     backgroundColor: "#e6ffe6",
@@ -214,6 +230,7 @@ const styles = {
     borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    position: "relative", // Ensure relative positioning for button positioning
   },
   cardHeader: {
     display: "flex",
@@ -230,18 +247,28 @@ const styles = {
     color: "#777",
     marginBottom: "5px",
   },
-  complainButton: {
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "space-between", // Align buttons apart
     marginTop: "10px",
+  },
+  complainButton: {
     padding: "8px 16px",
     backgroundColor: "#ff6b6b",
     color: "#fff",
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
-    transition: "background-color 0.3s ease", // Smooth transition effect
+    transition: "background-color 0.3s ease",
   },
-  complainButtonHover: {
-    backgroundColor: "#ff554a", // Change the color on hover
+  trackOrderButton: {
+    padding: "8px 16px",
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    marginLeft: "auto", // Push the Track Order button to the right
   },
 };
 

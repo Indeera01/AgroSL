@@ -186,7 +186,7 @@ router.get("/orders", async (req, res) => {
 
     // Execute the query
     const deliveries = await pool.query(
-      'SELECT order_id, buyer_id, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order" WHERE sent_to_delivery = $1 and deliver_took=$2 ',
+      'SELECT order_id, buyer_id,buyer_name,seller_name,buyer_address,seller_address, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order_with_addresses" WHERE sent_to_delivery = $1 and deliver_took=$2 ',
       [true, false]
     );
 
@@ -222,9 +222,13 @@ router.get("/orders_for_riders", async (req, res) => {
 router.get("/api/orders_for_buyers/:buyer_id", async (req, res) => {
   const { buyer_id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM "order" WHERE buyer_id=$1', [
-      buyer_id,
-    ]);
+    // const result = await pool.query('SELECT * FROM "order" WHERE buyer_id=$1', [
+    //   buyer_id,
+    // ]);
+    const result = await pool.query(
+      'SELECT order_id, buyer_id,buyer_name,seller_name,buyer_address,seller_address, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order_with_addresses" WHERE buyer_id=$1 ',
+      [buyer_id]
+    );
     res.json(result.rows);
   } catch (err) {
     console.error(err.message);
