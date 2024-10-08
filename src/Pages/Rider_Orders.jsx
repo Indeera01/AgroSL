@@ -269,14 +269,10 @@ const Rider_Orders = () => {
               <p style={styles.orderId}>Order ID: {order.order_id}</p>
             </div>
 
-            <p style={styles.detail}>Item ID: {order.item_id}</p>
-            <p style={styles.detail}>
-              Order Date: {new Date(order.order_date).toLocaleDateString()}
-            </p>
-            <p style={styles.detail}>Quantity: {order.order_quantity}</p>
-            <p style={styles.detail}>
-              Is Confirmed: {order.is_confirmed ? "Yes" : "No"}
-            </p>
+            <p style={styles.detail}>Seller Name: {order.seller_name}</p>
+            <p style={styles.detail}>Buyer Name: {order.buyer_name}</p>
+            <p style={styles.detail}>From: {order.seller_address}</p>
+            <p style={styles.detail}>To: {order.buyer_address}</p>
             <button
               style={styles.takeButton}
               onClick={() => handleTakeOrder(order.order_id)}

@@ -181,9 +181,10 @@ const Deliveries = () => {
             <p style={styles.deliveryId}>Delivery ID: {delivery.delivery_id}</p>
           </div>
           <p style={styles.detail}>Order ID: {delivery.order_id}</p>
-          <p style={styles.detail}>Buyer Name: {delivery.buyer_first_name}</p>
+          <p style={styles.detail}>Buyer Name: {delivery.buyer_name}</p>
           <p style={styles.detail}>Ordered Date: {delivery.order_date}</p>
-          <p style={styles.detail}>Address: {delivery.address_id}</p>
+          <p style={styles.detail}>From: {delivery.seller_address}</p>
+          <p style={styles.detail}>To: {delivery.buyer_address}</p>
 
           <select
             value={delivery.delivery_status}
