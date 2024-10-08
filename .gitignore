@@ -27,3 +27,8 @@ Backend/db.js
 firebase.js
 /.expo
 .env
+.babelrc
+jest.config.cjs
+jest.setup.js
+coverage
+src/Components/__test__/
