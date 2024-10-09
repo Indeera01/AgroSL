@@ -38,7 +38,7 @@ const ShoppingCart = () => {
     console.log(currentUser);
     if (currentUser) {
       axios
-        .get(`http://localhost:5001/users/${currentUser.uid}`)
+        .get(`http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           console.log("User data:", res.data);
@@ -57,7 +57,7 @@ const ShoppingCart = () => {
       const fetchCartItems = async (userID) => {
         try {
           const response = await axios.get(
-            `http://localhost:5001/cart/${userID}`
+            `http://backend-rho-three-58.vercel.app/cart/${userID}`
           );
           setCartItems(response.data);
           console.log("Cart items:", response.data);
@@ -84,7 +84,9 @@ const ShoppingCart = () => {
 
   const handleRemoveItem = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/cart/${user.user_id}/${id}`);
+      await axios.delete(
+        `http://backend-rho-three-58.vercel.app/cart/${user.user_id}/${id}`
+      );
       setCartItems(cartItems.filter((item) => item.item_id !== id));
     } catch (err) {
       console.error("Error removing item:", err);
@@ -126,7 +128,7 @@ const ShoppingCart = () => {
     try {
       const chargeAmount = Math.round(calculateTotal() * 100); // Total amount in cents
       const chargeResponse = await axios.post(
-        "http://localhost:5001/create-charge",
+        "http://backend-rho-three-58.vercel.app/create-charge",
         {
           amount: chargeAmount,
         }
@@ -141,7 +143,7 @@ const ShoppingCart = () => {
 
       // Step 1: Create payment intent and get clientSecret + transferData
       const response = await axios.post(
-        "http://localhost:5001/create-payment-intent",
+        "http://backend-rho-three-58.vercel.app/create-payment-intent",
         {
           user_id: user.user_id,
           cartItems: cartItems, // Include cart items in the request body
@@ -162,10 +164,13 @@ const ShoppingCart = () => {
       } else {
         if (result.paymentIntent.status === "succeeded") {
           // Step 3: Transfer payment to sellers
-          await axios.post("http://localhost:5001/transfer-payment", {
-            paymentIntentId: result.paymentIntent.id,
-            transferData,
-          });
+          await axios.post(
+            "http://backend-rho-three-58.vercel.app/transfer-payment",
+            {
+              paymentIntentId: result.paymentIntent.id,
+              transferData,
+            }
+          );
 
           console.log("Payment and transfer successful!");
           alert("Order placed succssesfully!");
@@ -173,18 +178,21 @@ const ShoppingCart = () => {
           try {
             for (const item of cartItems) {
               await axios.delete(
-                `http://localhost:5001/cart/${user.user_id}/${item.item_id}`
+                `http://backend-rho-three-58.vercel.app/cart/${user.user_id}/${item.item_id}`
               );
 
               console.log(item);
 
-              await axios.post(`http://localhost:5001/orders`, {
-                buyer_id: user.user_id,
-                item_id: item.item_id,
-                is_confirmed: true,
-                seller_id: item.seller_id,
-                order_quantity: item.quantity,
-              });
+              await axios.post(
+                `http://backend-rho-three-58.vercel.app/orders`,
+                {
+                  buyer_id: user.user_id,
+                  item_id: item.item_id,
+                  is_confirmed: true,
+                  seller_id: item.seller_id,
+                  order_quantity: item.quantity,
+                }
+              );
             }
             // Optionally clear cartItems state
             setCartItems([]);
@@ -205,7 +213,7 @@ const ShoppingCart = () => {
   //   try {
   //     // Step 1: Create checkout session
   //     const response = await axios.post(
-  //       "http://localhost:5001/create-checkout-session",
+  //       "http://backend-rho-three-58.vercel.app/create-checkout-session",
   //       {
   //         user_id: user.user_id,
   //         cartItems: cartItems, // Include cart items in the request body

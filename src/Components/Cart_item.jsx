@@ -21,7 +21,7 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
     const fetchItem = async (itemID) => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/items/${itemID}`
+          `http://backend-rho-three-58.vercel.app/items/${itemID}`
         );
         setFullItem(response.data[0]);
         console.log("Item:", response.data[0]);
@@ -39,7 +39,7 @@ const Cart_item = ({ item, onRemove, onQuantityChange }) => {
   const updateQuantity = async (newQuantity) => {
     try {
       const response = await axios.put(
-        `http://localhost:5001/cart/${item.buyer_id}/${item.item_id}`,
+        `http://backend-rho-three-58.vercel.app/cart/${item.buyer_id}/${item.item_id}`,
         { quantity: newQuantity }
       );
       setQuantity(response.data.quantity);
