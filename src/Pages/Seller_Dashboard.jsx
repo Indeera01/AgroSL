@@ -36,7 +36,7 @@ export default function Seller_Dashboard() {
     const currentUser = auth.currentUser;
     if (currentUser) {
       axios
-        .get(`http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
+        .get(`http://localhost:5001/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setLoading(false);
@@ -48,9 +48,7 @@ export default function Seller_Dashboard() {
 
       // Fetch seller statistics (e.g., number of orders, deliveries, and items)
       axios
-        .get(
-          `http://backend-rho-three-58.vercel.app/seller/stats/${currentUser.uid}`
-        )
+        .get(`http://localhost:5001/seller/stats/${currentUser.uid}`)
         .then((res) => {
           setStats(res.data);
         })
@@ -66,7 +64,7 @@ export default function Seller_Dashboard() {
       const fetchStore = async (userID) => {
         try {
           const response = await axios.get(
-            `http://backend-rho-three-58.vercel.app/getseller/${userID}`
+            `http://localhost:5001/getseller/${userID}`
           );
           setStore(response.data.store_name);
           console.log("Store", response.data.store_name);

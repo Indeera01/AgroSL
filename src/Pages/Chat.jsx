@@ -34,9 +34,7 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(
-          `http://backend-rho-three-58.vercel.app/users/${userId}`
-        );
+        const res = await axios.get(`http://localhost:5001/users/${userId}`);
         setUser(res.data);
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -52,7 +50,7 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
 
       try {
         const { data: tokenData } = await axios.post(
-          "http://backend-rho-three-58.vercel.app/token",
+          "http://localhost:5001/token",
           {
             identity: userId,
             friendlyName: user.first_name,
@@ -62,7 +60,7 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
         const client = await TwilioConversationsClient.create(tokenData.token);
 
         const { data: convData } = await axios.post(
-          "http://backend-rho-three-58.vercel.app/conversation",
+          "http://localhost:5001/conversation",
           {
             user1Id: userId,
             user2Id: chatPartnerId,

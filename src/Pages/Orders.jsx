@@ -11,7 +11,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          `http://backend-rho-three-58.vercel.app/api/orders?seller_id=${seller_id}`
+          `http://localhost:5001/api/orders?seller_id=${seller_id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -33,16 +33,13 @@ const Orders = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await fetch(
-        `http://backend-rho-three-58.vercel.app/api/orders/${orderId}/status`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: newStatus }),
-        }
-      );
+      await fetch(`http://localhost:5001/api/orders/${orderId}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.order_id === orderId
@@ -57,16 +54,13 @@ const Orders = () => {
 
   const handleSendToDelivery = async (orderId) => {
     try {
-      await fetch(
-        `http://backend-rho-three-58.vercel.app/api/orders/${orderId}/send`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ sent_to_delivery: true }),
-        }
-      );
+      await fetch(`http://localhost:5001/api/orders/${orderId}/send`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sent_to_delivery: true }),
+      });
       setOrders(
         (prevOrders) => prevOrders.filter((order) => order.order_id !== orderId) // Remove the order after sending it to delivery
       );
