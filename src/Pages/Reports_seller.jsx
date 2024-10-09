@@ -39,7 +39,7 @@ const Reports_seller = () => {
     console.log(currentUser);
     if (currentUser) {
       axios
-        .get(`http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
+        .get(`http://localhost:5001/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           console.log("User data:", res.data);
@@ -60,7 +60,7 @@ const Reports_seller = () => {
 
     try {
       const response = await axios.get(
-        `http://backend-rho-three-58.vercel.app/seller_orders/${user.user_id}`,
+        `http://localhost:5001/seller_orders/${user.user_id}`,
         {
           params: {
             startDate: startDate.format("YYYY-MM-DD"), // Formatting date to send to the backend

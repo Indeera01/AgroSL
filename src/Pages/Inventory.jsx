@@ -40,7 +40,7 @@ const Inventory = () => {
     console.log(currentUser);
     if (currentUser) {
       axios
-        .get(`http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
+        .get(`http://localhost:5001/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           console.log("User data:", res.data);
@@ -59,7 +59,7 @@ const Inventory = () => {
       const fetchItems = async (userID) => {
         try {
           const response = await axios.get(
-            `http://backend-rho-three-58.vercel.app/items_seller/${userID}`
+            `http://localhost:5001/items_seller/${userID}`
           );
           setItems(response.data);
           console.log("Cart items:", response.data);
@@ -85,7 +85,7 @@ const Inventory = () => {
       const fetchStore = async (userID) => {
         try {
           const response = await axios.get(
-            `http://backend-rho-three-58.vercel.app/getseller/${userID}`
+            `http://localhost:5001/getseller/${userID}`
           );
           setStore(response.data.store_name);
           console.log("Store", response.data.store_name);
@@ -107,7 +107,7 @@ const Inventory = () => {
 
   const handleRemoveItem = async (id) => {
     try {
-      await axios.delete(`http://backend-rho-three-58.vercel.app/items/${id}`);
+      await axios.delete(`http://localhost:5001/items/${id}`);
       setItems(items.filter((item) => item.item_id !== id));
     } catch (err) {
       console.error("Error removing item:", err);
