@@ -32,7 +32,7 @@ const Items = () => {
     if (currentUser) {
       console.log(searchTerm, category, rating);
       axios
-        .get(`http://localhost:5001/users/${currentUser.uid}`)
+        .get(`http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setLoading(false);
@@ -46,7 +46,7 @@ const Items = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/items")
+      .get("http://backend-rho-three-58.vercel.app/items")
       .then((res) => {
         setItems(res.data);
         setFilteredItems(res.data);

@@ -34,10 +34,13 @@ const Tracking = () => {
 
     const confirmationDate = formatDate();
     axios
-      .patch(`http://localhost:5001/delivery/${orderData.delivery_id}`, {
-        is_delivered_to_buyer: true,
-        confirmation_date: confirmationDate,
-      })
+      .patch(
+        `http://backend-rho-three-58.vercel.app/delivery/${orderData.delivery_id}`,
+        {
+          is_delivered_to_buyer: true,
+          confirmation_date: confirmationDate,
+        }
+      )
       .then((res) => {
         setOrderData((prevOrderData) => ({
           ...prevOrderData,
@@ -53,7 +56,7 @@ const Tracking = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/delivery-by-orderID/ORD0007")
+      .get("http://backend-rho-three-58.vercel.app/delivery-by-orderID/ORD0007")
       .then((res) => {
         setOrderData(res.data);
         setLoading(false);

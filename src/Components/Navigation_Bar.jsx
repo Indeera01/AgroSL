@@ -46,7 +46,7 @@ function ResponsiveAppBar() {
       if (currentUser) {
         try {
           const res = await axios.get(
-            `http://localhost:5001/users/${currentUser.uid}`
+            `http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`
           );
           setUser(res.data);
           setLoading(false);
@@ -70,7 +70,7 @@ function ResponsiveAppBar() {
       const fetchCartItems = async (userID) => {
         try {
           const response = await axios.get(
-            `http://localhost:5001/cart/${userID}`
+            `http://backend-rho-three-58.vercel.app/cart/${userID}`
           );
           setCart(response.data);
           console.log("Cart items:", response.data);

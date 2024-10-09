@@ -27,7 +27,7 @@ const AddProof = () => {
     if (firebaseUrl) {
       try {
         await axios.post(
-          `http://localhost:5001/deliveries/${deliveryId}/proof`,
+          `http://backend-rho-three-58.vercel.app/deliveries/${deliveryId}/proof`,
           {
             signature_url: firebaseUrl,
           }
@@ -41,7 +41,7 @@ const AddProof = () => {
 
   const handleStatusChange = async (deliveryId, newStatus) => {
     try {
-      await fetch(`http://localhost:5001/delivery-status/${deliveryId}`, {
+      await fetch(`http://backend-rho-three-58.vercel.app/delivery-status/${deliveryId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const AddProof = () => {
 
         try {
           const res = await axios.post(
-            `http://localhost:5001/upload-signature/${deliveryId}`,
+            `http://backend-rho-three-58.vercel.app/upload-signature/${deliveryId}`,
             formData,
             {
               headers: {
@@ -156,7 +156,7 @@ const SubmitSignature = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5001/deliveries/${deliveryId}/proof`, // Your API endpoint
+        `http://backend-rho-three-58.vercel.app/deliveries/${deliveryId}/proof`, // Your API endpoint
         formData,
         {
           headers: {

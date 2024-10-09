@@ -60,7 +60,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/user_counts`)
+      .get(`http://backend-rho-three-58.vercel.app/user_counts`)
       .then((res) => {
         console.log(res.data);
         setUserCounts({
@@ -79,7 +79,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/item_counts`)
+      .get(`http://backend-rho-three-58.vercel.app/item_counts`)
       .then((res) => {
         console.log(res.data);
         setItemCounts({
@@ -98,7 +98,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/sales_stats`)
+      .get(`http://backend-rho-three-58.vercel.app/sales_stats`)
       .then((res) => {
         console.log(res.data);
         setSalesStats({
@@ -149,7 +149,7 @@ const Admin_Page = () => {
       alert("Select at least one user type!");
     } else {
       axios
-        .get("http://localhost:5001/users_by_type", {
+        .get("http://backend-rho-three-58.vercel.app/users_by_type", {
           params: { types: types.join(",") },
         })
         .then((res) => {
@@ -168,7 +168,7 @@ const Admin_Page = () => {
 
   const handleComplaints = () => {
     axios
-      .get("http://localhost:5001/all_complaints_for_admins")
+      .get("http://backend-rho-three-58.vercel.app/all_complaints_for_admins")
       .then((res) => {
         setComplaints(res.data);
         setLoading(false);

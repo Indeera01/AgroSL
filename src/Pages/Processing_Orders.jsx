@@ -10,7 +10,7 @@ const Processing_Orders = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5001/api/processingorders?seller_id=${seller_id}`
+          `http://backend-rho-three-58.vercel.app/api/processingorders?seller_id=${seller_id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -37,7 +37,7 @@ const Processing_Orders = () => {
   const handleSendToDelivery = async (orderId) => {
     try {
       await fetch(
-        `http://localhost:5001/api/processingorders/${orderId}/send`,
+        `http://backend-rho-three-58.vercel.app/api/processingorders/${orderId}/send`,
         {
           method: "PUT",
           headers: {
