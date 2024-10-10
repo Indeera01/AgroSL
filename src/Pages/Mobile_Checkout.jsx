@@ -8,11 +8,10 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import Navigation_Bar from "../Components/Navigation_Bar";
 import axios from "axios";
 import Cart_item from "../Components/Cart_item";
 import { auth } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import emptyImage from "../assets/empty cart.jpg";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -32,32 +31,15 @@ const Mobile_Checkout = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  useEffect(() => {
-    // Fetch logged-in user details from Firebase Authentication
-    const currentUser = auth.currentUser;
-    console.log(currentUser);
-    if (currentUser) {
-      axios
-        .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
-        .then((res) => {
-          setUser(res.data);
-          console.log("User data:", res.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError(err.message);
-          setLoading(false);
-        });
-    }
-  }, []); // Empty dependency array, runs once on mount
+  const { user_id } = useParams();
 
   useEffect(() => {
     // Fetch cart items when user data is available
-    if (user?.user_id) {
-      const fetchCartItems = async (userID) => {
+    if (user_id) {
+      const fetchCartItems = async (user_id) => {
         try {
           const response = await axios.get(
-            `https://backend-rho-three-58.vercel.app/cart/${userID}`
+            `https://backend-rho-three-58.vercel.app/cart/${user_id}`
           );
           setCartItems(response.data);
           console.log("Cart items:", response.data);
@@ -75,31 +57,8 @@ const Mobile_Checkout = () => {
 
       fetchCartItems(user.user_id); // Call the function with user.uid
     }
-  }, [user]); // Dependency array includes user
+  }, [user_id]); // Dependency array includes user
   //added by damitha
-
-  const handleViewPastOrders = () => {
-    navigate(`/orders_for_buyer/${user.user_id}`); // Use template string to navigate
-  };
-
-  const handleRemoveItem = async (id) => {
-    try {
-      await axios.delete(
-        `https://backend-rho-three-58.vercel.app/cart/${user.user_id}/${id}`
-      );
-      setCartItems(cartItems.filter((item) => item.item_id !== id));
-    } catch (err) {
-      console.error("Error removing item:", err);
-    }
-  };
-
-  const handleQuantityChange = (itemId, newQuantity) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.item_id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
 
   const calculateTotal = () => {
     console.log("Calculating total with cartItems:", cartItems);
@@ -107,10 +66,6 @@ const Mobile_Checkout = () => {
       (total, item) => total + item.price * item.quantity,
       0
     );
-  };
-
-  const handleContinueShopping = () => {
-    navigate(-1); // Navigate to the previous page
   };
 
   if (loading) return <div>Loading...</div>;
