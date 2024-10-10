@@ -97,7 +97,7 @@ const Mobile_Checkout = () => {
       const response = await axios.post(
         "https://backend-rho-three-58.vercel.app/create-payment-intent",
         {
-          user_id: user.user_id,
+          user_id: user_id,
           cartItems: cartItems, // Include cart items in the request body
         }
       );
@@ -126,32 +126,7 @@ const Mobile_Checkout = () => {
 
           console.log("Payment and transfer successful!");
           alert("Order placed succssesfully!");
-
-          try {
-            for (const item of cartItems) {
-              await axios.delete(
-                `https://backend-rho-three-58.vercel.app/cart/${user.user_id}/${item.item_id}`
-              );
-
-              console.log(item);
-
-              await axios.post(
-                `https://backend-rho-three-58.vercel.app/orders`,
-                {
-                  buyer_id: user.user_id,
-                  item_id: item.item_id,
-                  is_confirmed: true,
-                  seller_id: item.seller_id,
-                  order_quantity: item.quantity,
-                }
-              );
-            }
-            // Optionally clear cartItems state
-            setCartItems([]);
-            console.log("Payment and transfer successful, cart cleared!");
-          } catch (deleteError) {
-            console.error("Error deleting cart items:", deleteError);
-          }
+          navigate("/Success");
         }
       }
     } catch (error) {
@@ -166,24 +141,25 @@ const Mobile_Checkout = () => {
         height: "100%",
         paddingBottom: "1px",
         minHeight: "100vh",
+        paddingTop: "1px",
       }}
     >
       <Card sx={{ padding: 2, backgroundColor: "white", margin: "20px" }}>
         <CardContent>
-          <Typography variant="h4" gutterBottom sx={{ color: "#4B8412" }}>
+          <Typography variant="h5" gutterBottom sx={{ color: "#4B8412" }}>
             Order Summary
           </Typography>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h7" gutterBottom>
             SubTotal ({cartItems.length} items) : {calculateTotal()}.00 LKR
           </Typography>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h7" gutterBottom>
             Delivery Fee : 400.00 LKR
           </Typography>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h7" gutterBottom>
             Discount : _
           </Typography>
           <Typography
-            variant="h5"
+            variant="h6"
             align="center"
             gutterBottom
             sx={{ color: "#4B8412" }}
