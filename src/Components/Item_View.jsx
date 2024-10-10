@@ -216,6 +216,234 @@ const Item_View = () => {
     );
   }
 
+  // return (
+  //   <Box
+  //     sx={{
+  //       backgroundColor: "#e6ffe6",
+  //       height: "100%",
+  //       paddingBottom: "1px",
+  //       minHeight: "100vh",
+  //     }}
+  //   >
+  //     <Navigation_Bar />
+  //     <Box
+  //       sx={{
+  //         padding: "20px",
+  //         backgroundColor: "white",
+  //         display: "flex",
+  //         justifyContent: "space-between",
+  //         alignItems: "flex-start",
+  //         marginTop: "20px",
+  //         marginBottom: "20px",
+  //         marginX: "200px",
+  //         borderRadius: "10px",
+  //       }}
+  //     >
+  //       <Box sx={{ width: "70%" }}>
+  //         <img
+  //           src={item.image_url}
+  //           style={{ width: "100%", height: "auto", borderRadius: "10px" }}
+  //         />
+  //       </Box>
+  //       <Box sx={{ width: "30%", marginLeft: "40px" }}>
+  //         <Typography variant="h6" gutterBottom>
+  //           {store}
+  //         </Typography>
+  //         <Typography variant="h6">{item.item_name}</Typography>
+  //         <Rating
+  //           name="rating"
+  //           value={parseFloat(item.average_rating_value)}
+  //           precision={0.1}
+  //           readOnly
+  //         />
+  //         <Typography>{reviews.length} ratings</Typography>
+  //         <Typography variant="h7">{item.description}</Typography>
+  //         <Typography gutterBottom variant="h6" component="div">
+  //           LKR : {item.unit_price} / {item.unit_type}
+  //         </Typography>
+  //         <Typography gutterBottom variant="h6" component="div">
+  //           Units left: {item.quantity}
+  //         </Typography>
+  //         <Typography gutterBottom variant="body2" color="text.secondary">
+  //           Quantity:
+  //           <Button
+  //             size="small"
+  //             onClick={handleDecrease}
+  //             disabled={quantity <= 1}
+  //           >
+  //             <RemoveIcon />
+  //           </Button>
+  //           {quantity}
+  //           <Button
+  //             size="small"
+  //             onClick={handleAdd}
+  //             disabled={quantity >= item.quantity}
+  //           >
+  //             <AddIcon />
+  //           </Button>
+  //         </Typography>
+  //         <Typography gutterBottom variant="body2" color="text.secondary">
+  //           Total: {item.unit_price * quantity} LKR
+  //         </Typography>
+  //         <Box
+  //           sx={{
+  //             display: "flex",
+  //             flexDirection: "column",
+  //             alignItems: "center",
+  //           }}
+  //         >
+  //           <Box marginTop={2}>
+  //             <Button
+  //               size="medium"
+  //               variant="contained"
+  //               color="primary"
+  //               onClick={addToCart}
+  //             >
+  //               Add to cart
+  //             </Button>
+  //           </Box>
+
+  //           <Box marginTop={2}>
+  //             <Button onClick={handleOpen}>Chat with Seller</Button>
+  //           </Box>
+  //         </Box>
+  //       </Box>
+  //     </Box>
+  //     <Box
+  //       sx={{
+  //         padding: "20px",
+  //         backgroundColor: "white",
+  //         marginTop: "20px",
+  //         marginBottom: "20px",
+  //         marginX: "200px",
+  //         borderRadius: "10px",
+  //         justifyContent: "center",
+  //       }}
+  //     >
+  //       <Typography gutterBottom variant="h5" color="primary">
+  //         Reviews and Ratings
+  //       </Typography>
+  //       <Box
+  //         sx={{
+  //           display: "flex",
+  //           justifyContent: "space-between",
+  //           alignItems: "flex-start",
+  //           padding: "10px",
+  //           borderRadius: "10px",
+  //           marginBottom: "10px",
+  //           width: "70%",
+  //         }}
+  //       >
+  //         <Box sx={{ width: "50%" }}>
+  //           <Typography variant="h4" gutterBottom>
+  //             {item.average_rating_value}/5
+  //           </Typography>
+  //           <Rating
+  //             name="rating"
+  //             value={parseFloat(item.average_rating_value)}
+  //             precision={0.1}
+  //             readOnly
+  //           />
+  //           <Typography>{reviews.length} ratings</Typography>
+  //         </Box>
+  //         <Box sx={{ width: "50%", display: "flex", flexDirection: "column" }}>
+  //           {Object.entries(ratingCounts).map(([rating, count]) => (
+  //             <Box
+  //               key={rating}
+  //               sx={{ display: "flex", alignItems: "center", mb: 1 }}
+  //             >
+  //               <Rating
+  //                 name={`rating-${rating}`}
+  //                 value={parseInt(rating)}
+  //                 precision={0.1}
+  //                 readOnly
+  //               />
+  //               <Typography variant="body1" sx={{ ml: 2 }}>
+  //                 ({count})
+  //               </Typography>
+  //             </Box>
+  //           ))}
+  //         </Box>
+  //       </Box>
+  //       <Box>
+  //         <Grid container spacing={2} sx={{ width: "100%" }}>
+  //           {reviews.length > 0 ? (
+  //             reviews.map((review) => (
+  //               <Grid item xs={12} sm={6} key={review.review_id}>
+  //                 <Item_Review review={review} />
+  //               </Grid>
+  //             ))
+  //           ) : (
+  //             <Typography variant="h6" sx={{ mt: 2, ml: 4 }}>
+  //               No reviews yet
+  //             </Typography>
+  //           )}
+  //         </Grid>
+
+  //         {/* Review submission form */}
+  //         <Stack spacing={2} mt={3}>
+  //           <TextField
+  //             label="Write a review"
+  //             multiline
+  //             rows={4}
+  //             value={reviewText}
+  //             onChange={(e) => setReviewText(e.target.value)}
+  //           />
+  //           <Rating
+  //             name="simple-controlled"
+  //             value={ratingValue}
+  //             onChange={(event, newValue) => setRatingValue(newValue)}
+  //           />
+  //           <Button variant="contained" onClick={handleReviewSubmit}>
+  //             Submit Review
+  //           </Button>
+  //         </Stack>
+  //       </Box>
+  //     </Box>
+  //     {open && (
+  //       <Box
+  //         sx={{
+  //           position: "fixed",
+  //           top: "70%",
+  //           left: "85%",
+  //           bottom: "20%",
+  //           transform: "translate(-50%, -50%)",
+  //           width: { md: "25%", xs: "60%" },
+  //           height: "50%", // Add height so the chat box has a fixed size
+  //           maxHeight: "600px", // You can control the max height of the outer box
+  //           bgcolor: "background.paper",
+  //           boxShadow: 24,
+  //           borderRadius: 3,
+  //           p: 1,
+  //           display: "flex", // Ensure that the content inside can be flexed
+  //           flexDirection: "column", // Align the content in a column (close button and chat)
+  //           overflow: "hidden", // Prevent the outer box itself from scrolling
+  //         }}
+  //       >
+  //         <Button
+  //           onClick={handleClose}
+  //           sx={{ alignSelf: "flex-end", color: "red" }}
+  //         >
+  //           {" "}
+  //           {/* Align Close button to the top right */}
+  //           <CloseIcon />
+  //         </Button>
+  //         <Box
+  //           sx={{
+  //             flexGrow: 1,
+  //             overflow: "hidden",
+  //           }}
+  //         >
+  //           <Chat
+  //             userId={user?.user_id}
+  //             chatPartnerId={item?.seller_id}
+  //             partnerName={store}
+  //           />
+  //         </Box>
+  //       </Box>
+  //     )}
+  //   </Box>
+  // );
   return (
     <Box
       sx={{
@@ -228,24 +456,27 @@ const Item_View = () => {
       <Navigation_Bar />
       <Box
         sx={{
-          padding: "20px",
+          padding: { xs: "10px", md: "20px" }, // Adjust padding for mobile and larger screens
           backgroundColor: "white",
           display: "flex",
+          flexDirection: { xs: "column", md: "row" }, // Stack elements on mobile
           justifyContent: "space-between",
           alignItems: "flex-start",
           marginTop: "20px",
           marginBottom: "20px",
-          marginX: "200px",
+          marginX: { xs: "10px", md: "200px" }, // Adjust margins for mobile
           borderRadius: "10px",
         }}
       >
-        <Box sx={{ width: "70%" }}>
+        <Box sx={{ width: { xs: "100%", md: "70%" } }}>
           <img
             src={item.image_url}
             style={{ width: "100%", height: "auto", borderRadius: "10px" }}
           />
         </Box>
-        <Box sx={{ width: "30%", marginLeft: "40px" }}>
+        <Box
+          sx={{ width: { xs: "100%", md: "30%" }, marginLeft: { md: "40px" } }}
+        >
           <Typography variant="h6" gutterBottom>
             {store}
           </Typography>
@@ -311,11 +542,11 @@ const Item_View = () => {
       </Box>
       <Box
         sx={{
-          padding: "20px",
+          padding: { xs: "10px", md: "20px" }, // Adjust padding for mobile and larger screens
           backgroundColor: "white",
           marginTop: "20px",
           marginBottom: "20px",
-          marginX: "200px",
+          marginX: { xs: "10px", md: "200px" }, // Adjust margins for mobile
           borderRadius: "10px",
           justifyContent: "center",
         }}
@@ -331,10 +562,10 @@ const Item_View = () => {
             padding: "10px",
             borderRadius: "10px",
             marginBottom: "10px",
-            width: "70%",
+            width: { xs: "100%", md: "70%" }, // Adjust width for mobile
           }}
         >
-          <Box sx={{ width: "50%" }}>
+          <Box sx={{ width: { xs: "100%", md: "50%" } }}>
             <Typography variant="h4" gutterBottom>
               {item.average_rating_value}/5
             </Typography>
@@ -346,7 +577,13 @@ const Item_View = () => {
             />
             <Typography>{reviews.length} ratings</Typography>
           </Box>
-          <Box sx={{ width: "50%", display: "flex", flexDirection: "column" }}>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "50%" },
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             {Object.entries(ratingCounts).map(([rating, count]) => (
               <Box
                 key={rating}
