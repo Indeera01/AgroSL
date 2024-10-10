@@ -137,7 +137,10 @@ const App = () => {
             element={<Buyer_Orders />}
           />
           <Route path="/complain" element={<ComplaintPage />} />
-          <Route path="/mobile_checkout" element={<Mobile_Checkout />} />
+          <Route
+            path="/mobile_checkout/:user_id"
+            element={<Mobile_Checkout />}
+          />
         </Routes>
       </Router>
     </Elements>
