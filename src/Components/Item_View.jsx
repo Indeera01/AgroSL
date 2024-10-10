@@ -43,7 +43,7 @@ const Item_View = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/items/${id}`)
+      .get(`http://backend-rho-three-58.vercel.app/items/${id}`)
       .then((res) => {
         setItem(res.data[0]);
         console.log("Fetched item data:", res.data);
@@ -57,7 +57,7 @@ const Item_View = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/reviews/${id}`)
+      .get(`http://backend-rho-three-58.vercel.app/reviews/${id}`)
       .then((res) => {
         setReviews(res.data);
         console.log("Fetched reviews:", res.data);
@@ -72,7 +72,9 @@ const Item_View = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/getseller/${item?.seller_id}`)
+      .get(
+        `http://backend-rho-three-58.vercel.app/getseller/${item?.seller_id}`
+      )
       .then((res) => {
         setStore(res.data.store_name);
         console.log("Fetched store:", res.data.store_name);
@@ -106,12 +108,15 @@ const Item_View = () => {
 
     if (reviewText.trim() && ratingValue > 0) {
       try {
-        const response = await axios.post("http://localhost:5001/reviews", {
-          item_id: id,
-          description: reviewText,
-          rating: ratingValue,
-          buyer_id: user.user_id,
-        });
+        const response = await axios.post(
+          "http://backend-rho-three-58.vercel.app/reviews",
+          {
+            item_id: id,
+            description: reviewText,
+            rating: ratingValue,
+            buyer_id: user.user_id,
+          }
+        );
 
         if (response.status === 201) {
           setReviews([
@@ -154,12 +159,15 @@ const Item_View = () => {
       const item_id = item.item_id;
       const price = item.unit_price;
 
-      const response = await axios.post(`http://localhost:5001/cart`, {
-        buyer_id: buyer_id,
-        item_id: item_id,
-        quantity: quantity,
-        price: price,
-      });
+      const response = await axios.post(
+        `http://backend-rho-three-58.vercel.app/cart`,
+        {
+          buyer_id: buyer_id,
+          item_id: item_id,
+          quantity: quantity,
+          price: price,
+        }
+      );
 
       alert("Item Succssfully added to the cart");
     } catch (err) {

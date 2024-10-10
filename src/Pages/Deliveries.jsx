@@ -14,7 +14,7 @@ const Deliveries = () => {
     const fetchDeliveries = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5001/deliveries/${riderId}`
+          `http://backend-rho-three-58.vercel.app/deliveries/${riderId}`
         );
         setDeliveries(res.data);
         setLoading(false);
@@ -113,7 +113,7 @@ const Deliveries = () => {
     const fetchDeliveries = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5001/deliveries/${riderId}`
+          `http://backend-rho-three-58.vercel.app/deliveries/${riderId}`
         );
         setDeliveries(res.data);
         console.log(deliveries);
@@ -130,16 +130,19 @@ const Deliveries = () => {
   const handleStatusChange = async (deliveryId, newStatus) => {
     try {
       // Send the PUT request to update the delivery status
-      await fetch(`http://localhost:5001/delivery-status/${deliveryId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          delivery_status: newStatus,
-          is_delivered_to_buyer: newStatus === "Delivered", // Update 'is_delivered_to_buyer' only if delivered
-        }),
-      });
+      await fetch(
+        `http://backend-rho-three-58.vercel.app/delivery-status/${deliveryId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            delivery_status: newStatus,
+            is_delivered_to_buyer: newStatus === "Delivered", // Update 'is_delivered_to_buyer' only if delivered
+          }),
+        }
+      );
 
       // Update the local state after the status change
       setDeliveries((prevDeliveries) =>

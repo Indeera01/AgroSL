@@ -10,7 +10,7 @@ const Complaints = () => {
     const fetchComplaints = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5001/api/complaints?seller_id=${seller_id}`
+          `http://backend-rho-three-58.vercel.app/api/complaints?seller_id=${seller_id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch complaints");
@@ -30,7 +30,7 @@ const Complaints = () => {
   const handleStatusChange = async (complaintId, newStatus) => {
     try {
       await fetch(
-        `http://localhost:5001/api/complaints/${complaintId}/status`,
+        `http://backend-rho-three-58.vercel.app/api/complaints/${complaintId}/status`,
         {
           method: "PUT",
           headers: {

@@ -53,7 +53,7 @@ const Sign_Up_Admin = () => {
       clearFields();
       navigate("/Success");
       axios
-        .post("http://localhost:5001/admins", newUser)
+        .post("http://backend-rho-three-58.vercel.app/admins", newUser)
         .then((response) => {
           alert("Account created successfully");
           clearFields();
