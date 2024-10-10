@@ -128,6 +128,29 @@ const Mobile_Checkout = () => {
           alert("Order placed succssesfully!");
           navigate("/Success");
         }
+
+        try {
+          for (const item of cartItems) {
+            await axios.delete(
+              `https://backend-rho-three-58.vercel.app/cart/${user_id}/${item.item_id}`
+            );
+
+            console.log(item);
+
+            await axios.post(`https://backend-rho-three-58.vercel.app/orders`, {
+              buyer_id: user_id,
+              item_id: item.item_id,
+              is_confirmed: true,
+              seller_id: item.seller_id,
+              order_quantity: item.quantity,
+            });
+          }
+          // Optionally clear cartItems state
+          setCartItems([]);
+          console.log("Payment and transfer successful, cart cleared!");
+        } catch (deleteError) {
+          console.error("Error deleting cart items:", deleteError);
+        }
       }
     } catch (error) {
       console.error("Error during checkout:", error);
