@@ -18,7 +18,7 @@ const Inventory_item = ({ item, onRemove, onQuantityChange }) => {
     if (!isNaN(newQuantity) && newQuantity > 0) {
       try {
         const response = await axios.put(
-          `http://localhost:5001/items_update/${item.item_id}`,
+          `https://backend-rho-three-58.vercel.app/items_update/${item.item_id}`,
           { quantity: newQuantity }
         );
         setQuantity(response.data.quantity.toString()); // Keep quantity as string

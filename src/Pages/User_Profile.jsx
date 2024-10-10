@@ -57,7 +57,7 @@ const User_Profile = ({ onClose }) => {
     const currentUser = auth.currentUser;
     if (currentUser) {
       axios
-        .get(`http://localhost:5001/users/${currentUser.uid}`)
+        .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setUpdatedUser(res.data);
@@ -88,7 +88,7 @@ const User_Profile = ({ onClose }) => {
 
   const handleSaveClick = () => {
     axios
-      .put(`http://localhost:5001/users/${id}`, updatedUser)
+      .put(`https://backend-rho-three-58.vercel.app/users/${id}`, updatedUser)
       .then((res) => {
         setUser(res.data);
         setIsEditing(false);
@@ -322,7 +322,7 @@ const User_Profile = ({ onClose }) => {
     const currentUser = auth.currentUser;
     if (currentUser) {
       axios
-        .get(`http://localhost:5001/users/${currentUser.uid}`)
+        .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setUpdatedUser(res.data);
@@ -365,7 +365,7 @@ const User_Profile = ({ onClose }) => {
       addressup,
     };
     axios
-      .put(`http://localhost:5001/users/${id}`, combinedData)
+      .put(`https://backend-rho-three-58.vercel.app/users/${id}`, combinedData)
       .then((res) => {
         setUser(res.data);
         setIsEditing(false);
@@ -630,7 +630,7 @@ const User_Profile = ({ onClose }) => {
   //   const currentUser = auth.currentUser;
   //   if (currentUser) {
   //     axios
-  //       .get(`http://localhost:5001/users/${currentUser.uid}`)
+  //       .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
   //       .then((res) => {
   //         setUser(res.data);
   //         setUpdatedUser(res.data);
@@ -644,7 +644,7 @@ const User_Profile = ({ onClose }) => {
 
   //     if (updatedUser?.address_id) {
   //       axios
-  //         .get(`http://localhost:5001/get_user_address/${currentUser.uid}`)
+  //         .get(`https://backend-rho-three-58.vercel.app/get_user_address/${currentUser.uid}`)
   //         .then((res) => {
   //           console.log(res.data);
   //           setAddressup({
@@ -668,7 +668,7 @@ const User_Profile = ({ onClose }) => {
     const currentUser = auth.currentUser;
     if (currentUser) {
       axios
-        .get(`http://localhost:5001/users/${currentUser.uid}`)
+        .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setUpdatedUser(res.data); // This will trigger the next useEffect
@@ -686,7 +686,9 @@ const User_Profile = ({ onClose }) => {
     if (updatedUser?.address_id) {
       const currentUser = auth.currentUser;
       axios
-        .get(`http://localhost:5001/get_user_address/${currentUser.uid}`)
+        .get(
+          `https://backend-rho-three-58.vercel.app/get_user_address/${currentUser.uid}`
+        )
         .then((res) => {
           console.log(res.data);
           setAddressup({
@@ -738,7 +740,7 @@ const User_Profile = ({ onClose }) => {
       addressup,
     };
     axios
-      .put(`http://localhost:5001/users/${id}`, combinedData)
+      .put(`https://backend-rho-three-58.vercel.app/users/${id}`, combinedData)
       .then((res) => {
         setUser(res.data);
         setIsEditing(false);

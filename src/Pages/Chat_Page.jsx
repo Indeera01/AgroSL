@@ -47,7 +47,7 @@
 //   useEffect(() => {
 //     const fetchUser = async () => {
 //       try {
-//         const res = await axios.get(`http://localhost:5001/users/${userId}`);
+//         const res = await axios.get(`https://backend-rho-three-58.vercel.app/users/${userId}`);
 //         setUser(res.data);
 //       } catch (err) {
 //         console.error("Error fetching user:", err);
@@ -69,7 +69,7 @@
 
 //       try {
 //         setLoading(true); // Start loading
-//         const { data } = await axios.post("http://localhost:5001/token", {
+//         const { data } = await axios.post("https://backend-rho-three-58.vercel.app/token", {
 //           identity: userId,
 //           friendlyName: user.first_name,
 //         });
@@ -292,7 +292,9 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/users/${userId}`);
+        const res = await axios.get(
+          `https://backend-rho-three-58.vercel.app/users/${userId}`
+        );
         setUser(res.data);
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -308,10 +310,13 @@ const ChatPage = () => {
 
       try {
         setLoading(true);
-        const { data } = await axios.post("http://localhost:5001/token", {
-          identity: userId,
-          friendlyName: user.first_name,
-        });
+        const { data } = await axios.post(
+          "https://backend-rho-three-58.vercel.app/token",
+          {
+            identity: userId,
+            friendlyName: user.first_name,
+          }
+        );
 
         const client = await TwilioChatClient.create(data.token);
         setChatClient(client);

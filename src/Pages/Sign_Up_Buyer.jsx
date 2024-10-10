@@ -91,7 +91,7 @@ const SignUp = () => {
       clearFields();
       navigate("/Success");
       axios
-        .post("http://localhost:5001/users", newUser)
+        .post("https://backend-rho-three-58.vercel.app/users", newUser)
         .then((response) => {
           alert("Account created successfully");
           clearFields();
@@ -102,7 +102,7 @@ const SignUp = () => {
         });
 
       axios
-        .post("http://localhost:5001/buyer", newUser)
+        .post("https://backend-rho-three-58.vercel.app/buyer", newUser)
         .then((response) => {
           console.log(response);
         })

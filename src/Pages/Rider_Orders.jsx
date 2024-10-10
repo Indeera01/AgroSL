@@ -14,7 +14,7 @@ const Rider_Orders = () => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         axios
-          .get(`http://localhost:5001/users/${currentUser.uid}`)
+          .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
           .then((res) => {
             setUser(res.data);
             setLoading(false);
@@ -35,7 +35,7 @@ const Rider_Orders = () => {
   useEffect(() => {
     if (user) {
       axios
-        .get(`http://localhost:5001/orders?sent_to_delivery=true`) // Modify the API endpoint to fetch orders
+        .get(`https://backend-rho-three-58.vercel.app/orders?sent_to_delivery=true`) // Modify the API endpoint to fetch orders
         .then((res) => {
           setOrders(res.data);
         })
@@ -48,7 +48,7 @@ const Rider_Orders = () => {
   // Handle 'Take It' button click
   const handleTakeOrder = (orderId) => {
     axios
-      .put(`http://localhost:5001/orders/${orderId}`, {
+      .put(`https://backend-rho-three-58.vercel.app/orders/${orderId}`, {
         sent_to_delivery: true,
       })
       .then(() => {
@@ -174,7 +174,9 @@ const Rider_Orders = () => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         axios
-          .get(`http://localhost:5001/users/${currentUser.uid}`)
+          .get(
+            `https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`
+          )
           .then((res) => {
             setUser(res.data);
             setLoading(false);
@@ -195,7 +197,7 @@ const Rider_Orders = () => {
   useEffect(() => {
     if (user) {
       axios
-        .get(`http://localhost:5001/orders`) // Modify the API endpoint to fetch orders
+        .get(`https://backend-rho-three-58.vercel.app/orders`) // Modify the API endpoint to fetch orders
         .then((res) => {
           if (res.data.length === 0) {
             setOrders([]); // No orders available
@@ -226,16 +228,21 @@ const Rider_Orders = () => {
 
     // Move order to delivery table and update the order table
     axios
-      .post(`http://localhost:5001/deliveries`, {
+      .post(`https://backend-rho-three-58.vercel.app/deliveries`, {
         deliveryData,
       }) // Add to delivery table
       .then(() => {
-        return axios.put(`http://localhost:5001/orders/${orderId}`, {
-          deliver_took: true,
-        }); // Update order table
+        return axios.put(
+          `https://backend-rho-three-58.vercel.app/orders/${orderId}`,
+          {
+            deliver_took: true,
+          }
+        ); // Update order table
       })
       .then(() => {
-        return axios.put(`http://localhost:5001/orders/${orderId}`); // Delete order from order table
+        return axios.put(
+          `https://backend-rho-three-58.vercel.app/orders/${orderId}`
+        ); // Delete order from order table
       })
       .then(() => {
         // Refresh the orders list after taking an order

@@ -27,7 +27,7 @@ const Sign_In = () => {
       try {
         // Attempt to fetch user details from the users table
         const response = await axios.get(
-          `http://localhost:5001/get_user/${currentUser.uid}`
+          `https://backend-rho-three-58.vercel.app/get_user/${currentUser.uid}`
         );
 
         const userType = response.data.user_type;
@@ -47,7 +47,7 @@ const Sign_In = () => {
           console.log("User not found in users table, checking admin table...");
           try {
             const admin = await axios.get(
-              `http://localhost:5001/admin/${currentUser.uid}`
+              `https://backend-rho-three-58.vercel.app/admin/${currentUser.uid}`
             );
 
             if (admin.data && admin.data.user_id) {

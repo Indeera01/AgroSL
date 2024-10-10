@@ -36,7 +36,7 @@ export default function Seller_Dashboard() {
     const currentUser = auth.currentUser;
     if (currentUser) {
       axios
-        .get(`http://localhost:5001/users/${currentUser.uid}`)
+        .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setLoading(false);
@@ -48,7 +48,9 @@ export default function Seller_Dashboard() {
 
       // Fetch seller statistics (e.g., number of orders, deliveries, and items)
       axios
-        .get(`http://localhost:5001/seller/stats/${currentUser.uid}`)
+        .get(
+          `https://backend-rho-three-58.vercel.app/seller/stats/${currentUser.uid}`
+        )
         .then((res) => {
           setStats(res.data);
         })
@@ -64,7 +66,7 @@ export default function Seller_Dashboard() {
       const fetchStore = async (userID) => {
         try {
           const response = await axios.get(
-            `http://localhost:5001/getseller/${userID}`
+            `https://backend-rho-three-58.vercel.app/getseller/${userID}`
           );
           setStore(response.data.store_name);
           console.log("Store", response.data.store_name);
@@ -494,7 +496,7 @@ export default function Seller_Dashboard() {
                     image={
                       user.image_url
                         ? user.image_url
-                        : "https://firebasestorage.googleapis.com/v0/b/agrosl-7abb2.appspot.com/o/items%2Fdefault_user.jpg?alt=media&token=9d2d5193-73f0-4ba2-9776-06b91c4ca354"
+                        : "httpss://firebasestorage.googleapis.com/v0/b/agrosl-7abb2.appspot.com/o/items%2Fdefault_user.jpg?alt=media&token=9d2d5193-73f0-4ba2-9776-06b91c4ca354"
                     }
                     title={user.first_name}
                   />

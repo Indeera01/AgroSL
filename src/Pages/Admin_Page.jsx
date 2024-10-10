@@ -23,6 +23,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Logo from "../assets/AgroSL.png";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { auth } from "../../firebase";
+import { BarChart } from "@mui/x-charts/BarChart";
 
 const Admin_Page = () => {
   const [users, setUsers] = useState([]);
@@ -60,7 +61,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/user_counts`)
+      .get(`https://backend-rho-three-58.vercel.app/user_counts`)
       .then((res) => {
         console.log(res.data);
         setUserCounts({
@@ -79,7 +80,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/item_counts`)
+      .get(`https://backend-rho-three-58.vercel.app/item_counts`)
       .then((res) => {
         console.log(res.data);
         setItemCounts({
@@ -98,7 +99,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/sales_stats`)
+      .get(`https://backend-rho-three-58.vercel.app/sales_stats`)
       .then((res) => {
         console.log(res.data);
         setSalesStats({
@@ -149,7 +150,7 @@ const Admin_Page = () => {
       alert("Select at least one user type!");
     } else {
       axios
-        .get("http://localhost:5001/users_by_type", {
+        .get("https://backend-rho-three-58.vercel.app/users_by_type", {
           params: { types: types.join(",") },
         })
         .then((res) => {
@@ -168,7 +169,7 @@ const Admin_Page = () => {
 
   const handleComplaints = () => {
     axios
-      .get("http://localhost:5001/all_complaints_for_admins")
+      .get("https://backend-rho-three-58.vercel.app/all_complaints_for_admins")
       .then((res) => {
         setComplaints(res.data);
         setLoading(false);
@@ -464,6 +465,34 @@ const Admin_Page = () => {
                       </Card>
                     </Grid>
                   </Grid>
+                  <BarChart
+                    xAxis={[
+                      {
+                        data: [
+                          "Fruits",
+                          "Vegetables",
+                          "Seeds",
+                          "Animal Products",
+                        ],
+                        scaleType: "band", // Set the scaleType to 'band'
+                      },
+                    ]}
+                    series={[
+                      {
+                        data: [
+                          itemCounts.fruitCount,
+                          itemCounts.vegetableCount,
+                          itemCounts.seedCount,
+                          itemCounts.animalProductCount,
+                        ],
+                        color: "#4caf50", // Set the bar color
+                      },
+                    ]}
+                    width={500}
+                    height={400}
+                    barGap={10} // Adjust the gap between bars
+                    barCategoryGap="30%" // Control the category gap (space between groups of bars)
+                  />
                 </Grid>
 
                 {/* Sales Statistics */}

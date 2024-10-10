@@ -14,7 +14,7 @@ const Buyer_Orders = () => {
       try {
         // Use the buyer_id to fetch the buyer's orders
         const response = await axios.get(
-          `http://localhost:5001/api/orders_for_buyers/${buyer_id}`
+          `https://backend-rho-three-58.vercel.app/api/orders_for_buyers/${buyer_id}`
         );
 
         const data = response.data;
@@ -124,7 +124,7 @@ const Buyer_Orders = () => {
       try {
         // Use the buyer_id to fetch the buyer's orders
         const response = await axios.get(
-          `http://localhost:5001/api/orders_for_buyers/${buyer_id}`
+          `https://backend-rho-three-58.vercel.app/api/orders_for_buyers/${buyer_id}`
         );
 
         const data = response.data;
