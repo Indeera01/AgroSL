@@ -259,7 +259,7 @@ const AddItem = () => {
           // Send the data to the backend API
 
           // Send the data to the backend API
-          fetch("http://localhost:5001/api/items", {
+          fetch("https://backend-rho-three-58.vercel.app/api/items", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
