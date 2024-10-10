@@ -259,9 +259,7 @@ const AddItem = () => {
           // Send the data to the backend API
 
           axios
-            .post("http://backend-rho-three-58.vercel.app/api/items", itemData)
-
-          
+            .post("https://backend-rho-three-58.vercel.app/api/items", itemData)
 
             .then((response) => {
               // Axios considers responses with status codes in the range of 2xx as successful
