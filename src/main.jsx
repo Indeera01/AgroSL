@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 const theme = createTheme({
   palette: {
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <CssBaseline />
       <App />
       <SpeedInsights />
+      <Analytics />
     </ThemeProvider>
   </React.StrictMode>
 );
