@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Button, Card } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
@@ -18,20 +10,16 @@ const stripePromise = loadStripe(
 );
 
 const Mobile_Checkout = () => {
-  const [user, setUser] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [orders, setOrders] = useState([]);
 
   const stripe = useStripe();
   const elements = useElements();
-
   const { user_id } = useParams();
 
   useEffect(() => {
-    // Fetch cart items when user data is available
     if (user_id) {
       const fetchCartItems = async (user_id) => {
         try {
@@ -39,11 +27,9 @@ const Mobile_Checkout = () => {
             `https://backend-rho-three-58.vercel.app/cart/${user_id}`
           );
           setCartItems(response.data);
-          console.log("Cart items:", response.data);
         } catch (err) {
-          // Handle 404 or any other errors gracefully
           if (err.response && err.response.status === 404) {
-            setCartItems([]); // Set cartItems to empty array if 404 error
+            setCartItems([]);
           } else {
             setError(err.message);
           }
@@ -52,13 +38,11 @@ const Mobile_Checkout = () => {
         }
       };
 
-      fetchCartItems(user_id); // Call the function with user.uid
+      fetchCartItems(user_id);
     }
-  }, [user_id]); // Dependency array includes user
-  //added by damitha
+  }, [user_id]);
 
   const calculateTotal = () => {
-    console.log("Calculating total with cartItems:", cartItems);
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0
@@ -69,16 +53,16 @@ const Mobile_Checkout = () => {
   if (error) return <div>Error: {error}</div>;
 
   const handleCheckout = async () => {
-    if (!stripe || !elements) return; // Ensure Stripe.js is loaded
+    if (!stripe || !elements) return;
 
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
       console.error("Card Element not found");
-      return; // Exit if Card Element is not found
+      return;
     }
 
     try {
-      const chargeAmount = Math.round(calculateTotal() * 100); // Total amount in cents
+      const chargeAmount = Math.round(calculateTotal() * 100);
       const chargeResponse = await axios.post(
         "https://backend-rho-three-58.vercel.app/create-charge",
         {
@@ -86,25 +70,20 @@ const Mobile_Checkout = () => {
         }
       );
 
-      console.log("Charge Response:", chargeResponse.data);
-
-      // Only proceed if the charge was successful
       if (!chargeResponse.data.success) {
         throw new Error("Charge was not successful");
       }
 
-      // Step 1: Create payment intent and get clientSecret + transferData
       const response = await axios.post(
         "https://backend-rho-three-58.vercel.app/create-payment-intent",
         {
           user_id: user_id,
-          cartItems: cartItems, // Include cart items in the request body
+          cartItems: cartItems,
         }
       );
 
       const { clientSecret, transferData } = response.data;
 
-      // Step 2: Confirm payment with Stripe.js
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
@@ -115,7 +94,6 @@ const Mobile_Checkout = () => {
         console.error("Payment failed:", result.error.message);
       } else {
         if (result.paymentIntent.status === "succeeded") {
-          // Step 3: Transfer payment to sellers
           await axios.post(
             "https://backend-rho-three-58.vercel.app/transfer-payment",
             {
@@ -124,19 +102,10 @@ const Mobile_Checkout = () => {
             }
           );
 
-          console.log("Payment and transfer successful!");
-          alert("Order placed succssesfully!");
-          navigate("/Success");
-        }
-
-        try {
           for (const item of cartItems) {
             await axios.delete(
               `https://backend-rho-three-58.vercel.app/cart/${user_id}/${item.item_id}`
             );
-
-            console.log(item);
-
             await axios.post(`https://backend-rho-three-58.vercel.app/orders`, {
               buyer_id: user_id,
               item_id: item.item_id,
@@ -145,11 +114,10 @@ const Mobile_Checkout = () => {
               order_quantity: item.quantity,
             });
           }
-          // Optionally clear cartItems state
+
           setCartItems([]);
-          console.log("Payment and transfer successful, cart cleared!");
-        } catch (deleteError) {
-          console.error("Error deleting cart items:", deleteError);
+          alert("Order placed successfully!");
+          navigate("/Success");
         }
       }
     } catch (error) {
@@ -160,47 +128,65 @@ const Mobile_Checkout = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#e6ffe6",
-        height: "100%",
-        paddingBottom: "1px",
+        backgroundColor: "#f0f8ff",
+        padding: 2,
         minHeight: "100vh",
-        paddingTop: "1px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <Card sx={{ padding: 2, backgroundColor: "white", margin: "20px" }}>
-        <CardContent>
-          <Typography variant="h5" gutterBottom sx={{ color: "#4B8412" }}>
-            Order Summary
-          </Typography>
-          <Typography variant="h7" gutterBottom>
-            SubTotal ({cartItems.length} items) : {calculateTotal()}.00 LKR
-          </Typography>
-          <Typography variant="h7" gutterBottom>
-            Delivery Fee : 400.00 LKR
-          </Typography>
-          <Typography variant="h7" gutterBottom>
-            Discount : _
-          </Typography>
-          <Typography
-            variant="h6"
-            align="center"
-            gutterBottom
-            sx={{ color: "#4B8412" }}
-          >
-            Total: {calculateTotal() + 400}.00 LKR
-          </Typography>
-          <CardElement />
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={handleCheckout}
-          >
-            Checkout
-          </Button>
-        </CardActions>
+      <Card
+        sx={{
+          width: "90%",
+          maxWidth: "400px",
+          padding: 3,
+          borderRadius: "8px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{ color: "#4B8412", textAlign: "center" }}
+        >
+          Order Summary
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          SubTotal ({cartItems.length} items): {calculateTotal()}.00 LKR
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Delivery Fee: 400.00 LKR
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Discount: _
+        </Typography>
+        <Typography
+          variant="h6"
+          align="center"
+          gutterBottom
+          sx={{ color: "#4B8412" }}
+        >
+          Total: {calculateTotal() + 400}.00 LKR
+        </Typography>
+        <CardElement
+          style={{
+            marginBottom: "16px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            padding: "10px",
+          }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ padding: "5px", fontSize: "1.1rem", mt: 2, borderRadius: 100 }}
+          onClick={handleCheckout}
+        >
+          Checkout
+        </Button>
       </Card>
     </Box>
   );
