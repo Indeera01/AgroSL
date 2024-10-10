@@ -48,6 +48,8 @@ const ShoppingCart = () => {
           setError(err.message);
           setLoading(false);
         });
+    } else {
+      navigate("/Sign_in");
     }
   }, []); // Empty dependency array, runs once on mount
 

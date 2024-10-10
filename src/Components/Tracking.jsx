@@ -12,14 +12,18 @@ import {
   Button,
   useMediaQuery,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Tracking = () => {
+  const { orderID } = useParams();
+
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const nav = useNavigate();
   const isMobile = useMediaQuery("(max-width:600px)");
+
+  console.log(orderID);
 
   const handleConfirmDelivery = () => {
     const formatDate = () => {
@@ -56,9 +60,11 @@ const Tracking = () => {
 
   useEffect(() => {
     axios
+
       .get(
-        "https://backend-rho-three-58.vercel.app/delivery-by-orderID/ORD0007"
+        `https://backend-rho-three-58.vercel.app/delivery-by-orderID/${orderID}`
       )
+
       .then((res) => {
         setOrderData(res.data);
         setLoading(false);

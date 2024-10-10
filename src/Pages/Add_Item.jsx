@@ -198,6 +198,8 @@ import {
 } from "@mui/material";
 import Navigation_Bar_Seller from "../Components/Navigation_Bar_Seller";
 
+import axios from "axios";
+
 // Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA6G7lILKQ9c3MQ0umcmi-4RW4r72zkOFk",
@@ -255,6 +257,8 @@ const AddItem = () => {
           };
 
           // Send the data to the backend API
+
+          // Send the data to the backend API
           fetch("https://backend-rho-three-58.vercel.app/api/items", {
             method: "POST",
             headers: {
@@ -263,20 +267,19 @@ const AddItem = () => {
             body: JSON.stringify(itemData),
           })
             .then((response) => {
-              if (response.ok) {
-                alert("Item added successfully!");
-                setItemName("");
-                setUnitPrice("");
-                setQuantity("");
-                setDescription("");
-                setUnitType("");
-                setImage(null);
-                setCategory("");
-              } else {
-                alert("Failed to add item.");
-              }
+              // Axios considers responses with status codes in the range of 2xx as successful
+              alert("Item added successfully!");
+              setItemName("");
+              setUnitPrice("");
+              setQuantity("");
+              setDescription("");
+              setUnitType("");
+              setImage(null);
+              setCategory("");
             })
             .catch((error) => {
+              // If the request fails, it will automatically go here
+              alert("Failed to add item.");
               console.error("Error adding item:", error);
             });
         });

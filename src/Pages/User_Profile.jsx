@@ -790,6 +790,256 @@ const User_Profile = ({ onClose }) => {
     );
   }
 
+  // return (
+  //   <Box
+  //     display="flex"
+  //     justifyContent="center"
+  //     alignItems="center"
+  //     height="100vh"
+  //     position="fixed"
+  //     top={0}
+  //     left={0}
+  //     width="100%"
+  //     bgcolor="rgba(240, 240, 240, 0.9)"
+  //     zIndex={9999}
+  //     p={3}
+  //   >
+  //     <Card
+  //       sx={{
+  //         width: "40%",
+  //         maxHeight: "80vh", // Limit height to ensure the card doesn't exceed the viewport
+  //         padding: 4,
+  //         borderRadius: 8,
+  //         boxShadow: 5,
+  //         bgcolor: "white",
+  //         display: "flex",
+  //         flexDirection: "column", // Ensures proper scrolling behavior
+  //       }}
+  //     >
+  //       <CardContent
+  //         sx={{
+  //           textAlign: "center",
+  //           overflowY: "auto", // Enables vertical scrolling
+  //           maxHeight: "calc(80vh - 80px)", // Adjusted to fit the card content with buttons
+  //         }}
+  //       >
+  //         <Box
+  //           display="flex"
+  //           alignItems="center"
+  //           justifyContent="space-between"
+  //           mb={3} // Adds bottom margin for space between the heading section and other components
+  //         >
+  //           <Typography variant="h4" gutterBottom>
+  //             User Profile
+  //           </Typography>
+  //           <Avatar
+  //             {...stringAvatar(`${user.first_name} ${user.last_name}`)}
+  //             src={user?.image_url}
+  //           />
+  //         </Box>
+  //         <Divider sx={{ my: 3 }} />
+
+  //         {isEditing ? (
+  //           <Box>
+  //             <Grid container spacing={2}>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="First Name"
+  //                   name="first_name"
+  //                   value={updatedUser.first_name}
+  //                   onChange={handleInputChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="Last Name"
+  //                   name="last_name"
+  //                   value={updatedUser.last_name}
+  //                   onChange={handleInputChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="Phone Number"
+  //                   name="mobile_number"
+  //                   value={updatedUser.mobile_number}
+  //                   onChange={handleInputChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="Email"
+  //                   name="email"
+  //                   value={updatedUser.email}
+  //                   onChange={handleInputChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //             </Grid>
+
+  //             <Typography variant="h6" align="left" sx={{ mt: 3 }}>
+  //               Address:
+  //             </Typography>
+  //             <Grid container spacing={2}>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="P.B Number"
+  //                   name="pb_number"
+  //                   value={addressup.pb_number}
+  //                   onChange={handleAddressChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="Street Name"
+  //                   name="street_name"
+  //                   value={addressup.street_name}
+  //                   onChange={handleAddressChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="City"
+  //                   name="city"
+  //                   value={addressup.city}
+  //                   onChange={handleAddressChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //               <Grid item xs={6}>
+  //                 <TextField
+  //                   fullWidth
+  //                   label="District"
+  //                   name="district"
+  //                   value={addressup.district}
+  //                   onChange={handleAddressChange}
+  //                   variant="outlined"
+  //                 />
+  //               </Grid>
+  //             </Grid>
+
+  //             <CardActions sx={{ justifyContent: "center", gap: 2, mt: 3 }}>
+  //               <Button
+  //                 variant="contained"
+  //                 color="primary"
+  //                 onClick={handleSaveClick}
+  //                 sx={{
+  //                   paddingX: 3,
+  //                   "&:hover": {
+  //                     backgroundColor: "#4CAF50",
+  //                   },
+  //                 }}
+  //               >
+  //                 Save
+  //               </Button>
+  //               <Button
+  //                 variant="contained"
+  //                 color="secondary"
+  //                 onClick={handleCloseClick}
+  //                 sx={{
+  //                   paddingX: 3,
+  //                   "&:hover": {
+  //                     backgroundColor: "#FF5252",
+  //                   },
+  //                 }}
+  //               >
+  //                 Cancel
+  //               </Button>
+  //             </CardActions>
+  //           </Box>
+  //         ) : (
+  //           <List>
+  //             <ListItem>
+  //               <ListItemText
+  //                 primary="First Name"
+  //                 secondary={user.first_name}
+  //               />
+  //             </ListItem>
+  //             <Divider />
+  //             <ListItem>
+  //               <ListItemText primary="Last Name" secondary={user.last_name} />
+  //             </ListItem>
+  //             <Divider />
+  //             <ListItem>
+  //               <ListItemText
+  //                 primary="Phone Number"
+  //                 secondary={user.mobile_number}
+  //               />
+  //             </ListItem>
+  //             <Divider />
+  //             <ListItem>
+  //               <ListItemText primary="Email" secondary={user.email} />
+  //             </ListItem>
+  //             <Divider />
+  //             <ListItem>
+  //               <ListItemText
+  //                 primary="P.B Number"
+  //                 secondary={addressup.pb_number}
+  //               />
+  //             </ListItem>
+  //             <ListItem>
+  //               <ListItemText
+  //                 primary="Street"
+  //                 secondary={addressup.street_name}
+  //               />
+  //             </ListItem>
+  //             <ListItem>
+  //               <ListItemText primary="City" secondary={addressup.city} />
+  //             </ListItem>
+  //             <ListItem>
+  //               <ListItemText
+  //                 primary="District"
+  //                 secondary={addressup.district}
+  //               />
+  //             </ListItem>
+  //           </List>
+  //         )}
+  //       </CardContent>
+
+  //       {!isEditing && (
+  //         <CardActions sx={{ justifyContent: "center" }}>
+  //           <Button
+  //             variant="contained"
+  //             color="primary"
+  //             onClick={handleEditClick}
+  //             sx={{
+  //               "&:hover": {
+  //                 backgroundColor: "#03A9F4",
+  //               },
+  //             }}
+  //           >
+  //             Edit Profile
+  //           </Button>
+  //           <Button
+  //             variant="contained"
+  //             color="secondary"
+  //             onClick={handleCloseClickHome}
+  //             sx={{
+  //               paddingX: 3,
+  //               "&:hover": {
+  //                 backgroundColor: "#FF5252",
+  //               },
+  //             }}
+  //           >
+  //             Cancel
+  //           </Button>
+  //         </CardActions>
+  //       )}
+  //     </Card>
+  //   </Box>
+  // );
   return (
     <Box
       display="flex"
@@ -806,28 +1056,29 @@ const User_Profile = ({ onClose }) => {
     >
       <Card
         sx={{
-          width: "40%",
-          maxHeight: "80vh", // Limit height to ensure the card doesn't exceed the viewport
-          padding: 4,
+          width: { xs: "90%", sm: "80%", md: "60%", lg: "40%" }, // Adjust width based on screen size
+          maxHeight: "80vh",
+          padding: { xs: 2, sm: 3, md: 4 }, // Adjust padding for smaller screens
           borderRadius: 8,
           boxShadow: 5,
           bgcolor: "white",
           display: "flex",
-          flexDirection: "column", // Ensures proper scrolling behavior
+          flexDirection: "column",
         }}
       >
         <CardContent
           sx={{
             textAlign: "center",
-            overflowY: "auto", // Enables vertical scrolling
-            maxHeight: "calc(80vh - 80px)", // Adjusted to fit the card content with buttons
+            overflowY: "auto",
+            maxHeight: "calc(80vh - 80px)",
           }}
         >
           <Box
             display="flex"
             alignItems="center"
             justifyContent="space-between"
-            mb={3} // Adds bottom margin for space between the heading section and other components
+            mb={3}
+            flexDirection={{ xs: "column", sm: "row" }} // Stack vertically on small screens
           >
             <Typography variant="h4" gutterBottom>
               User Profile
@@ -842,7 +1093,7 @@ const User_Profile = ({ onClose }) => {
           {isEditing ? (
             <Box>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="First Name"
@@ -852,7 +1103,7 @@ const User_Profile = ({ onClose }) => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="Last Name"
@@ -862,7 +1113,7 @@ const User_Profile = ({ onClose }) => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="Phone Number"
@@ -872,7 +1123,7 @@ const User_Profile = ({ onClose }) => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="Email"
@@ -888,7 +1139,7 @@ const User_Profile = ({ onClose }) => {
                 Address:
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="P.B Number"
@@ -898,7 +1149,7 @@ const User_Profile = ({ onClose }) => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="Street Name"
@@ -908,7 +1159,7 @@ const User_Profile = ({ onClose }) => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="City"
@@ -918,7 +1169,7 @@ const User_Profile = ({ onClose }) => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="District"
