@@ -83,7 +83,7 @@ const App = () => {
             path="/Home/:id"
             element={<PrivateRoute element={<Layout />} />}
           />
-          <Route path="Home/Tracking/:order_id" element={<Tracking />} />
+          <Route path="Home/Tracking/:orderID" element={<Tracking />} />
           <Route path="/Success" element={<Success />} />
           <Route
             path="/Profile/:id"
