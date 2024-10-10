@@ -9,10 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import axios from "axios";
-import Cart_item from "../Components/Cart_item";
-import { auth } from "../../firebase";
 import { useNavigate, useParams } from "react-router-dom";
-import emptyImage from "../assets/empty cart.jpg";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -55,7 +52,7 @@ const Mobile_Checkout = () => {
         }
       };
 
-      fetchCartItems(user.user_id); // Call the function with user.uid
+      fetchCartItems(user_id); // Call the function with user.uid
     }
   }, [user_id]); // Dependency array includes user
   //added by damitha
