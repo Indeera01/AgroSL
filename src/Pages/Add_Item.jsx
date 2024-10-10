@@ -258,9 +258,14 @@ const AddItem = () => {
 
           // Send the data to the backend API
 
-          axios
-            .post("https://backend-rho-three-58.vercel.app/api/items", itemData)
-
+          // Send the data to the backend API
+          fetch("http://localhost:5001/api/items", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(itemData),
+          })
             .then((response) => {
               // Axios considers responses with status codes in the range of 2xx as successful
               alert("Item added successfully!");
