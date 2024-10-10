@@ -108,7 +108,7 @@ const SignUp = () => {
 
       // Create a Stripe connected account for the seller
       const stripeAccountResponse = await axios.post(
-        "http://backend-rho-three-58.vercel.app/create-connected-account",
+        "https://backend-rho-three-58.vercel.app/create-connected-account",
         {
           email: email, // Passing the user's email here
         }
@@ -124,7 +124,7 @@ const SignUp = () => {
       // clearFields();
       // navigate("/Success");
       axios
-        .post("http://backend-rho-three-58.vercel.app/users", newUser)
+        .post("https://backend-rho-three-58.vercel.app/users", newUser)
         .then((response) => {
           // alert("Account created successfully");
           // clearFields();
@@ -135,7 +135,7 @@ const SignUp = () => {
         });
 
       axios
-        .post("http://backend-rho-three-58.vercel.app/sellers", newSeller)
+        .post("https://backend-rho-three-58.vercel.app/sellers", newSeller)
         .then((response) => {
           console.log(response);
         })
@@ -463,7 +463,7 @@ const SignUp = () => {
 
       // Create a Stripe connected account for the seller
       const stripeAccountResponse = await axios.post(
-        "http://backend-rho-three-58.vercel.app/create-connected-account",
+        "https://backend-rho-three-58.vercel.app/create-connected-account",
         {
           email: email, // Passing the user's email here
         }
@@ -478,7 +478,7 @@ const SignUp = () => {
       alert("Account created successfully");
 
       axios
-        .post("http://backend-rho-three-58.vercel.app/users", newUser)
+        .post("https://backend-rho-three-58.vercel.app/users", newUser)
         .then((response) => {
           console.log("User added:", response);
         })
@@ -487,7 +487,7 @@ const SignUp = () => {
         });
 
       axios
-        .post("http://backend-rho-three-58.vercel.app/sellers", newSeller)
+        .post("https://backend-rho-three-58.vercel.app/sellers", newSeller)
         .then((response) => {
           console.log("Seller added:", response);
         })

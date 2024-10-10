@@ -11,7 +11,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          `http://backend-rho-three-58.vercel.app/api/orders?seller_id=${seller_id}`
+          `https://backend-rho-three-58.vercel.app/api/orders?seller_id=${seller_id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -34,7 +34,7 @@ const Orders = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await fetch(
-        `http://backend-rho-three-58.vercel.app/api/orders/${orderId}/status`,
+        `https://backend-rho-three-58.vercel.app/api/orders/${orderId}/status`,
         {
           method: "PUT",
           headers: {
@@ -58,7 +58,7 @@ const Orders = () => {
   const handleSendToDelivery = async (orderId) => {
     try {
       await fetch(
-        `http://backend-rho-three-58.vercel.app/api/orders/${orderId}/send`,
+        `https://backend-rho-three-58.vercel.app/api/orders/${orderId}/send`,
         {
           method: "PUT",
           headers: {

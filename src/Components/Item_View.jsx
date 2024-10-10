@@ -43,7 +43,7 @@ const Item_View = () => {
 
   useEffect(() => {
     axios
-      .get(`http://backend-rho-three-58.vercel.app/items/${id}`)
+      .get(`https://backend-rho-three-58.vercel.app/items/${id}`)
       .then((res) => {
         setItem(res.data[0]);
         console.log("Fetched item data:", res.data);
@@ -57,7 +57,7 @@ const Item_View = () => {
 
   useEffect(() => {
     axios
-      .get(`http://backend-rho-three-58.vercel.app/reviews/${id}`)
+      .get(`https://backend-rho-three-58.vercel.app/reviews/${id}`)
       .then((res) => {
         setReviews(res.data);
         console.log("Fetched reviews:", res.data);
@@ -73,7 +73,7 @@ const Item_View = () => {
   useEffect(() => {
     axios
       .get(
-        `http://backend-rho-three-58.vercel.app/getseller/${item?.seller_id}`
+        `https://backend-rho-three-58.vercel.app/getseller/${item?.seller_id}`
       )
       .then((res) => {
         setStore(res.data.store_name);
@@ -109,7 +109,7 @@ const Item_View = () => {
     if (reviewText.trim() && ratingValue > 0) {
       try {
         const response = await axios.post(
-          "http://backend-rho-three-58.vercel.app/reviews",
+          "https://backend-rho-three-58.vercel.app/reviews",
           {
             item_id: id,
             description: reviewText,
@@ -160,7 +160,7 @@ const Item_View = () => {
       const price = item.unit_price;
 
       const response = await axios.post(
-        `http://backend-rho-three-58.vercel.app/cart`,
+        `https://backend-rho-three-58.vercel.app/cart`,
         {
           buyer_id: buyer_id,
           item_id: item_id,

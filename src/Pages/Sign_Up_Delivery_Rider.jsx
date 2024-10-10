@@ -107,7 +107,7 @@ const SignUp = () => {
       clearFields();
       navigate("/Success");
       axios
-        .post("http://backend-rho-three-58.vercel.app/users", newUser)
+        .post("https://backend-rho-three-58.vercel.app/users", newUser)
         .then((response) => {
           alert("Account created successfully");
           clearFields();
@@ -119,7 +119,7 @@ const SignUp = () => {
 
       axios
         .post(
-          "http://backend-rho-three-58.vercel.app/delivery_riders",
+          "https://backend-rho-three-58.vercel.app/delivery_riders",
           newDeliveryRider
         )
         .then((response) => {

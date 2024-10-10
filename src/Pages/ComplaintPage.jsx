@@ -25,7 +25,7 @@ const ComplaintPage = () => {
     try {
       // Post data to the backend
       const response = await axios.post(
-        "http://backend-rho-three-58.vercel.app/api/complaints",
+        "https://backend-rho-three-58.vercel.app/api/complaints",
         {
           buyer_id, // Replace with actual buyer_id from the session or state
           description,
@@ -190,7 +190,7 @@ const ComplaintPage = () => {
     try {
       // Post data to the backend
       const response = await axios.post(
-        "http://backend-rho-three-58.vercel.app/api/complaints",
+        "https://backend-rho-three-58.vercel.app/api/complaints",
         {
           buyer_id: buyerId, // Send the buyer_id from Firebase
           description,
@@ -354,7 +354,7 @@ const ComplaintPage = () => {
     try {
       // Post data to the backend
       const response = await axios.post(
-        "http://backend-rho-three-58.vercel.app/api/complaints",
+        "https://backend-rho-three-58.vercel.app/api/complaints",
         {
           buyer_id: buyerId, // Send the buyer_id from Firebase
           description,

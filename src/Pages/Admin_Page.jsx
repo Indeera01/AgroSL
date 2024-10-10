@@ -61,7 +61,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://backend-rho-three-58.vercel.app/user_counts`)
+      .get(`https://backend-rho-three-58.vercel.app/user_counts`)
       .then((res) => {
         console.log(res.data);
         setUserCounts({
@@ -80,7 +80,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://backend-rho-three-58.vercel.app/item_counts`)
+      .get(`https://backend-rho-three-58.vercel.app/item_counts`)
       .then((res) => {
         console.log(res.data);
         setItemCounts({
@@ -99,7 +99,7 @@ const Admin_Page = () => {
 
   useEffect(() => {
     axios
-      .get(`http://backend-rho-three-58.vercel.app/sales_stats`)
+      .get(`https://backend-rho-three-58.vercel.app/sales_stats`)
       .then((res) => {
         console.log(res.data);
         setSalesStats({
@@ -150,7 +150,7 @@ const Admin_Page = () => {
       alert("Select at least one user type!");
     } else {
       axios
-        .get("http://backend-rho-three-58.vercel.app/users_by_type", {
+        .get("https://backend-rho-three-58.vercel.app/users_by_type", {
           params: { types: types.join(",") },
         })
         .then((res) => {
@@ -169,7 +169,7 @@ const Admin_Page = () => {
 
   const handleComplaints = () => {
     axios
-      .get("http://backend-rho-three-58.vercel.app/all_complaints_for_admins")
+      .get("https://backend-rho-three-58.vercel.app/all_complaints_for_admins")
       .then((res) => {
         setComplaints(res.data);
         setLoading(false);

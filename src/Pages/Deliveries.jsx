@@ -14,7 +14,7 @@ const Deliveries = () => {
     const fetchDeliveries = async () => {
       try {
         const res = await axios.get(
-          `http://backend-rho-three-58.vercel.app/deliveries/${riderId}`
+          `https://backend-rho-three-58.vercel.app/deliveries/${riderId}`
         );
         setDeliveries(res.data);
         setLoading(false);
@@ -113,7 +113,7 @@ const Deliveries = () => {
     const fetchDeliveries = async () => {
       try {
         const res = await axios.get(
-          `http://backend-rho-three-58.vercel.app/deliveries/${riderId}`
+          `https://backend-rho-three-58.vercel.app/deliveries/${riderId}`
         );
         setDeliveries(res.data);
         console.log(deliveries);
@@ -131,7 +131,7 @@ const Deliveries = () => {
     try {
       // Send the PUT request to update the delivery status
       await fetch(
-        `http://backend-rho-three-58.vercel.app/delivery-status/${deliveryId}`,
+        `https://backend-rho-three-58.vercel.app/delivery-status/${deliveryId}`,
         {
           method: "PUT",
           headers: {

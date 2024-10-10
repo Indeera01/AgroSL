@@ -38,7 +38,7 @@ const ShoppingCart = () => {
     console.log(currentUser);
     if (currentUser) {
       axios
-        .get(`http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
+        .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           console.log("User data:", res.data);
@@ -57,7 +57,7 @@ const ShoppingCart = () => {
       const fetchCartItems = async (userID) => {
         try {
           const response = await axios.get(
-            `http://backend-rho-three-58.vercel.app/cart/${userID}`
+            `https://backend-rho-three-58.vercel.app/cart/${userID}`
           );
           setCartItems(response.data);
           console.log("Cart items:", response.data);
@@ -85,7 +85,7 @@ const ShoppingCart = () => {
   const handleRemoveItem = async (id) => {
     try {
       await axios.delete(
-        `http://backend-rho-three-58.vercel.app/cart/${user.user_id}/${id}`
+        `https://backend-rho-three-58.vercel.app/cart/${user.user_id}/${id}`
       );
       setCartItems(cartItems.filter((item) => item.item_id !== id));
     } catch (err) {
@@ -128,7 +128,7 @@ const ShoppingCart = () => {
     try {
       const chargeAmount = Math.round(calculateTotal() * 100); // Total amount in cents
       const chargeResponse = await axios.post(
-        "http://backend-rho-three-58.vercel.app/create-charge",
+        "https://backend-rho-three-58.vercel.app/create-charge",
         {
           amount: chargeAmount,
         }
@@ -143,7 +143,7 @@ const ShoppingCart = () => {
 
       // Step 1: Create payment intent and get clientSecret + transferData
       const response = await axios.post(
-        "http://backend-rho-three-58.vercel.app/create-payment-intent",
+        "https://backend-rho-three-58.vercel.app/create-payment-intent",
         {
           user_id: user.user_id,
           cartItems: cartItems, // Include cart items in the request body
@@ -165,7 +165,7 @@ const ShoppingCart = () => {
         if (result.paymentIntent.status === "succeeded") {
           // Step 3: Transfer payment to sellers
           await axios.post(
-            "http://backend-rho-three-58.vercel.app/transfer-payment",
+            "https://backend-rho-three-58.vercel.app/transfer-payment",
             {
               paymentIntentId: result.paymentIntent.id,
               transferData,
@@ -178,13 +178,13 @@ const ShoppingCart = () => {
           try {
             for (const item of cartItems) {
               await axios.delete(
-                `http://backend-rho-three-58.vercel.app/cart/${user.user_id}/${item.item_id}`
+                `https://backend-rho-three-58.vercel.app/cart/${user.user_id}/${item.item_id}`
               );
 
               console.log(item);
 
               await axios.post(
-                `http://backend-rho-three-58.vercel.app/orders`,
+                `https://backend-rho-three-58.vercel.app/orders`,
                 {
                   buyer_id: user.user_id,
                   item_id: item.item_id,
@@ -213,7 +213,7 @@ const ShoppingCart = () => {
   //   try {
   //     // Step 1: Create checkout session
   //     const response = await axios.post(
-  //       "http://backend-rho-three-58.vercel.app/create-checkout-session",
+  //       "https://backend-rho-three-58.vercel.app/create-checkout-session",
   //       {
   //         user_id: user.user_id,
   //         cartItems: cartItems, // Include cart items in the request body

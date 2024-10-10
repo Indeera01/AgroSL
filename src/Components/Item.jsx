@@ -26,7 +26,7 @@ const Item = ({ item, onCardClick }) => {
         const price = item.unit_price;
 
         const response = await axios.post(
-          `http://backend-rho-three-58.vercel.app/cart`,
+          `https://backend-rho-three-58.vercel.app/cart`,
           {
             buyer_id: buyer_id,
             item_id: item_id,
@@ -95,7 +95,7 @@ const Item = ({ item, onCardClick }) => {
 
   const getseller = (id) => {
     axios
-      .get(`http://backend-rho-three-58.vercel.app/getseller/${id}`)
+      .get(`https://backend-rho-three-58.vercel.app/getseller/${id}`)
       .then((res) => {
         setStoreName(res.data.store_name || "Unknown Seller");
       })

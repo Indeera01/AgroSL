@@ -47,7 +47,7 @@
 //   useEffect(() => {
 //     const fetchUser = async () => {
 //       try {
-//         const res = await axios.get(`http://backend-rho-three-58.vercel.app/users/${userId}`);
+//         const res = await axios.get(`https://backend-rho-three-58.vercel.app/users/${userId}`);
 //         setUser(res.data);
 //       } catch (err) {
 //         console.error("Error fetching user:", err);
@@ -69,7 +69,7 @@
 
 //       try {
 //         setLoading(true); // Start loading
-//         const { data } = await axios.post("http://backend-rho-three-58.vercel.app/token", {
+//         const { data } = await axios.post("https://backend-rho-three-58.vercel.app/token", {
 //           identity: userId,
 //           friendlyName: user.first_name,
 //         });
@@ -293,7 +293,7 @@ const ChatPage = () => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          `http://backend-rho-three-58.vercel.app/users/${userId}`
+          `https://backend-rho-three-58.vercel.app/users/${userId}`
         );
         setUser(res.data);
       } catch (err) {
@@ -311,7 +311,7 @@ const ChatPage = () => {
       try {
         setLoading(true);
         const { data } = await axios.post(
-          "http://backend-rho-three-58.vercel.app/token",
+          "https://backend-rho-three-58.vercel.app/token",
           {
             identity: userId,
             friendlyName: user.first_name,

@@ -36,7 +36,7 @@ function ResponsiveAppBar() {
     const currentUser = auth.currentUser;
     if (currentUser) {
       axios
-        .get(`http://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
+        .get(`https://backend-rho-three-58.vercel.app/users/${currentUser.uid}`)
         .then((res) => {
           setUser(res.data);
           setUpdatedUser(res.data);
