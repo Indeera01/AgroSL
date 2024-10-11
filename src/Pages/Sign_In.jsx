@@ -71,15 +71,95 @@ const Sign_In = () => {
   };
 
   return (
+    // <Box
+    //   width={"100%"}
+    //   height={"100vh"}
+    //   sx={{
+    //     backgroundImage: `url(${backgroundImage})`,
+    //     backgroundRepeat: "no-Repeat",
+    //     backgroundSize: "cover",
+    //   }}
+    //   position={"absolute"}
+    // >
+    //   <Container
+    //     maxWidth="xs"
+    //     sx={{
+    //       display: "flex",
+    //       flexDirection: "column",
+    //       alignItems: "center",
+    //       justifyContent: "center",
+    //       p: 4,
+    //       borderRadius: 6,
+    //       boxShadow: 3,
+    //       backgroundColor: "rgba(255, 255, 255, 0.7)",
+    //       marginTop: "10%",
+    //     }}
+    //   >
+    //     <Typography variant="h4" fontFamily="open-sans" gutterBottom mb={2}>
+    //       Sign In
+    //     </Typography>
+    //     <TextField
+    //       label="Email Address"
+    //       variant="outlined"
+    //       margin="dense"
+    //       type="email"
+    //       fullWidth
+    //       value={email}
+    //       onChange={(e) => setEmail(e.target.value)}
+    //       required
+    //     />
+    //     <TextField
+    //       label="Password"
+    //       variant="outlined"
+    //       type="password"
+    //       margin="dense"
+    //       fullWidth
+    //       value={password}
+    //       onChange={(e) => setPassword(e.target.value)}
+    //       required
+    //     />
+    //     <Button
+    //       variant="contained"
+    //       color="primary"
+    //       onClick={handleSignIn}
+    //       sx={{ mt: 2, width: "40%", fontSize: "16px" }}
+    //     >
+    //       Sign In
+    //     </Button>
+    //     <Typography variant="body2" sx={{ mt: 2 }} align="center">
+    //       Don’t have an account?{" "}
+    //       <Box
+    //         display={"flex"}
+    //         flexDirection={"row"}
+    //         width={"100%"}
+    //         gap={12}
+    //         mt={1}
+    //       >
+    //         <Link
+    //           color="secondary"
+    //           href="/Sign_Up_Buyer"
+    //           style={{ display: "block", marginBottom: "8px" }}
+    //         >
+    //           Sign Up Buyer
+    //         </Link>
+    //         <Link color="secondary" href="/Sign_Up_Delivery_Rider">
+    //           Sign Up Delivery Rider
+    //         </Link>
+    //       </Box>
+    //     </Typography>
+    //   </Container>
+    // </Box>
+
     <Box
       width={"100%"}
       height={"100vh"}
       sx={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundRepeat: "no-Repeat",
+        backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
+        position: "absolute",
+        padding: { xs: "30px" },
       }}
-      position={"absolute"}
     >
       <Container
         maxWidth="xs"
@@ -88,14 +168,20 @@ const Sign_In = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          p: 4,
+          padding: { xs: 3, sm: 4 }, // Added more padding for mobile
           borderRadius: 6,
           boxShadow: 3,
           backgroundColor: "rgba(255, 255, 255, 0.7)",
-          marginTop: "10%",
+          marginTop: { xs: "40%", sm: "10%" }, // Increased marginTop on mobile
         }}
       >
-        <Typography variant="h4" fontFamily="open-sans" gutterBottom mb={2}>
+        <Typography
+          variant="h4"
+          fontFamily="open-sans"
+          gutterBottom
+          mb={2}
+          align="center"
+        >
           Sign In
         </Typography>
         <TextField
@@ -122,7 +208,7 @@ const Sign_In = () => {
           variant="contained"
           color="primary"
           onClick={handleSignIn}
-          sx={{ mt: 2, width: "40%", fontSize: "16px" }}
+          sx={{ mt: 2, width: { xs: "70%", sm: "40%" }, fontSize: "16px" }} // Increased button width for mobile
         >
           Sign In
         </Button>
@@ -130,10 +216,11 @@ const Sign_In = () => {
           Don’t have an account?{" "}
           <Box
             display={"flex"}
-            flexDirection={"row"}
+            flexDirection={{ xs: "column", sm: "row" }} // Stacked vertically on mobile
             width={"100%"}
-            gap={12}
+            gap={2} // Adjusted gap
             mt={1}
+            justifyContent="center"
           >
             <Link
               color="secondary"

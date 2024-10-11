@@ -25,8 +25,8 @@ import Logo from "../assets/white logo.png";
 const pages = [
   "Become a Seller",
   "Become a Delivery Rider",
-  "Contact us",
-  "About",
+  // "Contact us",
+  // "About",
 ];
 const settings = ["Profile", "Logout"];
 
