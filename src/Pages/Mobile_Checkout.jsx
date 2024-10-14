@@ -182,7 +182,7 @@ const Mobile_Checkout = () => {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ padding: "5px", fontSize: "1.1rem", mt: 2, borderRadius: 100 }}
+          sx={{ padding: "12px", fontSize: "1.1rem" }}
           onClick={handleCheckout}
         >
           Checkout
