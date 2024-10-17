@@ -177,13 +177,30 @@ const ShoppingCart = () => {
           console.log("Payment and transfer successful!");
           alert("Order placed succssesfully!");
 
-          const mail = await axios.post(
-            "https://backend-rho-three-58.vercel.app/send-confirmation",
-            {
-              user_email: user.user_email,
-              cartItems: cartItems, // Include cart items in the request body
-            }
-          );
+          // const mail = await axios.post(
+          //   "https://backend-rho-three-58.vercel.app/send-confirmation",
+          //   {
+          //     user_email: user.user_email,
+          //     cartItems: cartItems, // Include cart items in the request body
+          //   }
+          // );
+
+          try {
+            const responseMail = await axios.post(
+              "https://backend-rho-three-58.vercel.app/send-confirmation",
+              {
+                user_email: user.user_email,
+                cartItems: cartItems,
+              },
+              {
+                withCredentials: true, // Include cookies/auth headers
+                headers: { "Content-Type": "application/json" },
+              }
+            );
+            console.log("Email sent:", responseMail.data);
+          } catch (error) {
+            console.error("Error during email:", error);
+          }
 
           try {
             for (const item of cartItems) {
