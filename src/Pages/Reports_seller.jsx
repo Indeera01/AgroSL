@@ -43,7 +43,6 @@ const Reports_seller = () => {
         .then((res) => {
           setUser(res.data);
           console.log("User data:", res.data);
-          fetchOrders(res.data.user_id);
           setLoading(false);
         })
         .catch((err) => {
@@ -52,6 +51,10 @@ const Reports_seller = () => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    fetchOrders(user?.user_id);
+  }, [user]);
 
   const fetchOrders = async () => {
     if (!startDate || !endDate) {
