@@ -52,10 +52,6 @@ const Reports_seller = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchOrders(user?.user_id);
-  }, [user]);
-
   const fetchOrders = async () => {
     if (!startDate || !endDate) {
       alert("Please select a date range to generate the report.");
