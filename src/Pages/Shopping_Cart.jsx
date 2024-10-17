@@ -183,7 +183,7 @@ const ShoppingCart = () => {
             const responseMail = await axios.post(
               "https://backend-rho-three-58.vercel.app/send-confirmation",
               {
-                user_email: user.user_email,
+                user_email: user.email,
                 cartItems: cartItems,
               },
               {
