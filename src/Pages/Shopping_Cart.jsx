@@ -177,6 +177,14 @@ const ShoppingCart = () => {
           console.log("Payment and transfer successful!");
           alert("Order placed succssesfully!");
 
+          const mail = await axios.post(
+            "https://backend-rho-three-58.vercel.app/send-confirmation",
+            {
+              user_email: user.user_email,
+              cartItems: cartItems, // Include cart items in the request body
+            }
+          );
+
           try {
             for (const item of cartItems) {
               await axios.delete(
