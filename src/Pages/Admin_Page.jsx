@@ -569,7 +569,7 @@ const Admin_Page = () => {
                       <TableCell align="center">Mobile Number</TableCell>
                       <TableCell align="center">Email</TableCell>
                       <TableCell align="center">User Type</TableCell>
-                      <TableCell align="center">Delete User</TableCell>
+                      {/* <TableCell align="center">Delete User</TableCell> */}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -588,14 +588,14 @@ const Admin_Page = () => {
                         </TableCell>
                         <TableCell align="center">{user.email}</TableCell>
                         <TableCell align="center">{user.user_type}</TableCell>
-                        <TableCell align="center">
+                        {/* <TableCell align="center">
                           <DeleteForeverIcon
                             sx={{ cursor: "pointer", color: "red" }}
                             onClick={() => {
                               // Handle delete user logic
                             }}
                           />
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     ))}
                   </TableBody>
