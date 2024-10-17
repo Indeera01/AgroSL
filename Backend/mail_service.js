@@ -35,7 +35,10 @@ router.post("/send-confirmation", async (req, res) => {
     await transporter.sendMail(mailOptions);
     console.log("Email sent successfully");
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error during email:", error); // Log the full error
+    res
+      .status(500)
+      .json({ message: "Error sending email", error: error.message });
   }
 });
 

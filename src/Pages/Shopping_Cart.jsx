@@ -178,6 +178,8 @@ const ShoppingCart = () => {
           alert("Order placed succssesfully!");
 
           try {
+            console.log(user.user_email);
+            console.log("for the email:", cartItems);
             const responseMail = await axios.post(
               "https://backend-rho-three-58.vercel.app/send-confirmation",
               {
