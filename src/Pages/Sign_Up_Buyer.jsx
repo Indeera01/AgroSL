@@ -90,25 +90,24 @@ const SignUp = () => {
       alert("Account created successfully");
       clearFields();
       navigate("/Success");
-      axios
-        .post("https://backend-rho-three-58.vercel.app/users", newUser)
-        .then((response) => {
-          alert("Account created successfully");
-          clearFields();
-          navigate("/Success");
-        })
-        .catch((error) => {
-          console.error("Error creating account:", error);
-        });
+      try {
+        const userResponse = await axios.post(
+          "https://backend-rho-three-58.vercel.app/users",
+          newUser
+        );
+        alert("Account created successfully");
+        clearFields();
+        navigate("/Success");
 
-      axios
-        .post("https://backend-rho-three-58.vercel.app/buyer", newUser)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error("Error creating buyer:", error);
-        });
+        // Create the buyer only after the user has been created
+        const buyerResponse = await axios.post(
+          "https://backend-rho-three-58.vercel.app/buyer",
+          newUser
+        );
+        console.log(buyerResponse);
+      } catch (error) {
+        console.error("Error creating account or buyer:", error);
+      }
     } catch (error) {
       console.error("Error creating user:", error);
       alert("Error creating account");
