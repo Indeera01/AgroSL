@@ -116,7 +116,6 @@ const Mobile_Checkout = () => {
           }
 
           setCartItems([]);
-          alert("Order placed successfully!");
           navigate("/Success");
         }
       }
@@ -154,7 +153,8 @@ const Mobile_Checkout = () => {
           Order Summary
         </Typography>
         <Typography variant="body1" gutterBottom>
-          SubTotal ({cartItems.length} items): {calculateTotal()}.00 LKR
+          SubTotal ({cartItems.length} {cartItems.length > 1 ? "items" : "item"}
+          ): LKR {calculateTotal().toFixed(2)}
         </Typography>
         <Typography variant="body1" gutterBottom>
           Delivery Fee: 400.00 LKR
@@ -168,7 +168,7 @@ const Mobile_Checkout = () => {
           gutterBottom
           sx={{ color: "#4B8412" }}
         >
-          Total: {calculateTotal() + 400}.00 LKR
+          Total: LKR {(calculateTotal() + 400).toFixed(2)}
         </Typography>
         <CardElement
           style={{
@@ -182,7 +182,7 @@ const Mobile_Checkout = () => {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ padding: "12px", fontSize: "1.1rem" }}
+          sx={{ padding: "12px", fontSize: "1.1rem", mt: 5 }}
           onClick={handleCheckout}
         >
           Checkout
