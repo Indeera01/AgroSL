@@ -16,26 +16,25 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const Tracking = () => {
   const { orderID } = useParams();
-
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const nav = useNavigate();
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  console.log(orderID);
+  // Helper function to format the current date and time
+  const formatDate = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
 
+  // Confirm delivery by making an API call
   const handleConfirmDelivery = () => {
-    const formatDate = () => {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-      return `${year}-${month}-${day} ${hours}:${minutes}`;
-    };
-
     const confirmationDate = formatDate();
     axios
       .patch(
@@ -45,7 +44,7 @@ const Tracking = () => {
           confirmation_date: confirmationDate,
         }
       )
-      .then((res) => {
+      .then(() => {
         setOrderData((prevOrderData) => ({
           ...prevOrderData,
           is_delivered_to_buyer: true,
@@ -59,21 +58,34 @@ const Tracking = () => {
   };
 
   useEffect(() => {
-    axios
+    let isMounted = true; // Prevent state update if the component unmounts
 
+    axios
       .get(
         `https://backend-rho-three-58.vercel.app/delivery-by-orderID/${orderID}`
       )
-
       .then((res) => {
-        setOrderData(res.data);
-        setLoading(false);
+        console.log(res.data);
+        if (isMounted) {
+          setOrderData(res.data[0]);
+          setLoading(false);
+        }
       })
       .catch((err) => {
-        setError(err.message);
-        setLoading(false);
+        if (isMounted) {
+          setError(
+            err.response?.status === 404
+              ? "No delivery data found"
+              : err.message
+          );
+          setLoading(false);
+        }
       });
-  }, []);
+
+    return () => {
+      isMounted = false; // Cleanup function to prevent memory leak
+    };
+  }, [orderID]);
 
   if (loading) {
     return (
@@ -104,51 +116,37 @@ const Tracking = () => {
     );
   }
 
-  if (!orderData) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <Typography variant="h6" color="error">
-          No delivery data found
-        </Typography>
-      </Box>
-    );
-  }
-
-  // Steps based on the `delivery` table structure
   const steps = [
     {
-      title: "Order Processed",
+      title: orderData ? "Order Processed" : "Processing your order",
       description: "The order has been processed.",
-      isCompleted: orderData.delivery_status !== "Delivery Processing",
+      isCompleted: orderData,
     },
     {
-      title: "Sent to delivery rider",
-      description: orderData.delivered_to_sc
-        ? `Delivered to delivery rider ( ${orderData.delivery_rider_id} ) on ${orderData.delivered_to_sc}`
+      title: "Sent to Delivery Rider",
+      description: orderData?.delivered_to_sc
+        ? `Delivered to delivery rider (${orderData.delivery_rider_id}) on ${orderData.delivered_to_sc}`
         : "Not yet delivered to delivery rider",
-      isCompleted: orderData.delivered_to_sc !== null,
+      isCompleted: orderData?.delivered_to_sc,
     },
     {
       title: "Delivered to Buyer",
-      description: orderData.is_delivered_to_buyer
-        ? `Delivered to buyer on ${orderData.confirmation_date}`
+      description: orderData?.is_delivered_to_buyer
+        ? `Delivered to buyer on ${orderData.delivered_to_dc}`
         : "Not yet delivered to buyer",
-      isCompleted: orderData.is_delivered_to_buyer,
+      isCompleted: orderData?.is_delivered_to_buyer,
     },
   ];
 
   const getCurrentStep = () => {
+    if (!orderData) return 0; // If no order data, return first step
+
     for (let i = 0; i < steps.length; i++) {
       if (!steps[i].isCompleted) {
         return i;
       }
     }
-    return steps.length;
+    return steps.length; // All steps completed
   };
 
   return (
@@ -166,7 +164,6 @@ const Tracking = () => {
       <Box display="flex" flexDirection="column" alignItems="center">
         <Typography
           variant="h4"
-          gutterBottom
           align="center"
           sx={{ fontWeight: "bold", mb: 4 }}
         >
@@ -175,13 +172,20 @@ const Tracking = () => {
 
         <Typography
           variant="body1"
-          gutterBottom
           align="center"
           sx={{ mb: 2, fontSize: "1.2rem" }}
         >
-          Order ID: <strong>{orderData.order_id}</strong>
-          <br />
-          Delivery ID: <strong>{orderData.delivery_id}</strong>
+          {orderData ? (
+            <>
+              Order ID: <strong>{orderData.order_id}</strong>
+              <br />
+              Delivery ID: <strong>{orderData.delivery_id}</strong>
+            </>
+          ) : (
+            <>
+              Order ID: <strong>{orderID}</strong>
+            </>
+          )}
         </Typography>
 
         <Stepper
@@ -222,12 +226,7 @@ const Tracking = () => {
                 <React.Fragment key={index}>
                   <Typography
                     variant="h6"
-                    sx={{
-                      fontSize: "1.1rem",
-                      fontWeight: "bold",
-                      color: "primary.main",
-                      mb: 1,
-                    }}
+                    sx={{ fontWeight: "bold", color: "primary.main", mb: 1 }}
                   >
                     {step.title}
                   </Typography>
@@ -242,20 +241,23 @@ const Tracking = () => {
 
         <Button
           variant="contained"
+          onClick={handleConfirmDelivery}
+          disabled={
+            orderData?.is_delivered_to_buyer ||
+            !orderData?.delivery_id ||
+            !orderData?.delivered_to_sc
+          }
           sx={{
             px: 4,
             py: 1.5,
             borderRadius: 8,
-            fontSize: "1rem",
             textTransform: "none",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
+            "&:hover": { backgroundColor: "primary.dark" },
           }}
-          onClick={handleConfirmDelivery}
-          disabled={orderData.is_delivered_to_buyer}
         >
-          Confirm Delivery
+          {orderData?.is_delivered_to_buyer
+            ? "Delivery Confirmed"
+            : "Confirm Delivery"}
         </Button>
       </Box>
     </Box>
