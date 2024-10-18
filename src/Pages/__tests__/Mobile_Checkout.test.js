@@ -11,10 +11,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import React from "react";
 
-// Mock Stripe instance
 const stripePromise = loadStripe("pk_test_12345");
 
-// Mock axios to return predefined data
 jest.mock("axios", () => ({
   get: jest.fn(() =>
     Promise.resolve({
@@ -24,7 +22,6 @@ jest.mock("axios", () => ({
 }));
 
 test("renders Mobile_Checkout component without crashing", async () => {
-  // Use act() to ensure all state updates are flushed
   await act(async () => {
     render(
       <BrowserRouter>
@@ -35,16 +32,14 @@ test("renders Mobile_Checkout component without crashing", async () => {
     );
   });
 
-  // Wait for "Loading..." to disappear (with timeout fallback)
   try {
     await waitForElementToBeRemoved(() => screen.getByText(/Loading.../i), {
-      timeout: 3000, // Adjust timeout as needed
+      timeout: 3000,
     });
   } catch {
     console.warn("Loading state took too long to disappear.");
   }
 
-  // Now verify that "Order Summary" appears
   try {
     await waitFor(() =>
       expect(screen.getByText(/Order Summary/i)).toBeInTheDocument()

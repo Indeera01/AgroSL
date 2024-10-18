@@ -4,7 +4,7 @@ import Navigation_Bar_Seller from "../Components/Navigation_Bar_Seller";
 
 const Complaints = () => {
   const [complaints, setComplaints] = useState([]);
-  const { seller_id } = useParams(); // Extracting seller_id from the URL
+  const { seller_id } = useParams();
 
   useEffect(() => {
     const fetchComplaints = async () => {
@@ -98,7 +98,7 @@ const Complaints = () => {
 
 const styles = {
   container: {
-    backgroundColor: "#E6F4EA", // Subtle light background
+    backgroundColor: "#E6F4EA",
     fontFamily: "'Roboto', sans-serif",
     height: "100%",
     paddingBottom: "1px",
@@ -117,7 +117,7 @@ const styles = {
     margin: "15px auto",
     maxWidth: "700px",
     borderRadius: "10px",
-    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.1)",
     transition: "box-shadow 0.3s ease",
     fontSize: "16px",
     lineHeight: "1.6",

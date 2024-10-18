@@ -28,14 +28,12 @@ const Inventory = () => {
   const navigate = useNavigate();
 
   const handlePostItemClick = () => {
-    // Extract seller ID from the current URL
     const sellerId = window.location.pathname.split("/")[2];
-    // Navigate to the add item page, passing the seller ID
+
     navigate(`/add_item/${sellerId}`);
   };
 
   useEffect(() => {
-    // Fetch logged-in user details from Firebase Authentication
     const currentUser = auth.currentUser;
     console.log(currentUser);
     if (currentUser) {
@@ -64,7 +62,7 @@ const Inventory = () => {
           setItems(response.data);
           console.log("Cart items:", response.data);
         } catch (err) {
-          // Handle 404 or any other errors gracefully
+          // Handle 404 or any other errors
           if (err.response && err.response.status === 404) {
             setItems([]); // Set Items to empty array if 404 error
           } else {
@@ -90,7 +88,7 @@ const Inventory = () => {
           setStore(response.data.store_name);
           console.log("Store", response.data.store_name);
         } catch (err) {
-          // Handle 404 or any other errors gracefully
+          // Handle 404 or any other errors
           if (err.response && err.response.status === 404) {
             setStore(null); // Set Items to empty array if 404 error
           } else {
@@ -130,10 +128,10 @@ const Inventory = () => {
       <Navigation_Bar_Seller />
       <Box
         sx={{
-          display: "flex", // Make the Box a flex container
-          flexDirection: "column", // Ensure items stack vertically
-          justifyContent: "center", // Center horizontally
-          alignItems: "center", // Align content to the center
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
           marginTop: "20px",
         }}
       >
@@ -157,11 +155,11 @@ const Inventory = () => {
           </Typography>
           <Box
             sx={{
-              display: "flex", // Make the Box a flex container
-              flexDirection: "row", // Ensure tables are side by side
-              justifyContent: "space-between", // Add space between tables
-              width: "100%", // Set the width of the container
-              gap: "20px", // Adjust gap between the two tables
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+              gap: "20px",
             }}
           >
             <Box sx={{ width: "75%" }}>
@@ -243,9 +241,9 @@ const Inventory = () => {
             margin: "20px",
             backgroundColor: "white",
             padding: "10px",
-            display: "inline-flex", // Allows the Box to adjust its size based on content
-            flexDirection: "column", // Ensures that the Grid is contained within the Box
-            width: "auto", // Allows the Box to grow with its content
+            display: "inline-flex",
+            flexDirection: "column",
+            width: "auto",
             minWidth: 0,
             borderRadius: "10px",
             minWidth: "90%",
@@ -261,10 +259,10 @@ const Inventory = () => {
           <Box>
             <Grid
               container
-              spacing={2} // Adjust spacing between items as needed
-              direction="row" // Display items in a row
-              alignItems="flex-start" // Align items to the start of the container vertically
-              justifyContent="flex-start" // Align items to the start of the container horizontally
+              spacing={2}
+              direction="row"
+              alignItems="flex-start"
+              justifyContent="flex-start"
             >
               {items.length > 0 ? (
                 items.map((item) => (
@@ -287,18 +285,18 @@ const Inventory = () => {
                   backgroundColor: "#98BC74",
                   margin: "20px",
                   borderRadius: "5px",
-                  display: "flex", // Flexbox for centering
+                  display: "flex",
                   flexDirection: "column",
-                  alignItems: "center", // Vertical centering
-                  justifyContent: "center", // Horizontal centering
+                  alignItems: "center",
+                  justifyContent: "center",
                   cursor: "pointer",
                 }}
                 onClick={handlePostItemClick}
               >
                 <AddCardIcon
                   sx={{
-                    fontSize: "80px", // Adjust size as needed
-                    color: "black", // Optional: Change the color
+                    fontSize: "80px",
+                    color: "black",
                   }}
                 />
                 <Typography variant="h6" color={"black"}>

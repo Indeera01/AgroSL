@@ -4,7 +4,7 @@ import Navigation_Bar_Seller from "../Components/Navigation_Bar_Seller";
 
 const Processing_Orders = () => {
   const [processing_orders, setOrders] = useState([]);
-  const { seller_id } = useParams(); // Extracting seller_id from the URL
+  const { seller_id } = useParams();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -22,7 +22,6 @@ const Processing_Orders = () => {
           (processing_orders) => processing_orders.sent_to_delivery === true
         );
 
-        // Assuming 'order_id' is the field to sort by
         filteredData.sort((a, b) => b.order_id.localeCompare(a.order_id));
 
         setOrders(filteredData);
@@ -56,7 +55,7 @@ const Processing_Orders = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString(); // Format date as MM/DD/YYYY or use another locale/date style as needed
+    return date.toLocaleDateString();
   };
 
   return (
