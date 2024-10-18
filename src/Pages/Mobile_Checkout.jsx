@@ -102,6 +102,25 @@ const Mobile_Checkout = () => {
             }
           );
 
+          try {
+            console.log(user);
+            console.log("for the email:", cartItems);
+            const responseMail = await axios.post(
+              "https://backend-rho-three-58.vercel.app/send-confirmation",
+              {
+                user_email: user.email,
+                cartItems: cartItems,
+              },
+              {
+                withCredentials: true, // Include cookies/auth headers
+                headers: { "Content-Type": "application/json" },
+              }
+            );
+            console.log("Email sent:", responseMail.data);
+          } catch (error) {
+            console.error("Error during email:", error);
+          }
+
           for (const item of cartItems) {
             await axios.delete(
               `https://backend-rho-three-58.vercel.app/cart/${user_id}/${item.item_id}`
