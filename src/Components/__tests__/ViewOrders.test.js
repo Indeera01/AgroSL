@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Routes, Route } from "react-router-dom"; // Import necessary components from react-router
-import ViewOrders from "../View_Orders"; // Adjust the import path as necessary
+import { MemoryRouter, Routes, Route } from "react-router-dom";
+import ViewOrders from "../View_Orders";
 
 describe("ViewOrders Component", () => {
   test("renders the View Orders button", () => {
-    const sellerId = "S001"; // Example seller ID
+    const sellerId = "S001";
 
     render(
       <MemoryRouter initialEntries={[`/sellerdashboard/${sellerId}`]}>
@@ -15,12 +15,11 @@ describe("ViewOrders Component", () => {
       </MemoryRouter>
     );
 
-    // Check if the button is rendered with the correct text
     expect(screen.getByText(/View Orders/i)).toBeInTheDocument();
   });
 
   test("navigates to the correct orders page on button click", () => {
-    const sellerId = "S001"; // Example seller ID
+    const sellerId = "S001";
 
     render(
       <MemoryRouter initialEntries={[`/sellerdashboard/${sellerId}`]}>
@@ -34,10 +33,8 @@ describe("ViewOrders Component", () => {
       </MemoryRouter>
     );
 
-    // Click the button to navigate
     fireEvent.click(screen.getByText(/View Orders/i));
 
-    // Check if the navigation occurred to the correct path
     expect(screen.getByText(/Orders Page/i)).toBeInTheDocument();
   });
 });

@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom"; // Import Router for navigation
-import Navigation_Bar from "../Navigation_Bar"; // Adjust the import path as needed
-import { auth } from "../__mocks__/fileMock"; // Import Firebase auth to mock it
+import { BrowserRouter as Router } from "react-router-dom";
+import Navigation_Bar from "../Navigation_Bar";
+import { auth } from "../__mocks__/fileMock";
 import axios from "axios";
 
 // Mocking Firebase auth
@@ -18,7 +18,6 @@ jest.mock("axios");
 
 describe("Navigation_Bar", () => {
   beforeEach(() => {
-    // Clear all mocks before each test
     jest.clearAllMocks();
   });
 
@@ -30,15 +29,15 @@ describe("Navigation_Bar", () => {
     );
 
     const sellerButtons = screen.queryAllByText("Become a Seller");
-    expect(sellerButtons.length).toBeGreaterThan(0); // Check at least one exists
+    expect(sellerButtons.length).toBeGreaterThan(0);
 
     const riderButtons = screen.queryAllByText("Become a Delivery Rider");
-    expect(riderButtons.length).toBeGreaterThan(0); // Check at least one exists
+    expect(riderButtons.length).toBeGreaterThan(0);
   });
 
   test("displays login button when user is not authenticated", async () => {
     auth.onAuthStateChanged.mockImplementation((callback) => {
-      callback(null); // Simulate no user logged in
+      callback(null);
     });
 
     render(

@@ -25,7 +25,6 @@ const Sign_In = () => {
       const currentUser = auth.currentUser;
 
       try {
-        // Attempt to fetch user details from the users table
         const response = await axios.get(
           `https://backend-rho-three-58.vercel.app/get_user/${currentUser.uid}`
         );
@@ -42,7 +41,6 @@ const Sign_In = () => {
           alert("User type not recognized");
         }
       } catch (error) {
-        // If a 404 error occurs, check the admin table
         if (error.response && error.response.status === 404) {
           console.log("User not found in users table, checking admin table...");
           try {
@@ -71,85 +69,6 @@ const Sign_In = () => {
   };
 
   return (
-    // <Box
-    //   width={"100%"}
-    //   height={"100vh"}
-    //   sx={{
-    //     backgroundImage: `url(${backgroundImage})`,
-    //     backgroundRepeat: "no-Repeat",
-    //     backgroundSize: "cover",
-    //   }}
-    //   position={"absolute"}
-    // >
-    //   <Container
-    //     maxWidth="xs"
-    //     sx={{
-    //       display: "flex",
-    //       flexDirection: "column",
-    //       alignItems: "center",
-    //       justifyContent: "center",
-    //       p: 4,
-    //       borderRadius: 6,
-    //       boxShadow: 3,
-    //       backgroundColor: "rgba(255, 255, 255, 0.7)",
-    //       marginTop: "10%",
-    //     }}
-    //   >
-    //     <Typography variant="h4" fontFamily="open-sans" gutterBottom mb={2}>
-    //       Sign In
-    //     </Typography>
-    //     <TextField
-    //       label="Email Address"
-    //       variant="outlined"
-    //       margin="dense"
-    //       type="email"
-    //       fullWidth
-    //       value={email}
-    //       onChange={(e) => setEmail(e.target.value)}
-    //       required
-    //     />
-    //     <TextField
-    //       label="Password"
-    //       variant="outlined"
-    //       type="password"
-    //       margin="dense"
-    //       fullWidth
-    //       value={password}
-    //       onChange={(e) => setPassword(e.target.value)}
-    //       required
-    //     />
-    //     <Button
-    //       variant="contained"
-    //       color="primary"
-    //       onClick={handleSignIn}
-    //       sx={{ mt: 2, width: "40%", fontSize: "16px" }}
-    //     >
-    //       Sign In
-    //     </Button>
-    //     <Typography variant="body2" sx={{ mt: 2 }} align="center">
-    //       Don’t have an account?{" "}
-    //       <Box
-    //         display={"flex"}
-    //         flexDirection={"row"}
-    //         width={"100%"}
-    //         gap={12}
-    //         mt={1}
-    //       >
-    //         <Link
-    //           color="secondary"
-    //           href="/Sign_Up_Buyer"
-    //           style={{ display: "block", marginBottom: "8px" }}
-    //         >
-    //           Sign Up Buyer
-    //         </Link>
-    //         <Link color="secondary" href="/Sign_Up_Delivery_Rider">
-    //           Sign Up Delivery Rider
-    //         </Link>
-    //       </Box>
-    //     </Typography>
-    //   </Container>
-    // </Box>
-
     <Box
       width={"100%"}
       height={"100vh"}
@@ -168,11 +87,11 @@ const Sign_In = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          padding: { xs: 3, sm: 4 }, // Added more padding for mobile
+          padding: { xs: 3, sm: 4 },
           borderRadius: 6,
           boxShadow: 3,
           backgroundColor: "rgba(255, 255, 255, 0.7)",
-          marginTop: { xs: "40%", sm: "10%" }, // Increased marginTop on mobile
+          marginTop: { xs: "40%", sm: "10%" },
         }}
       >
         <Typography
@@ -208,7 +127,7 @@ const Sign_In = () => {
           variant="contained"
           color="primary"
           onClick={handleSignIn}
-          sx={{ mt: 2, width: { xs: "70%", sm: "40%" }, fontSize: "16px" }} // Increased button width for mobile
+          sx={{ mt: 2, width: { xs: "70%", sm: "40%" }, fontSize: "16px" }}
         >
           Sign In
         </Button>
@@ -216,9 +135,9 @@ const Sign_In = () => {
           Don’t have an account?{" "}
           <Box
             display={"flex"}
-            flexDirection={{ xs: "column", sm: "row" }} // Stacked vertically on mobile
+            flexDirection={{ xs: "column", sm: "row" }}
             width={"100%"}
-            gap={2} // Adjusted gap
+            gap={2}
             mt={1}
             justifyContent="center"
           >

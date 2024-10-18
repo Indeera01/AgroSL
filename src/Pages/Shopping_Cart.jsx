@@ -33,7 +33,6 @@ const ShoppingCart = () => {
   const elements = useElements();
 
   useEffect(() => {
-    // Fetch logged-in user details from Firebase Authentication
     const currentUser = auth.currentUser;
     console.log(currentUser);
     if (currentUser) {
@@ -51,10 +50,9 @@ const ShoppingCart = () => {
     } else {
       navigate("/Sign_in");
     }
-  }, []); // Empty dependency array, runs once on mount
+  }, []);
 
   useEffect(() => {
-    // Fetch cart items when user data is available
     if (user?.user_id) {
       const fetchCartItems = async (userID) => {
         try {
@@ -64,9 +62,8 @@ const ShoppingCart = () => {
           setCartItems(response.data);
           console.log("Cart items:", response.data);
         } catch (err) {
-          // Handle 404 or any other errors gracefully
           if (err.response && err.response.status === 404) {
-            setCartItems([]); // Set cartItems to empty array if 404 error
+            setCartItems([]);
           } else {
             setError(err.message);
           }
@@ -75,13 +72,12 @@ const ShoppingCart = () => {
         }
       };
 
-      fetchCartItems(user.user_id); // Call the function with user.uid
+      fetchCartItems(user.user_id);
     }
-  }, [user]); // Dependency array includes user
-  //added by damitha
+  }, [user]);
 
   const handleViewPastOrders = () => {
-    navigate(`/orders_for_buyer/${user.user_id}`); // Use template string to navigate
+    navigate(`/orders_for_buyer/${user.user_id}`);
   };
 
   const handleRemoveItem = async (id) => {
@@ -228,152 +224,6 @@ const ShoppingCart = () => {
     }
   };
 
-  // const handleCheckout = async () => {
-  //   if (!stripe || !elements) return; // Ensure Stripe.js is loaded
-
-  //   try {
-  //     // Step 1: Create checkout session
-  //     const response = await axios.post(
-  //       "https://backend-rho-three-58.vercel.app/create-checkout-session",
-  //       {
-  //         user_id: user.user_id,
-  //         cartItems: cartItems, // Include cart items in the request body
-  //       }
-  //     );
-
-  //     const { id: sessionId } = response.data; // Get the session ID
-
-  //     // Step 2: Redirect to Stripe Checkout
-  //     const result = await stripe.redirectToCheckout({ sessionId });
-
-  //     if (result.error) {
-  //       console.error("Error redirecting to checkout:", result.error.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during checkout:", error);
-  //   }
-  // };
-
-  /*return (
-    <Box
-      sx={{
-        backgroundColor: "#e6ffe6",
-        height: "100%",
-        paddingBottom: "1px",
-        minHeight: "100vh",
-      }}
-    >
-      <Navigation_Bar />
-      <Grid container spacing={2} marginTop={5} marginBottom={5}>
-        <Grid item xs={12} md={5}>
-          {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <Cart_item
-                key={item.item_id}
-                item={item}
-                onRemove={handleRemoveItem}
-                onQuantityChange={handleQuantityChange}
-              />
-            ))
-          ) : (
-            <Box
-              margin={5}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-            >
-              <img
-                src={emptyImage}
-                alt="Empty Cart"
-                style={{ width: "100%", marginBottom: "20px" }}
-              />
-            </Box>
-          )}
-        </Grid>
-
-        {cartItems.length > 0 ? (
-          <Grid
-            item
-            xs={12}
-            md={6}
-            sx={{
-              position: "sticky",
-              top: "100px",
-              alignSelf: "flex-start",
-            }}
-          >
-            <Card sx={{ padding: 2, backgroundColor: "white", margin: "20px" }}>
-              <CardContent>
-                <Typography variant="h4" gutterBottom sx={{ color: "#4B8412" }}>
-                  Order Summary
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  SubTotal ({cartItems.length} items) : {calculateTotal()} LKR
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  Delivery Fee : 400 LKR
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  Discount : _
-                </Typography>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  gutterBottom
-                  sx={{ color: "#4B8412" }}
-                >
-                  Total: {calculateTotal() + 400} LKR
-                </Typography>
-                <CardElement />
-              </CardContent>
-              <CardActions>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  onClick={handleCheckout}
-                >
-                  Checkout
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  onClick={handleContinueShopping}
-                >
-                  Continue Shopping
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  onClick={handleViewPastOrders}
-                >
-                  view past orders
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ height: "40px", marginTop: "200px" }}
-            onClick={handleContinueShopping}
-          >
-            Continue Shopping
-          </Button>
-        )}
-      </Grid>
-    </Box>
-  );*/
-
-  //added by damitha.new return func to display the continue shopping and view past orders when cart is empty
   return (
     <Box
       sx={{
@@ -485,7 +335,6 @@ const ShoppingCart = () => {
           </Grid>
         ) : (
           <Grid item xs={12} md={6}>
-            {/* Display Continue Shopping and View Past Orders buttons even when cart is empty */}
             <Card sx={{ padding: 2, backgroundColor: "white", margin: "20px" }}>
               <CardContent>
                 <Button

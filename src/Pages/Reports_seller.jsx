@@ -30,11 +30,10 @@ const Reports_seller = () => {
   const [highest, setHighest] = useState(null);
   const [lowest, setLowest] = useState(null);
   const [reportGenerated, setReportGenerated] = useState(false);
-  const [startDate, setStartDate] = useState(dayjs().startOf("month")); // Set to first day of current month
+  const [startDate, setStartDate] = useState(dayjs().startOf("month"));
   const [endDate, setEndDate] = useState(dayjs().endOf("month"));
 
   useEffect(() => {
-    // Fetch logged-in user details from Firebase Authentication
     const currentUser = auth.currentUser;
     console.log(currentUser);
     if (currentUser) {
@@ -63,7 +62,7 @@ const Reports_seller = () => {
         `https://backend-rho-three-58.vercel.app/seller_orders/${user.user_id}`,
         {
           params: {
-            startDate: startDate.format("YYYY-MM-DD"), // Formatting date to send to the backend
+            startDate: startDate.format("YYYY-MM-DD"),
             endDate: endDate.format("YYYY-MM-DD"),
           },
         }
@@ -82,14 +81,11 @@ const Reports_seller = () => {
   };
 
   const pieChartData = orders.reduce((acc, order) => {
-    // Find the index of the item by its name
     const itemIndex = acc.findIndex((item) => item.label === order.item_name);
 
     if (itemIndex > -1) {
-      // If the item is already in the array, add its quantity to the existing value
       acc[itemIndex].value += order.order_quantity;
     } else {
-      // If the item is not in the array, add it with the initial quantity
       acc.push({
         id: acc.length,
         label: order.item_name,

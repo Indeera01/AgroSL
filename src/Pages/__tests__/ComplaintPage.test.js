@@ -1,20 +1,18 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom"; // Wrap with Router for routing
-import ComplaintPage from "../ComplaintPage"; // Adjust the import based on your file structure
-import axios from "axios"; // Import axios to mock
+import { MemoryRouter } from "react-router-dom";
+import ComplaintPage from "../ComplaintPage";
+import axios from "axios";
 
-jest.mock("axios"); // Mock axios
+jest.mock("axios");
 
 describe("ComplaintPage", () => {
   const orderId = "ORD12345";
   const sellerId = "SELLER001";
 
   beforeEach(() => {
-    // Mock the axios post method
     axios.post.mockResolvedValue({ status: 200 });
 
-    // Render the component with necessary props
     render(
       <MemoryRouter
         initialEntries={[
@@ -38,23 +36,20 @@ describe("ComplaintPage", () => {
   });
 
   test("submits the form with valid data", async () => {
-    // Mock the input values
     fireEvent.change(
       screen.getByPlaceholderText(/enter the complaint description/i),
       { target: { value: "Test complaint" } }
     );
 
-    // Submit the form
     fireEvent.click(screen.getByRole("button", { name: /submit complaint/i }));
 
-    // Assert that axios.post was called with the correct data
     expect(axios.post).toHaveBeenCalledWith(
       "https://backend-rho-three-58.vercel.app/api/complaints",
       expect.objectContaining({
         description: "Test complaint",
-        seller_id: sellerId, // you need to set this from location.state in your test
-        order_id: orderId, // you need to set this from location.state in your test
-        complaint_seller: false, // default checkbox state
+        seller_id: sellerId,
+        order_id: orderId,
+        complaint_seller: false,
       })
     );
   });
