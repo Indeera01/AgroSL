@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Routes, Route } from "react-router-dom"; // Import Routes for routing
-import View_Deliveries from "../View_Deliveries"; // Adjust the path according to your structure
+import { MemoryRouter, Routes, Route } from "react-router-dom";
+import View_Deliveries from "../View_Deliveries";
 
 describe("View_Deliveries Component", () => {
   test("renders the View Deliveries button", () => {
-    const riderId = "R001"; // Example rider ID
+    const riderId = "R001";
 
     render(
       <MemoryRouter initialEntries={[`/delivery_rider_dashboard/${riderId}`]}>
@@ -18,12 +18,11 @@ describe("View_Deliveries Component", () => {
       </MemoryRouter>
     );
 
-    // Check if the button is rendered with the correct text
     expect(screen.getByText(/View Deliveries/i)).toBeInTheDocument();
   });
 
   test("navigates to the correct deliveries page on button click", () => {
-    const riderId = "R001"; // Example rider ID
+    const riderId = "R001";
 
     render(
       <MemoryRouter initialEntries={[`/delivery_rider_dashboard/${riderId}`]}>
@@ -40,10 +39,8 @@ describe("View_Deliveries Component", () => {
       </MemoryRouter>
     );
 
-    // Click the button to navigate
     fireEvent.click(screen.getByText(/View Deliveries/i));
 
-    // Check if the navigation occurred to the correct path
     expect(screen.getByText(/Deliveries Page/i)).toBeInTheDocument();
   });
 });
