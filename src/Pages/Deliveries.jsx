@@ -140,6 +140,7 @@ const Deliveries = () => {
           body: JSON.stringify({
             delivery_status: newStatus,
             is_delivered_to_buyer: newStatus === "Delivered", // Update 'is_delivered_to_buyer' only if delivered
+            delivered_to_dc: new Date().toISOString(),
           }),
         }
       );
