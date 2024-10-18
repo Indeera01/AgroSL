@@ -6,7 +6,7 @@ function View_Processing_Orders() {
   const { id } = useParams(); // Extract seller_id from URL
 
   const handleViewProcessingOrders = () => {
-    navigate(`/sellerdashboard/${id}/processingorders`); // Use template string to navigate
+    navigate(`/sellerdashboard/${id}/processingorders`);
   };
 
   return (
@@ -37,8 +37,8 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Soft shadow for depth
-    transition: "transform 0.3s ease", // Add subtle interaction effect
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    transition: "transform 0.3s ease",
   },
   content: {
     display: "flex",
@@ -47,9 +47,9 @@ const styles = {
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#4B8412", // Modern, calming green shade
-    color: "#fff", // White text for contrast
-    borderRadius: "25px", // Round edges
+    backgroundColor: "#4B8412",
+    color: "#fff",
+    borderRadius: "25px",
     width: "220px",
     height: "55px",
     padding: "15px 25px",
@@ -57,12 +57,12 @@ const styles = {
     cursor: "pointer",
     fontSize: "16px",
     fontWeight: "600",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Shadow for button
-    transition: "background-color 0.3s ease, transform 0.2s ease", // Smooth transition on hover
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    transition: "background-color 0.3s ease, transform 0.2s ease",
   },
   buttonHover: {
-    backgroundColor: "#5A9274", // Darken on hover
-    transform: "scale(1.05)", // Slight scale on hover
+    backgroundColor: "#5A9274",
+    transform: "scale(1.05)",
   },
 };
 

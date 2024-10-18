@@ -95,11 +95,11 @@ function ResponsiveAppBar() {
             <Box
               onClick={() => {
                 if (user) {
-                  const userType = user.user_type; // Assuming userType is a property of user object
+                  const userType = user.user_type;
                   if (userType === "seller") {
                     navigate(`/seller_dashboard/${user.user_id}`);
                   } else if (userType === "delivery_rider") {
-                    navigate(`/delivery_rider_dashboard/${user.user_id}`); // Example for delivery rider
+                    navigate(`/delivery_rider_dashboard/${user.user_id}`);
                   } else {
                     navigate("/Sign_In");
                   }
