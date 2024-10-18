@@ -50,7 +50,7 @@ router.post("/create-connected-account", async (req, res) => {
 
 // Create a PaymentIntent (for processing payments)
 router.post("/create-payment-intent", async (req, res) => {
-  const { user_id, cartItems } = req.body; // Get user_id and cartItems from request
+  const { user_id, cartItems } = req.body;
 
   try {
     let totalAmount = 0;
@@ -122,82 +122,5 @@ router.post("/create-charge", async (req, res) => {
     res.status(500).json({ error: "Failed to create charge" });
   }
 });
-
-// router.post("/create-checkout-session", async (req, res) => {
-//   const { user_id, cartItems } = req.body; // Include user_id and cartItems in the request
-
-//   // Prepare line items for Stripe Checkout
-//   const lineItems = cartItems.map((item) => ({
-//     price_data: {
-//       currency: "usd",
-//       product_data: {
-//         name: item.name,
-//         // Optionally add images or descriptions
-//       },
-//       unit_amount: Math.round(item.price * item.quantity * 100), // Amount in cents
-//     },
-//     quantity: item.quantity,
-//   }));
-
-//   try {
-//     // Create a Checkout Session with line items
-//     const session = await stripe.checkout.sessions.create({
-//       payment_method_types: ["card"],
-//       line_items: lineItems,
-//       mode: "payment",
-//       success_url: "http://localhost:3000/success",
-//       cancel_url: "http://localhost:3000/cancel",
-//     });
-
-//     res.json({ id: session.id });
-//   } catch (error) {
-//     console.error("Error creating checkout session:", error);
-//     res.status(500).json({ error: "Failed to create checkout session" });
-//   }
-// });
-
-// const endpointSecret = "your_webhook_secret"; // Store your webhook secret securely
-
-// router.post(
-//   "/webhook",
-//   express.raw({ type: "application/json" }),
-//   async (req, res) => {
-//     let event;
-
-//     try {
-//       event = stripe.webhooks.constructEvent(
-//         req.body,
-//         req.headers["stripe-signature"],
-//         endpointSecret
-//       );
-//     } catch (err) {
-//       console.error(`Webhook signature verification failed: ${err.message}`);
-//       return res.status(400).send(`Webhook Error: ${err.message}`);
-//     }
-
-//     if (event.type === "checkout.session.completed") {
-//       const session = event.data.object;
-
-//       // You can handle transfers to sellers here using session.line_items
-//       const cartItems = session.line_items;
-
-//       // Loop through cartItems to perform transfers
-//       for (const item of cartItems) {
-//         const sellerStripeAccountId = await getSellerStripeId(item.seller_id); // Adjust this according to your structure
-//         const transferAmount = Math.round(item.price * item.quantity * 100); // Amount in cents
-
-//         // Create transfer to seller
-//         await stripe.transfers.create({
-//           amount: transferAmount,
-//           currency: "usd",
-//           destination: sellerStripeAccountId,
-//           transfer_group: session.id, // Use session ID for tracking
-//         });
-//       }
-//     }
-
-//     res.status(200).send("Received");
-//   }
-// );
 
 module.exports = router;

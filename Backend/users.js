@@ -3,8 +3,6 @@ const pool = require("./db.js");
 
 const router = express.Router();
 
-//get users
-
 router.get("/users", async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM "users"');
@@ -31,7 +29,6 @@ router.get("/users_by_type", async (req, res) => {
 
     // Modify the query if specific user types are requested
     if (userTypes.length > 0) {
-      // Use the IN clause with placeholders to avoid SQL injection
       const placeholders = userTypes.map((_, i) => `$${i + 1}`).join(", ");
       query += ` WHERE user_type IN (${placeholders})`;
     }
@@ -64,26 +61,6 @@ router.get("/users/:user_id", async (req, res) => {
   }
 });
 
-/*router.post("/users", async (req, res) => {
-  const { user_id, first_name, last_name, mobile_number, email, user_type } =
-    req.body;
-
-  try {
-    // Insert new user into the database
-    const result = await pool.query(
-      `INSERT INTO users (
-            user_id, first_name, last_name, mobile_number, email, user_type
-          ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [user_id, first_name, last_name, mobile_number, email, user_type]
-    );
-    console.log("Account stored successfully:", result.rows[0]); // Log the successful insertion
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error("Error inserting user:", error.message); // Log the detailed error message
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-*/
 router.post("/users", async (req, res) => {
   const {
     user_id,
@@ -93,7 +70,7 @@ router.post("/users", async (req, res) => {
     email,
     user_type,
     image_url,
-  } = req.body; // Add image_url to the destructuring
+  } = req.body;
 
   try {
     // Insert new user into the database including the image_url
@@ -109,56 +86,17 @@ router.post("/users", async (req, res) => {
         email,
         user_type,
         image_url,
-      ] // Add image_url to the values array
+      ]
     );
 
-    console.log("Account stored successfully:", result.rows[0]); // Log the successful insertion
+    console.log("Account stored successfully:", result.rows[0]);
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error("Error inserting user:", error.message); // Log the detailed error message
+    console.error("Error inserting user:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-/*router.put("/users/:user_id", async (req, res) => {
-  const { first_name, last_name, mobile_number, email, address_id, user_type } =
-    req.body;
-
-  try {
-    const result = await pool.query(
-      `UPDATE "users" 
-               SET 
-                  "first_name" = $1,
-                  "last_name" = $2,
-                  "mobile_number" = $3,
-                  "email" = $4,
-                  "address_id" = $5,
-                  "user_type" = $6
-               WHERE 
-                  "user_id" = $7
-               RETURNING *`,
-      [
-        first_name,
-        last_name,
-        mobile_number,
-        email,
-        address_id,
-        user_type,
-        req.params.user_id,
-      ]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "User not found" });
-    } else {
-      return res.status(200).json(result.rows[0]);
-    }
-  } catch (e) {
-    console.error("Error updating user:", e);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-*/
 router.put("/users/:user_id", async (req, res) => {
   const { first_name, last_name, mobile_number, email, user_type, addressup } =
     req.body;
@@ -220,7 +158,7 @@ router.get("/get_user/:uid", async (req, res) => {
   const { uid } = req.params;
 
   try {
-    // Query the user table to get the user_type for the given uid
+    // Querying the user table to get the user_type for the given uid
 
     const result = await pool.query(
       "SELECT user_type FROM users WHERE user_id = $1",
@@ -241,7 +179,7 @@ router.get("/get_user/:uid", async (req, res) => {
 });
 
 router.get("/api/delivery_rider_dashboard/:id/deliveries", async (req, res) => {
-  const { id } = req.params; // Extract delivery rider ID from the URL
+  const { id } = req.params;
 
   try {
     // Query to fetch deliveries for the given delivery rider ID
@@ -249,7 +187,6 @@ router.get("/api/delivery_rider_dashboard/:id/deliveries", async (req, res) => {
       id,
     ]);
 
-    // Respond with the deliveries
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("Error fetching deliveries:", error);
@@ -258,7 +195,7 @@ router.get("/api/delivery_rider_dashboard/:id/deliveries", async (req, res) => {
 });
 
 router.get("/api/delivery_rider_dashboard/:id/orders", async (req, res) => {
-  const { id } = req.params; // Extract delivery rider ID from the URL
+  const { id } = req.params;
 
   try {
     // Query to fetch deliveries for the given delivery rider ID
@@ -278,7 +215,6 @@ router.delete("/users/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Delete the user with the specified id
     const result = await pool.query(
       "DELETE FROM users WHERE user_id = $1 RETURNING *",
       [id]

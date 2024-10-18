@@ -160,7 +160,7 @@ router.put("/orders/:orderId", async (req, res) => {
 });
 
 router.delete("/orders/:orderId", async (req, res) => {
-  const { orderId } = req.params; // Extract orderId from URL parameters
+  const { orderId } = req.params;
 
   try {
     const result = await pool.query(
@@ -181,26 +181,21 @@ router.delete("/orders/:orderId", async (req, res) => {
 
 router.get("/orders", async (req, res) => {
   try {
-    // Log the request to debug
     console.log("Fetching orders where sent_to_delivery is true");
 
-    // Execute the query
     const deliveries = await pool.query(
       'SELECT order_id, buyer_id,buyer_name,seller_name,buyer_address,seller_address, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order_with_addresses" WHERE sent_to_delivery = $1 and deliver_took=$2 ',
       [true, false]
     );
 
-    // Check if any rows were returned
     if (deliveries.rows.length === 0) {
       return res.status(404).json({ message: "No orders found for delivery" });
     }
 
     res.status(200).json(deliveries.rows);
   } catch (error) {
-    // Log the error for debugging
     console.error("Error fetching orders:", error);
 
-    // Send a detailed error response
     res
       .status(500)
       .json({ error: "Failed to fetch orders", details: error.message });
@@ -222,9 +217,6 @@ router.get("/orders_for_riders", async (req, res) => {
 router.get("/api/orders_for_buyers/:buyer_id", async (req, res) => {
   const { buyer_id } = req.params;
   try {
-    // const result = await pool.query('SELECT * FROM "order" WHERE buyer_id=$1', [
-    //   buyer_id,
-    // ]);
     const result = await pool.query(
       'SELECT order_id, buyer_id,buyer_name,seller_name,buyer_address,seller_address, item_id, order_date, is_confirmed, seller_id, order_quantity FROM "order_with_addresses" WHERE buyer_id=$1 ',
       [buyer_id]

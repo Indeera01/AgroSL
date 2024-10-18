@@ -39,7 +39,6 @@ router.get("/cart/:userID", async (req, res) => {
   }
 });
 
-// Modify /cart/:userID route to include seller's name
 router.get("/cartWithSellerName/:userID", async (req, res) => {
   const userID = req.params.userID;
   try {
@@ -106,7 +105,6 @@ router.post("/cart", async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) {
     if (err.code === "23505") {
-      // Unique violation error code
       res.status(409).json({ error: "This item is already in your cart." });
     } else {
       console.error("Error adding item to cart:", err);

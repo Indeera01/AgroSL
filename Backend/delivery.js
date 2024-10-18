@@ -4,7 +4,7 @@ const pool = require("./db.js");
 const router = express.Router();
 
 router.get("/deliveries/:riderId", async (req, res) => {
-  const { riderId } = req.params; // Extract riderId from URL params
+  const { riderId } = req.params;
 
   try {
     const result = await pool.query(

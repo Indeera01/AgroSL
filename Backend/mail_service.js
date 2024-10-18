@@ -8,12 +8,12 @@ router.post("/send-confirmation", async (req, res) => {
   const { user_email, cartItems } = req.body;
 
   try {
-    // Set up transporter with your email provider (Gmail in this case)
+    // Set up transporter with Gmail
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "agrosl.marketplace@gmail.com", // Replace with your email
-        pass: "ygzy moso kwuh japx", // Replace with your email password or app password
+        user: "agrosl.marketplace@gmail.com",
+        pass: "ygzy moso kwuh japx",
       },
     });
 
@@ -35,7 +35,7 @@ router.post("/send-confirmation", async (req, res) => {
     await transporter.sendMail(mailOptions);
     console.log("Email sent successfully");
   } catch (error) {
-    console.error("Error during email:", error); // Log the full error
+    console.error("Error during email:", error);
     res
       .status(500)
       .json({ message: "Error sending email", error: error.message });
