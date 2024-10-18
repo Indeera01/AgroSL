@@ -1,16 +1,14 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import Complaints from "../Complaints"; // Adjust the import path as necessary
+import Complaints from "../Complaints";
 
-// Mock the fetch function
 global.fetch = jest.fn();
 
 describe("Complaints Component", () => {
-  const sellerId = "S001"; // Sample seller ID
+  const sellerId = "S001";
 
   beforeEach(() => {
-    // Mock the API response
     fetch.mockClear();
   });
 
@@ -57,7 +55,6 @@ describe("Complaints Component", () => {
     );
 
     await waitFor(() => {
-      // Check that the complaints are rendered
       expect(screen.getByText(/Complaint ID: C001/i)).toBeInTheDocument();
       expect(screen.getByText(/Product not delivered./i)).toBeInTheDocument();
       expect(screen.getByText(/Complaint ID: C002/i)).toBeInTheDocument();
@@ -66,6 +63,6 @@ describe("Complaints Component", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks(); // Clean up mocks after each test
+    jest.restoreAllMocks();
   });
 });

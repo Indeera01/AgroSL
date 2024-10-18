@@ -48,7 +48,7 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
 
   useEffect(() => {
     const setupChat = async () => {
-      if (!user) return; // Ensure user is loaded
+      if (!user) return;
 
       try {
         const { data: tokenData } = await axios.post(
@@ -92,7 +92,6 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
 
         conv.on("messageAdded", messageHandler);
 
-        // Cleanup function to remove listener
         return () => {
           conv.off("messageAdded", messageHandler);
         };
@@ -113,75 +112,11 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
   };
 
   return (
-    // <Box
-    //   sx={{
-    //     padding: 1,
-    //     backgroundColor: "#f9f9f9",
-    //     borderRadius: 2,
-    //     width: "100%",
-    //   }}
-    // >
-    //   <Typography variant="h6" gutterBottom>
-    //     Chat with {partnerName}
-    //   </Typography>
-
-    //   {loadingMessages ? (
-    //     <CircularProgress />
-    //   ) : (
-    //     <Box
-    //       sx={{
-    //         maxHeight: "350px",
-    //         overflowY: "auto",
-    //         scrollbarWidth: "none",
-    //         marginBottom: 2,
-    //         display: "flex", // Add this line
-    //         flexDirection: "column", // Add this line
-    //         gap: "5px", // Add spacing between messages
-    //       }}
-    //     >
-    //       {messages.map((msg) => (
-    //         <Paper
-    //           key={msg.index}
-    //           sx={{
-    //             padding: 1,
-    //             borderRadius: 2,
-    //             backgroundColor: msg.author === userId ? "#e1f5fe" : "#fff",
-    //             alignSelf: msg.author === userId ? "flex-end" : "flex-start",
-    //             width: "fit-content",
-    //           }}
-    //         >
-    //           <strong>{msg.author === userId ? "You" : partnerName}:</strong>{" "}
-    //           <Typography variant="body2">{msg.body}</Typography>
-    //         </Paper>
-    //       ))}
-    //       <div ref={messagesEndRef} /> {/* Scroll target */}
-    //     </Box>
-    //   )}
-
-    //   <Box display="flex" alignItems="center" marginTop={2}>
-    //     <TextField
-    //       variant="outlined"
-    //       placeholder="Type your message..."
-    //       fullWidth
-    //       value={newMessage}
-    //       onChange={(e) => setNewMessage(e.target.value)}
-    //       sx={{ marginRight: 1 }}
-    //     />
-    //     <Button
-    //       variant="contained"
-    //       color="primary"
-    //       onClick={handleSendMessage}
-    //       disabled={!newMessage.trim()}
-    //     >
-    //       <SendIcon />
-    //     </Button>
-    //   </Box>
-    // </Box>
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%", // Make it take the full height of the outer box
+        height: "100%",
         maxHeight: "500px", // Adjust this to the required max height
         backgroundColor: "#f9f9f9",
         borderRadius: 2,
@@ -193,7 +128,6 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
         Chat with {partnerName}
       </Typography>
 
-      {/* Chat messages container */}
       <Box
         sx={{
           flexGrow: 1, // Takes up remaining space
@@ -224,10 +158,9 @@ const Chat = ({ userId, chatPartnerId, partnerName }) => {
             </Paper>
           ))
         )}
-        <div ref={messagesEndRef} /> {/* Scroll target */}
+        <div ref={messagesEndRef} />
       </Box>
 
-      {/* Message input */}
       <Box display="flex" alignItems="center" marginTop={2}>
         <TextField
           variant="outlined"

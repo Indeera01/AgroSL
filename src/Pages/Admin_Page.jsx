@@ -203,7 +203,6 @@ const Admin_Page = () => {
       }}
     >
       <Grid container spacing={2}>
-        {/* Left-side Box (40% width) */}
         <Grid item xs={12} md={3}>
           <Box
             sx={{
@@ -217,9 +216,9 @@ const Admin_Page = () => {
           >
             <Box
               sx={{
-                display: "flex", // Enable flexbox
-                justifyContent: "center", // Center horizontally
-                marginBottom: 2, // Optional: Add some spacing below the logo
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: 2,
               }}
             >
               <Box
@@ -347,7 +346,6 @@ const Admin_Page = () => {
           </Box>
         </Grid>
 
-        {/* Right-side Box (60% width) */}
         <Grid item xs={12} md={9}>
           {statsClicked && (
             <Box
@@ -362,7 +360,6 @@ const Admin_Page = () => {
                 Platform Statistics
               </Typography>
               <Grid container spacing={2}>
-                {/* User Statistics */}
                 <Grid item xs={12}>
                   <Typography variant="h5" gutterBottom color={"#4B8412"}>
                     User Statistics
@@ -409,7 +406,6 @@ const Admin_Page = () => {
                   </Card>
                 </Grid>
 
-                {/* Product Statistics */}
                 <Grid item xs={12}>
                   <Typography variant="h5" gutterBottom color={"#4B8412"}>
                     Product Statistics
@@ -417,7 +413,6 @@ const Admin_Page = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Grid container spacing={2}>
-                    {/* Fruits */}
                     <Grid item xs={6} md={3}>
                       <Card sx={{ backgroundColor: "#e6ffe6" }}>
                         <CardContent>
@@ -429,7 +424,6 @@ const Admin_Page = () => {
                       </Card>
                     </Grid>
 
-                    {/* Vegetables */}
                     <Grid item xs={6} md={3}>
                       <Card sx={{ backgroundColor: "#e6ffe6" }}>
                         <CardContent>
@@ -441,7 +435,6 @@ const Admin_Page = () => {
                       </Card>
                     </Grid>
 
-                    {/* Seeds */}
                     <Grid item xs={6} md={3}>
                       <Card sx={{ backgroundColor: "#e6ffe6" }}>
                         <CardContent>
@@ -453,7 +446,6 @@ const Admin_Page = () => {
                       </Card>
                     </Grid>
 
-                    {/* Animal Products */}
                     <Grid item xs={6} md={3}>
                       <Card sx={{ backgroundColor: "#e6ffe6" }}>
                         <CardContent>
@@ -474,7 +466,7 @@ const Admin_Page = () => {
                           "Seeds",
                           "Animal Products",
                         ],
-                        scaleType: "band", // Set the scaleType to 'band'
+                        scaleType: "band",
                       },
                     ]}
                     series={[
@@ -485,17 +477,16 @@ const Admin_Page = () => {
                           itemCounts.seedCount,
                           itemCounts.animalProductCount,
                         ],
-                        color: "#4caf50", // Set the bar color
+                        color: "#4caf50",
                       },
                     ]}
                     width={500}
                     height={400}
-                    barGap={10} // Adjust the gap between bars
-                    barCategoryGap="30%" // Control the category gap (space between groups of bars)
+                    barGap={10}
+                    barCategoryGap="30%"
                   />
                 </Grid>
 
-                {/* Sales Statistics */}
                 <Grid item xs={12}>
                   <Typography variant="h5" gutterBottom color={"#4B8412"}>
                     Sales Statistics
@@ -569,7 +560,6 @@ const Admin_Page = () => {
                       <TableCell align="center">Mobile Number</TableCell>
                       <TableCell align="center">Email</TableCell>
                       <TableCell align="center">User Type</TableCell>
-                      {/* <TableCell align="center">Delete User</TableCell> */}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -588,14 +578,6 @@ const Admin_Page = () => {
                         </TableCell>
                         <TableCell align="center">{user.email}</TableCell>
                         <TableCell align="center">{user.user_type}</TableCell>
-                        {/* <TableCell align="center">
-                          <DeleteForeverIcon
-                            sx={{ cursor: "pointer", color: "red" }}
-                            onClick={() => {
-                              // Handle delete user logic
-                            }}
-                          />
-                        </TableCell> */}
                       </TableRow>
                     ))}
                   </TableBody>

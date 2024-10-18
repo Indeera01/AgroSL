@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import Success from "../Success"; // Adjust the path if needed
+import Success from "../Success";
 
 describe("Success Component", () => {
   const renderWithRouter = (component) => {
@@ -11,14 +11,13 @@ describe("Success Component", () => {
   test("renders success message correctly", () => {
     renderWithRouter(<Success />);
 
-    // Simplified assertions to guarantee success
     const successText = screen.queryByText(/Account Created Successfully!/i);
-    expect(successText).toBeTruthy(); // Just ensures the text exists
+    expect(successText).toBeTruthy();
   });
 
   test("renders login button", () => {
     renderWithRouter(<Success />);
     const button = screen.queryByRole("button", { name: /Go to Log In Page/i });
-    expect(button).toBeTruthy(); // Ensures the button exists
+    expect(button).toBeTruthy();
   });
 });
