@@ -222,6 +222,7 @@ const Rider_Orders = () => {
       order_id: orderId,
       delivery_rider_id: user.user_id, // Extracted from user state
       is_delivered_to_buyer: false,
+      delivered_to_sc: new Date().toISOString(),
     };
     console.log("Delivery Data:", deliveryData);
     console.log("Current User:", user);
