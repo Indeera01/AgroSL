@@ -118,33 +118,35 @@ const Tracking = () => {
 
   const steps = [
     {
-      title: "Order Processed",
+      title: orderData ? "Order Processed" : "Processing your order",
       description: "The order has been processed.",
-      isCompleted: orderData?.delivery_status !== "Delivery Processing", // Fix
+      isCompleted: orderData,
     },
     {
       title: "Sent to Delivery Rider",
       description: orderData?.delivered_to_sc
         ? `Delivered to delivery rider (${orderData.delivery_rider_id}) on ${orderData.delivered_to_sc}`
         : "Not yet delivered to delivery rider",
-      isCompleted: orderData?.delivered_to_sc !== null,
+      isCompleted: orderData?.delivered_to_sc,
     },
     {
       title: "Delivered to Buyer",
       description: orderData?.is_delivered_to_buyer
-        ? `Delivered to buyer on ${orderData.confirmation_date}`
+        ? `Delivered to buyer on ${orderData.delivered_to_dc}`
         : "Not yet delivered to buyer",
       isCompleted: orderData?.is_delivered_to_buyer,
     },
   ];
 
   const getCurrentStep = () => {
+    if (!orderData) return 0; // If no order data, return first step
+
     for (let i = 0; i < steps.length; i++) {
       if (!steps[i].isCompleted) {
         return i;
       }
     }
-    return steps.length;
+    return steps.length; // All steps completed
   };
 
   return (
@@ -173,9 +175,17 @@ const Tracking = () => {
           align="center"
           sx={{ mb: 2, fontSize: "1.2rem" }}
         >
-          Order ID: <strong>{orderData.order_id}</strong>
-          <br />
-          Delivery ID: <strong>{orderData.delivery_id}</strong>
+          {orderData ? (
+            <>
+              Order ID: <strong>{orderData.order_id}</strong>
+              <br />
+              Delivery ID: <strong>{orderData.delivery_id}</strong>
+            </>
+          ) : (
+            <>
+              Order ID: <strong>{orderID}</strong>
+            </>
+          )}
         </Typography>
 
         <Stepper
@@ -232,7 +242,11 @@ const Tracking = () => {
         <Button
           variant="contained"
           onClick={handleConfirmDelivery}
-          disabled={orderData.is_delivered_to_buyer}
+          disabled={
+            orderData?.is_delivered_to_buyer ||
+            !orderData?.delivery_id ||
+            !orderData?.delivered_to_sc
+          }
           sx={{
             px: 4,
             py: 1.5,
@@ -241,7 +255,7 @@ const Tracking = () => {
             "&:hover": { backgroundColor: "primary.dark" },
           }}
         >
-          {orderData.is_delivered_to_buyer
+          {orderData?.is_delivered_to_buyer
             ? "Delivery Confirmed"
             : "Confirm Delivery"}
         </Button>
