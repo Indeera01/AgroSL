@@ -9,9 +9,14 @@ import {
 } from "@mui/material";
 import backgroundImage from "../assets/pxfuel.jpg";
 import { useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../../firebase";
 import axios from "axios";
+import GoogleIcon from "@mui/icons-material/Google";
 
 const SignUp = () => {
   const [password, setPassword] = useState("");
@@ -26,40 +31,26 @@ const SignUp = () => {
   const [phoneNumberError, setPhonenumberError] = useState(false);
   const navigate = useNavigate();
 
+  const googleProvider = new GoogleAuthProvider();
+
   const handleFirstNameChange = (e) => {
     setFirstname(e.target.value);
-    if (e.target.validity.valid) {
-      setFirstNameError(false);
-    } else {
-      setFirstNameError(true);
-    }
+    setFirstNameError(!e.target.validity.valid);
   };
 
   const handleLastNameChange = (e) => {
     setLastname(e.target.value);
-    if (e.target.validity.valid) {
-      setLastNameError(false);
-    } else {
-      setLastNameError(true);
-    }
+    setLastNameError(!e.target.validity.valid);
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    if (e.target.validity.valid) {
-      setEmailError(false);
-    } else {
-      setEmailError(true);
-    }
+    setEmailError(!e.target.validity.valid);
   };
 
   const handlePhoneNumberChange = (e) => {
     setPhonenumber(e.target.value);
-    if (e.target.validity.valid) {
-      setPhonenumberError(false);
-    } else {
-      setPhonenumberError(true);
-    }
+    setPhonenumberError(!e.target.validity.valid);
   };
 
   const handleSignUp = async () => {
@@ -77,9 +68,8 @@ const SignUp = () => {
       const user = userCredential.user;
       console.log("User created:", user);
 
-      const userId = user.uid;
       const newUser = {
-        user_id: userId,
+        user_id: user.uid,
         first_name: firstname,
         last_name: lastname,
         mobile_number: phonenumber,
@@ -87,31 +77,46 @@ const SignUp = () => {
         address_id: "",
         user_type: "buyer",
       };
+
+      await axios.post(
+        "https://backend-rho-three-58.vercel.app/users",
+        newUser
+      );
       alert("Account created successfully");
       clearFields();
       navigate("/Success");
-      axios
-        .post("https://backend-rho-three-58.vercel.app/users", newUser)
-        .then((response) => {
-          alert("Account created successfully");
-          clearFields();
-          navigate("/Success");
-        })
-        .catch((error) => {
-          console.error("Error creating account:", error);
-        });
-
-      axios
-        .post("https://backend-rho-three-58.vercel.app/buyer", newUser)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error("Error creating buyer:", error);
-        });
     } catch (error) {
       console.error("Error creating user:", error);
       alert("Error creating account");
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const newUser = {
+        user_id: user.uid,
+        first_name: user.displayName.split(" ")[0] || "",
+        last_name: user.displayName.split(" ")[1] || "",
+        mobile_number: "",
+        email: user.email,
+        address_id: "",
+        user_type: "buyer",
+      };
+
+      console.log("Google user signed in:", newUser);
+      await axios.post(
+        "https://backend-rho-three-58.vercel.app/users",
+        newUser
+      );
+
+      alert("Signed in successfully with Google");
+      navigate("/Success");
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      alert("Failed to sign in with Google");
     }
   };
 
@@ -152,59 +157,43 @@ const SignUp = () => {
         <Typography variant="h4" fontFamily="open-sans" gutterBottom mb={2}>
           Create an Account
         </Typography>
+
         <TextField
           label="First Name"
           variant="outlined"
           margin="dense"
           fullWidth
           value={firstname}
-          onChange={(e) => handleFirstNameChange(e)}
-          inputProps={{
-            pattern: "[A-Za-z ]+",
-          }}
+          onChange={handleFirstNameChange}
+          inputProps={{ pattern: "[A-Za-z ]+" }}
           size="small"
-          helperText={
-            firstNameError
-              ? "Please enter a valid name . It should be [a-z,A-Z]"
-              : ""
-          }
+          helperText={firstNameError ? "Enter a valid name (a-z, A-Z)" : ""}
         />
+
         <TextField
           label="Last Name"
           variant="outlined"
           margin="dense"
           fullWidth
           value={lastname}
-          onChange={(e) => handleLastNameChange(e)}
-          required
-          inputProps={{
-            pattern: "[A-Za-z ]+",
-          }}
+          onChange={handleLastNameChange}
+          inputProps={{ pattern: "[A-Za-z ]+" }}
           size="small"
-          helperText={
-            lastNameError
-              ? "Please enter a valid name. It should be [a-z,A-Z]"
-              : ""
-          }
+          helperText={lastNameError ? "Enter a valid name (a-z, A-Z)" : ""}
         />
+
         <TextField
           label="Phone Number"
           variant="outlined"
           margin="dense"
           fullWidth
           value={phonenumber}
-          onChange={(e) => handlePhoneNumberChange(e)}
-          required
-          helperText={
-            phoneNumberError
-              ? "Enter a valid phone number  ie: 07xxxxxxxx  "
-              : ""
-          }
-          inputProps={{
-            pattern: "[0][7][0-9]{8}",
-          }}
+          onChange={handlePhoneNumberChange}
+          inputProps={{ pattern: "[0][7][0-9]{8}" }}
           size="small"
+          helperText={phoneNumberError ? "Enter a valid phone number" : ""}
         />
+
         <TextField
           label="Email Address"
           variant="outlined"
@@ -212,16 +201,11 @@ const SignUp = () => {
           fullWidth
           type="email"
           value={email}
-          onChange={(e) => handleEmailChange(e)}
-          required
-          helperText={
-            emailError ? "Enter a valid email address ie: dummy@gmail.com" : ""
-          }
-          inputProps={{
-            pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}",
-          }}
+          onChange={handleEmailChange}
           size="small"
+          helperText={emailError ? "Enter a valid email address" : ""}
         />
+
         <TextField
           label="Password"
           variant="outlined"
@@ -230,9 +214,9 @@ const SignUp = () => {
           fullWidth
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
           size="small"
         />
+
         <TextField
           label="Re-Enter Password"
           variant="outlined"
@@ -241,12 +225,9 @@ const SignUp = () => {
           fullWidth
           value={reenteredpassword}
           onChange={(e) => setReenteredpassword(e.target.value)}
-          required
           size="small"
         />
-        <Link color="secondary" href="/Sign_Up_Seller">
-          Create as seller
-        </Link>
+
         <Button
           variant="contained"
           color="primary"
@@ -255,6 +236,30 @@ const SignUp = () => {
         >
           Create Account
         </Button>
+
+        <Button
+          variant="outlined"
+          color="inherit"
+          onClick={handleGoogleSignUp}
+          sx={{
+            mt: 2,
+            width: { xs: "70%", sm: "40%" },
+            fontSize: "15px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1,
+            borderColor: "#4285F4", // Google's primary color
+            color: "#4285F4",
+            "&:hover": {
+              backgroundColor: "rgba(66, 133, 244, 0.1)",
+            },
+            textTransform: "none",
+          }}
+        >
+          <GoogleIcon sx={{ fontSize: 24 }} />
+        </Button>
+
         <Typography variant="body2" sx={{ mt: 2 }}>
           Already have an account?{" "}
           <Link color="secondary" href="/Sign_In">

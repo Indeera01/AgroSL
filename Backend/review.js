@@ -12,8 +12,8 @@ router.post("/reviews", async (req, res) => {
 
   try {
     const countResult = await pool.query("SELECT COUNT(*) FROM review");
-    const rid = parseInt(countResult.rows[0].count) + 2;
-    const review_id = `review${String(rid).padStart(4, "0")}`;
+    const rid = parseInt(countResult.rows[0].count) + 1;
+    const review_id = `rew${String(rid).padStart(4, "0")}`;
 
     const result = await pool.query(
       `INSERT INTO review (review_id, item_id, description, rating, buyer_id)
